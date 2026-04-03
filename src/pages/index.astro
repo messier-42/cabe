@@ -54,23 +54,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <a href="#spec" class="btn btn--primary">Read Specification</a>
         <a href="#overview" class="btn btn--ghost">Learn the Standard →</a>
       </div>
-
-      <!--div class="hero__metrics">
-        <div class="hero__metric">
-          <span class="hero__metric-value">~40%</span>
-          <span class="hero__metric-label">Smaller ciphertext vs. prior ABE schemes</span>
-        </div>
-        <div class="hero__metric-divider"></div>
-        <div class="hero__metric">
-          <span class="hero__metric-value">O(1)</span>
-          <span class="hero__metric-label">Pairing operations for policy evaluation</span>
-        </div>
-        <div class="hero__metric-divider"></div>
-        <div class="hero__metric">
-          <span class="hero__metric-value">IND-CPA</span>
-          <span class="hero__metric-label">Security under standard assumptions</span>
-        </div>
-      </div-->
     </div>
   </section>
 
@@ -87,322 +70,118 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div class="overview__columns">
           <div class="overview__col">
             <p>
-             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tempus malesuada eros et consectetur. Sed sed rutrum enim. Curabitur ut enim velit. Donec vel sapien quis justo dignissim dapibus quis id erat.
-            </p>
-            <p>
-             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tempus malesuada eros et consectetur. Sed sed rutrum enim. Curabitur ut enim velit. Donec vel sapien quis justo dignissim dapibus quis id erat.
+              With CABE, data of any size can be safely encrypted for transport through
+              untrusted and hostile environments, while being labeled according to the
+              identity and context of the producer. CABE can support any labelling schema
+              as needed to support mission objectives — label data according to
+              sensitivity, compartment, or based on any other selector.
             </p>
           </div>
           <div class="overview__col">
             <p>
-             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc tempus malesuada eros et consectetur. Sed sed rutrum enim. Curabitur ut enim velit. Donec vel sapien quis justo dignissim dapibus quis id erat.
+              Every object is bound to its associated label metadata and encrypted before
+              transport or storage. Decryption is gated by attribute-based access control
+              (ABAC) policy which can be configured as needed for the mission environment.
+              Both protected data objects and workloads accessing objects are assigned a
+              set of metadata labels, and system policy determines which workloads can
+              access which data according to arbitrary metadata predicates.
             </p>
-            <p>
-             Nam vel diam faucibus, condimentum augue et, sodales dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.  
-            </p>
           </div>
-        </div>
-      </div>
-
-      <div class="overview__comparison">
-        <div class="comparison-card comparison-card--before">
-          <div class="comparison-card__header">
-            <span class="comparison-card__tag tag--muted">TDF</span>
-          </div>
-          <ul class="comparison-list">
-            <li class="comparison-list__item comparison-list__item--no">Binary access: key or no key</li>
-            <li class="comparison-list__item comparison-list__item--no">Key distribution at scale is complex</li>
-            <li class="comparison-list__item comparison-list__item--no">Policy lives outside ciphertext</li>
-            <li class="comparison-list__item comparison-list__item--no">Requires re-encryption on policy change</li>
-          </ul>
-        </div>
-        <div class="comparison-divider">
-          <div class="comparison-divider__arrow">→</div>
-        </div>
-        <div class="comparison-card comparison-card--after">
-          <div class="comparison-card__header">
-            <span class="comparison-card__tag tag--amber">CABE</span>
-          </div>
-          <ul class="comparison-list">
-            <li class="comparison-list__item comparison-list__item--yes">Policy-based access over attributes</li>
-            <li class="comparison-list__item comparison-list__item--yes">Attribute authorities issue keys</li>
-            <li class="comparison-list__item comparison-list__item--yes">Policy embedded in ciphertext</li>
-            <li class="comparison-list__item comparison-list__item--yes">Dynamic attribute revocation support</li>
-          </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- FEATURES -->
-  <section class="features" id="features">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">002 · Security Properties</span>
-        <h2 class="section-heading">Built on rigorous<br />cryptographic foundations.</h2>
+  <!-- SCALABLE -->
+  <section class="scalable" id="scalable">
+    <div class="container scalable__inner">
+      <div class="scalable__label">
+        <span class="section-label">002 · Performance</span>
       </div>
-
-      <div class="features__grid">
-        <div class="feature-card">
-          <div class="feature-card__icon">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="8" y="14" width="24" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M14 14V10a6 6 0 0 1 12 0v4" stroke="currentColor" stroke-width="1.5"/>
-              <circle cx="20" cy="24" r="3" fill="currentColor" opacity="0.7"/>
-              <path d="M20 27v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <h3 class="feature-card__title">IND-CPA Security</h3>
-          <p class="feature-card__body">
-            Ciphertexts are semantically secure under adaptive chosen-plaintext
-            attacks, provably reducible to the Decisional Bilinear Diffie-Hellman
-            assumption.
-          </p>
-          <div class="feature-card__tag">Formal proof required</div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-card__icon">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M20 8v4M20 28v4M8 20h4M28 20h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <circle cx="20" cy="20" r="4" fill="currentColor" opacity="0.5"/>
-            </svg>
-          </div>
-          <h3 class="feature-card__title">Collusion Resistance</h3>
-          <p class="feature-card__body">
-            Multiple users cannot pool their attribute keys to exceed the access
-            rights of any single user. Key blinding ensures cryptographic isolation
-            between credential holders.
-          </p>
-          <div class="feature-card__tag">Per-user key randomisation</div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-card__icon">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 30 L20 10 L30 30" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-              <path d="M14 24h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <circle cx="20" cy="10" r="2.5" fill="currentColor" opacity="0.7"/>
-            </svg>
-          </div>
-          <h3 class="feature-card__title">Attribute Privacy</h3>
-          <p class="feature-card__body">
-            In KP-CABE mode, the ciphertext reveals no information about the
-            attributes used during encryption. The encryptor's attribute set
-            remains hidden from unauthorised decryptors.
-          </p>
-          <div class="feature-card__tag">Optional attribute hiding</div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-card__icon">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 20h16M20 12l8 8-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <rect x="4" y="12" width="8" height="16" rx="2" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-            </svg>
-          </div>
-          <h3 class="feature-card__title">Forward Secrecy</h3>
-          <p class="feature-card__body">
-            Epoch-based key evolution ensures that compromise of current
-            attribute keys does not decrypt historical ciphertexts. Key
-            update operations are non-interactive.
-          </p>
-          <div class="feature-card__tag">Epoch-based key rotation</div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-card__icon">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="6" y="6" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
-              <rect x="22" y="6" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-              <rect x="6" y="22" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-              <rect x="22" y="22" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M18 12h4M12 18v4M28 18v4M18 28h4" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-            </svg>
-          </div>
-          <h3 class="feature-card__title">Multi-Authority</h3>
-          <p class="feature-card__body">
-            Attribute keys can be issued by independent authorities without
-            coordination. A single ciphertext policy can span attributes from
-            multiple distrusting organisations.
-          </p>
-          <div class="feature-card__tag">Decentralised issuance</div>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-card__icon">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8 32 C8 20 20 8 32 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M8 32 C8 26 14 20 20 20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
-              <circle cx="32" cy="8" r="3" fill="currentColor" opacity="0.7"/>
-              <circle cx="8" cy="32" r="3" fill="currentColor" opacity="0.7"/>
-              <circle cx="20" cy="20" r="2.5" stroke="currentColor" stroke-width="1.5"/>
-            </svg>
-          </div>
-          <h3 class="feature-card__title">Compact Ciphertext</h3>
-          <p class="feature-card__body">
-            CABE's wire format achieves a constant-size ciphertext component
-            regardless of policy complexity, using CBOR encoding and curve
-            point compression throughout.
-          </p>
-          <div class="feature-card__tag">CBOR-encoded wire format</div>
+      <div class="scalable__body">
+        <h2 class="scalable__heading">Scalable to any object size.</h2>
+        <p class="scalable__text">
+          CABE is built on cryptographic primitives which are post-quantum safe, and
+          state-of-the-art internet ecosystem standards such as the IETF's COSE and
+          CBOR, providing a compact, low-overhead envelope format. CABE can scale
+          performantly to messages which are arbitrarily large — or arbitrarily small,
+          even a single byte.
+        </p>
+        <div class="scalable__tags">
+          <span class="scalable__tag">Post-quantum safe primitives</span>
+          <span class="scalable__tag">IETF COSE &amp; CBOR</span>
+          <span class="scalable__tag">Compact envelope format</span>
+          <span class="scalable__tag">Arbitrary message size</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- HOW IT WORKS -->
-  <section class="mechanism" id="how-it-works">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">003 · Mechanism</span>
-        <h2 class="section-heading">Four algorithms,<br />one coherent system.</h2>
-      </div>
-
-      <div class="mechanism__flow">
-        <div class="mech-step">
-          <div class="mech-step__number">01</div>
-          <div class="mech-step__content">
-            <h3 class="mech-step__title">Setup</h3>
-            <p class="mech-step__body">
-              A trusted authority (or distributed set of authorities) runs
-              <code>CABE.Setup(λ, U)</code> to generate a master public key
-              <code>MPK</code> and master secret key <code>MSK</code> over
-              attribute universe <em>U</em>.
-            </p>
-            <div class="mech-step__algo">
-              <span class="algo-label">Output:</span>
-              <span class="algo-value">(MPK, MSK)</span>
-            </div>
-          </div>
-        </div>
-        <div class="mech-connector" aria-hidden="true"></div>
-
-        <div class="mech-step">
-          <div class="mech-step__number">02</div>
-          <div class="mech-step__content">
-            <h3 class="mech-step__title">Key Generation</h3>
-            <p class="mech-step__body">
-              For a user with attribute set <em>S</em>, the authority issues
-              a decryption key <code>SK_S</code> via <code>CABE.KeyGen(MSK, S)</code>.
-              Each key is independently blinded to prevent collusion.
-            </p>
-            <div class="mech-step__algo">
-              <span class="algo-label">Output:</span>
-              <span class="algo-value">SK_S</span>
-            </div>
-          </div>
-        </div>
-        <div class="mech-connector" aria-hidden="true"></div>
-
-        <div class="mech-step">
-          <div class="mech-step__number">03</div>
-          <div class="mech-step__content">
-            <h3 class="mech-step__title">Encrypt</h3>
-            <p class="mech-step__body">
-              An encryptor specifies an access policy <em>P</em> (boolean circuit
-              over attributes) and calls <code>CABE.Encrypt(MPK, m, P)</code>.
-              The policy is embedded in the CBOR ciphertext header.
-            </p>
-            <div class="mech-step__algo">
-              <span class="algo-label">Output:</span>
-              <span class="algo-value">CT = (header‖body)</span>
-            </div>
-          </div>
-        </div>
-        <div class="mech-connector" aria-hidden="true"></div>
-
-        <div class="mech-step">
-          <div class="mech-step__number">04</div>
-          <div class="mech-step__content">
-            <h3 class="mech-step__title">Decrypt</h3>
-            <p class="mech-step__body">
-              A recipient with key <code>SK_S</code> calls
-              <code>CABE.Decrypt(SK_S, CT)</code>. Decryption succeeds
-              iff <em>S</em> satisfies <em>P</em>; otherwise the function
-              returns ⊥ without leaking partial information.
-            </p>
-            <div class="mech-step__algo">
-              <span class="algo-label">Output:</span>
-              <span class="algo-value">m or ⊥</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mechanism__policy-example">
-        <div class="policy-example__header">
-          <span class="policy-example__label">Example Policy Expression</span>
-          <span class="policy-example__badge">CP-CABE</span>
-        </div>
-        <div class="policy-example__code">
-          <pre><code><span class="tok-comment">// Grant access to senior engineering staff or auditors in the EU</span>
-<span class="tok-keyword">POLICY</span> <span class="tok-string">"data/financial/q4-2024"</span> := (
-  (<span class="tok-attr">role</span>:<span class="tok-value">engineer</span> AND <span class="tok-attr">clearance</span>:<span class="tok-value">senior</span>)
-  OR
-  (<span class="tok-attr">role</span>:<span class="tok-value">auditor</span> AND <span class="tok-attr">region</span>:<span class="tok-value">EU</span>)
-)
-
-<span class="tok-comment">// Encoded in CBOR header as a monotone boolean circuit</span>
-<span class="tok-keyword">CABE.Encrypt</span>(MPK, plaintext, policy) <span class="tok-op">→</span> <span class="tok-type">CipherText</span></code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SPEC / CTA -->
+  <!-- SPEC -->
   <section class="spec" id="spec">
     <div class="container">
       <div class="section-header">
-        <span class="section-label">004 · Specification</span>
-        <h2 class="section-heading">Standards-track<br />documentation.</h2>
+        <span class="section-label">003 · Specification</span>
+        <h2 class="section-heading">An open specification.</h2>
+        <p class="section-subheading">
+          CABE is a family of publicly-available specifications that fit together in a
+          cohesive framework.
+        </p>
       </div>
 
-      <div class="spec__grid">
-        <div class="spec-doc">
-          <div class="spec-doc__type">Internet-Draft</div>
-          <h3 class="spec-doc__title">draft-cabe-core-00</h3>
-          <p class="spec-doc__desc">Core wire format, algorithm identifiers, and CBOR encoding for CABE ciphertexts, keys, and policies.</p>
-          <div class="spec-doc__meta">
-            <span>Status: Active Draft</span>
-            <span>March 2025</span>
+      <div class="spec__group">
+        <h3 class="spec__group-title">Core Specifications</h3>
+        <p class="spec__group-desc">
+          The core specifications are critical to any CABE system.
+        </p>
+        <div class="spec__list">
+          <div class="spec-item">
+            <div class="spec-item__header">
+              <h4 class="spec-item__title">CABE Base Message Structure</h4>
+              <span class="spec-item__status spec-item__status--active">First draft published</span>
+            </div>
+            <p class="spec-item__desc">
+              Describes how to encrypt messages, enveloping them into a CABE Base Message.
+            </p>
+            <a href={`${base}/spec/core`} class="spec-item__link">Read specification →</a>
           </div>
-          <a href="#cta" class="spec-doc__link">View Draft →</a>
-        </div>
 
-        <div class="spec-doc">
-          <div class="spec-doc__type">Internet-Draft</div>
-          <h3 class="spec-doc__title">draft-cabe-algorithms-00</h3>
-          <p class="spec-doc__desc">Mandatory-to-implement algorithms: BLS12-381 pairing group, FAME-CP construction, and HKDF-based key derivation.</p>
-          <div class="spec-doc__meta">
-            <span>Status: Active Draft</span>
-            <span>March 2025</span>
+          <div class="spec-item">
+            <div class="spec-item__header">
+              <h4 class="spec-item__title">CABE Key Access Protocol</h4>
+              <span class="spec-item__status spec-item__status--active">First draft published</span>
+            </div>
+            <p class="spec-item__desc">
+              Describes the protocol used by CABE clients to interact with a CABE key
+              server, and the architecture of a reference CABE key server.
+            </p>
+            <a href={`${base}/spec/algorithms`} class="spec-item__link">Read specification →</a>
           </div>
-          <a href="#cta" class="spec-doc__link">View Draft →</a>
         </div>
+      </div>
 
-        <div class="spec-doc">
-          <div class="spec-doc__type">Internet-Draft</div>
-          <h3 class="spec-doc__title">draft-cabe-policy-lang-00</h3>
-          <p class="spec-doc__desc">CABE Policy Expression Language (CPEL): syntax, semantics, and canonical CBOR serialisation of access policies.</p>
-          <div class="spec-doc__meta">
-            <span>Status: Active Draft</span>
-            <span>March 2025</span>
+      <div class="spec__group spec__group--secondary">
+        <h3 class="spec__group-title">Additional Specifications</h3>
+        <p class="spec__group-desc">
+          Additional specifications provide extended functionality.
+        </p>
+        <div class="spec__list">
+          <div class="spec-item spec-item--wip">
+            <div class="spec-item__header">
+              <h4 class="spec-item__title">CABE Associated Messaging</h4>
+              <span class="spec-item__status spec-item__status--pending">Pending first draft</span>
+            </div>
+            <p class="spec-item__desc">
+              An ultra-low-overhead encryption format for efficiently transporting
+              multiple small amounts of information (even just one byte) in the context
+              of a CABE Base Message.
+            </p>
           </div>
-          <a href="#cta" class="spec-doc__link">View Draft →</a>
         </div>
+      </div>
 
-        <div class="spec-doc spec-doc--wip">
-          <div class="spec-doc__type">Internet-Draft</div>
-          <h3 class="spec-doc__title">draft-cabe-multi-authority-00</h3>
-          <p class="spec-doc__desc">Extensions for multi-authority deployments: authority registration, attribute namespacing, and inter-authority trust.</p>
-          <div class="spec-doc__meta">
-            <span>Status: In Progress</span>
-            <span>Q2 2025</span>
-          </div>
-          <a href="#cta" class="spec-doc__link">Coming Soon</a>
-        </div>
+      <div class="spec__cta">
+        <a href={`${base}/specification`} class="btn btn--primary">View all specifications</a>
       </div>
     </div>
   </section>
@@ -417,15 +196,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <p class="mc-body">
           Sign up and receive more information on:
         </p>
-        <ul class="mc-body">
-        <li>Adopting CABE in your organization</li>
-        <li>Incorporating CABE technology into your products</li>
-        <li>Getting involved in the specification process</li>
+        <ul class="mc-list">
+          <li><strong>Adoptees.</strong> Adopting CABE in your organization</li>
+          <li><strong>Incorporators.</strong> Incorporating CABE technology into your products</li>
+          <li><strong>Collaborators.</strong> Getting involved in the specification process</li>
         </ul>
       </div>
 
       <div class="mc-form-wrap">
-        <!-- Mailchimp embedded form — replace action URL with your list's POST URL -->
+        <!-- Mailchimp embedded form -->
         <form
           action="https://messier42.us19.list-manage.com/subscribe/post?u=f91016b8b104eeb6c1e840cc8&amp;id=edafba7923&amp;f_id=0094c2e1f0"
           method="post"
@@ -464,6 +243,216 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
   </section>
 
-  <!-- FOOTER -->
 </Layout>
 
+<style>
+  /* ─── SCALABLE SECTION ─────────────────────────────────────── */
+  .scalable {
+    padding: var(--section-pad) 0;
+    background: var(--bg-2);
+    border-top: 1px solid var(--border-dim);
+    border-bottom: 1px solid var(--border-dim);
+  }
+
+  .scalable__inner {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .scalable__heading {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+  }
+
+  .scalable__text {
+    font-size: 1rem;
+    color: var(--ink-3);
+    line-height: 1.8;
+    font-weight: 300;
+    max-width: 62ch;
+    margin-bottom: 2rem;
+  }
+
+  .scalable__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .scalable__tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--amber);
+    background: var(--amber-trace);
+    border: 1px solid var(--amber-border);
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+  }
+
+  /* ─── SPEC SECTION ─────────────────────────────────────────── */
+  .section-subheading {
+    font-size: 1rem;
+    color: var(--ink-3);
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 56ch;
+    margin-top: 0.75rem;
+  }
+
+  .spec__group {
+    margin-top: 3.5rem;
+  }
+
+  .spec__group--secondary {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--border-dim);
+  }
+
+  .spec__group-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-4);
+    margin-bottom: 0.4rem;
+  }
+
+  .spec__group-desc {
+    font-size: 0.9rem;
+    color: var(--ink-3);
+    font-weight: 300;
+    margin-bottom: 1.75rem;
+  }
+
+  .spec__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .spec-item {
+    padding: 1.75rem 2rem;
+    background: var(--bg-1);
+    border-bottom: 1px solid var(--border-dim);
+  }
+
+  .spec-item:last-child {
+    border-bottom: none;
+  }
+
+  .spec-item--wip {
+    background: var(--bg);
+    opacity: 0.75;
+  }
+
+  .spec-item__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .spec-item__title {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .spec-item__status {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    flex-shrink: 0;
+  }
+
+  .spec-item__status--active {
+    color: var(--success);
+    background: #e8f5ef;
+    border: 1px solid #b0dfc8;
+  }
+
+  .spec-item__status--pending {
+    color: var(--ink-4);
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+  }
+
+  .spec-item__desc {
+    font-size: 0.9rem;
+    color: var(--ink-3);
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 1rem;
+    max-width: 68ch;
+  }
+
+  .spec-item__link {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .spec-item__link:hover { color: var(--amber-bright); }
+
+  .spec__cta {
+    margin-top: 2.5rem;
+  }
+
+  /* ─── MAILING LIST LIST ─────────────────────────────────────── */
+  .mc-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 0.75rem;
+  }
+
+  .mc-list li {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+    font-weight: 300;
+    line-height: 1.6;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .mc-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--amber);
+    font-weight: 400;
+  }
+
+  .mc-list li strong {
+    color: rgba(255,255,255,0.9);
+    font-weight: 500;
+  }
+
+  @media (max-width: 900px) {
+    .scalable__inner {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>
