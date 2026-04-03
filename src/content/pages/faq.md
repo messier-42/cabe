@@ -26,7 +26,7 @@ Whereas ZTDF is built on container formats like ZIP, CABE is built on the
 IETF's state of the art standards COSE and CBOR, which define modern,
 peer-reviewed encryption and data serialization mechanisms.
 
-# How does CABE differ from Attribute Based Encryption (ABE)?
+# How does CABE differ from Attribute-Based Encryption (ABE)?
 
 ABE refers to the use of advanced or novel cryptography to enforce an
 attribute-based access control policy via cryptographic means.
