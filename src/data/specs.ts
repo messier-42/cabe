@@ -47,6 +47,14 @@ export const specGroups: SpecGroup[] = [
     desc: 'Additional specifications provide extended functionality.',
     specs: [
       {
+        title: 'NATO ACP240 Attribute Mapping',
+        draft: 'CABE-ACP240',
+        desc: 'Defines an isomorphic mapping between NATO ACP240 information classification labelling and CABE Attribute Sets.',
+        status: 'Pending first draft',
+        statusType: 'pending',
+        slug: null,
+      },
+      {
         title: 'CABE Associated Messaging',
         draft: 'CABE-ASSOC',
         desc: 'An ultra-low-overhead encryption format for efficiently transporting large numbers of small units of information — even a single byte — in the context of a CABE Base Message.',
