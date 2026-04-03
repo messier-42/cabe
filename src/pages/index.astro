@@ -1,8 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Nav from '../components/Nav.astro';
+import { specGroups } from '../data/specs';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const coreGroup = specGroups[0];
+const additionalGroup = specGroups[1];
 ---
 
 <Layout>
@@ -129,56 +132,28 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         </p>
       </div>
 
-      <div class="spec__group">
-        <h3 class="spec__group-title">Core Specifications</h3>
-        <p class="spec__group-desc">
-          The core specifications are critical to any CABE system.
-        </p>
-        <div class="spec__list">
-          <div class="spec-item">
-            <div class="spec-item__header">
-              <h4 class="spec-item__title">CABE Base Message Structure</h4>
-              <span class="spec-item__status spec-item__status--active">First draft published</span>
-            </div>
-            <p class="spec-item__desc">
-              Describes how to encrypt messages, enveloping them into a CABE Base Message.
-            </p>
-            <a href={`${base}/spec/core`} class="spec-item__link">Read specification →</a>
-          </div>
-
-          <div class="spec-item">
-            <div class="spec-item__header">
-              <h4 class="spec-item__title">CABE Key Access Protocol</h4>
-              <span class="spec-item__status spec-item__status--active">First draft published</span>
-            </div>
-            <p class="spec-item__desc">
-              Describes the protocol used by CABE clients to interact with a CABE key
-              server, and the architecture of a reference CABE key server.
-            </p>
-            <a href={`${base}/spec/algorithms`} class="spec-item__link">Read specification →</a>
+      {specGroups.map((group, i) => (
+        <div class:list={['spec__group', { 'spec__group--secondary': i > 0 }]}>
+          <h3 class="spec__group-title">{group.label}</h3>
+          <p class="spec__group-desc">{group.desc}</p>
+          <div class="spec__list">
+            {group.specs.map(spec => (
+              <div class:list={['spec-item', { 'spec-item--wip': !spec.slug }]}>
+                <div class="spec-item__header">
+                  <h4 class="spec-item__title">{spec.title}</h4>
+                  <span class:list={['spec-item__status', `spec-item__status--${spec.statusType}`]}>
+                    {spec.status}
+                  </span>
+                </div>
+                <p class="spec-item__desc">{spec.desc}</p>
+                {spec.slug && (
+                  <a href={`${base}/spec/${spec.slug}`} class="spec-item__link">Read specification →</a>
+                )}
+              </div>
+            ))}
           </div>
         </div>
-      </div>
-
-      <div class="spec__group spec__group--secondary">
-        <h3 class="spec__group-title">Additional Specifications</h3>
-        <p class="spec__group-desc">
-          Additional specifications provide extended functionality.
-        </p>
-        <div class="spec__list">
-          <div class="spec-item spec-item--wip">
-            <div class="spec-item__header">
-              <h4 class="spec-item__title">CABE Associated Messaging</h4>
-              <span class="spec-item__status spec-item__status--pending">Pending first draft</span>
-            </div>
-            <p class="spec-item__desc">
-              An ultra-low-overhead encryption format for efficiently transporting
-              multiple small amounts of information (even just one byte) in the context
-              of a CABE Base Message.
-            </p>
-          </div>
-        </div>
-      </div>
+      ))}
 
       <div class="spec__cta">
         <a href={`${base}/specification`} class="btn btn--primary">View all specifications</a>

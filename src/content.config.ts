@@ -12,4 +12,9 @@ const spec = defineCollection({
   }),
 });
 
-export const collections = {spec};
+const pages = defineCollection({
+  loader: glob({pattern: '**/*.md', base: './src/content/pages'}),
+  schema: z.object({}).passthrough(),
+});
+
+export const collections = {spec, pages};

@@ -1,0 +1,76 @@
+---
+import { getEntry, render } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+
+const entry = await getEntry('pages', 'faq');
+const { Content } = await render(entry);
+---
+
+<Layout title="FAQ — CABE" description="Frequently asked questions about Concise Attribute-Based Encryption.">
+  <Nav />
+
+  <main class="page">
+    <div class="page__header">
+      <div class="container">
+        <span class="section-label">FAQ</span>
+        <h1 class="page__title">Frequently asked questions</h1>
+      </div>
+    </div>
+
+    <div class="page__body">
+      <div class="container">
+        <div class="faq-prose">
+          <Content />
+        </div>
+      </div>
+    </div>
+  </main>
+
+</Layout>
+
+<style>
+  .faq-prose {
+    max-width: 72ch;
+  }
+
+  /* Each h1 is a question */
+  .faq-prose :global(h1) {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0;
+    padding: 1.5rem 0 0.6rem;
+    border-top: 1px solid var(--border-dim);
+  }
+
+  .faq-prose :global(h1:first-child) {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  /* Each paragraph following a h1 is an answer */
+  .faq-prose :global(p) {
+    font-size: 0.925rem;
+    color: var(--ink-3);
+    line-height: 1.8;
+    font-weight: 300;
+    margin: 0 0 1.5rem;
+  }
+
+  /* Lists within answers */
+  .faq-prose :global(ul) {
+    margin: 0.5rem 0 1.5rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .faq-prose :global(li) {
+    font-size: 0.925rem;
+    color: var(--ink-3);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+</style>

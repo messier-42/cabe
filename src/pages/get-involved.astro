@@ -1,0 +1,103 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="Get Involved — CABE">
+  <Nav />
+
+  <main class="page">
+    <div class="page__header">
+      <div class="container">
+        <span class="section-label">Get Involved</span>
+        <h1 class="page__title">Shape the future<br />of ABAC-driven object encryption.</h1>
+        <p class="page__subtitle">
+          CABE is developed in the open. Whether you want to review the drafts,
+          implement the specification, or join the discussion for future
+          revisions, we want you to get involved.
+        </p>
+      </div>
+    </div>
+
+    <div class="page__body">
+      <div class="container">
+
+        <div class="involved-grid">
+
+          <div class="involved-card">
+            <div class="involved-card__icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="6" width="24" height="30" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M13 14h14M13 19h14M13 24h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="involved-card__title">Read the Drafts</h3>
+            <p class="involved-card__body">
+              The CABE specifications are available for review.  Comments and
+              errata are always welcome.
+            </p>
+            <a href={`${base}/specification`} class="involved-card__link">View Specifications →</a>
+          </div>
+
+          <div class="involved-card">
+            <div class="involved-card__icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 6C12.268 6 6 12.268 6 20c0 6.19 4.008 11.434 9.572 13.28.7.128.956-.304.956-.676 0-.332-.012-1.208-.018-2.372-3.893.846-4.715-1.876-4.715-1.876-.636-1.616-1.552-2.046-1.552-2.046-1.27-.868.096-.85.096-.85 1.404.098 2.144 1.44 2.144 1.44 1.248 2.138 3.274 1.52 4.07 1.162.126-.904.488-1.52.888-1.87-3.108-.352-6.376-1.554-6.376-6.918 0-1.528.546-2.778 1.44-3.756-.144-.354-.624-1.776.138-3.702 0 0 1.174-.376 3.846 1.434A13.38 13.38 0 0 1 20 13.07c1.19.006 2.388.16 3.508.472 2.67-1.81 3.842-1.434 3.842-1.434.764 1.926.284 3.348.14 3.702.896.978 1.438 2.228 1.438 3.756 0 5.376-3.274 6.562-6.39 6.908.502.432.948 1.286.948 2.592 0 1.872-.016 3.38-.016 3.842 0 .374.252.81.962.672C29.996 31.428 34 26.188 34 20c0-7.732-6.268-14-14-14z" fill="currentColor" opacity="0.85"/>
+              </svg>
+            </div>
+            <h3 class="involved-card__title">Discuss on GitHub</h3>
+            <p class="involved-card__body">
+              Discussion of the CABE specifications is done on our GitHub Discussions page. Feel free to raise issues to discuss proposed future enhancements of CABE. The website and specification are maintained on GitHub; PRs for errata are welcomed.</p>
+            <a href="https://github.com/messier-42/cabe" class="involved-card__link">View Repository →</a>
+          </div>
+
+
+          <div class="involved-card">
+            <div class="involved-card__icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="13" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M20 13v7l5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="involved-card__title">Join the Chat</h3>
+            <p class="involved-card__body">
+              Live discussion happens on the <a href="https://discord.gg/tWQyJ8ETA">CABE Discord server</a>. Reach out today and work with us.
+            </p>
+            <a href="https://discord.gg/tWQyJ8ETA" class="involved-card__link">Join →</a>
+          </div>
+
+          <div class="involved-card">
+            <div class="involved-card__icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="6" y="10" width="28" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M6 16h28" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M14 24h4M22 24h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="involved-card__title">Build an Implementation</h3>
+            <p class="involved-card__body">
+              Build a CABE implementation in the language of your choice. Our aim is to have an ecosystem of interoperable CABE implementations across a broad spectrum of vendors, languages, and technologies.
+            </p>
+            <a href={`${base}/specification`} class="involved-card__link">Read the Spec →</a>
+          </div>
+
+        </div>
+
+        <div class="involved-cta-box">
+          <div class="involved-cta-box__text">
+            <h3>Ready to get started?</h3>
+            <p>Read the core specification and join the conversation on GitHub.</p>
+          </div>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href={`${base}/specification`} class="btn btn--primary btn--lg">Read the Specification</a>
+            <a href="https://github.com/messier-42/cabe" class="btn btn--ghost btn--lg" style="color: rgba(255,255,255,0.65); border-color: rgba(255,255,255,0.2);">Join the Discussion</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+</Layout>
