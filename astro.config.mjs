@@ -5,4 +5,5 @@ import {defineConfig} from 'astro/config';
 export default defineConfig({
   site: 'https://messier-42.github.io',
   base: '/cabe-website',
+  trailingSlash: 'ignore',
 });
