@@ -19,8 +19,16 @@ export const specGroups: SpecGroup[] = [
     desc: 'The core specifications are critical to any CABE system.',
     specs: [
       {
-        title: 'CABE Base Specification',
-        draft: 'CABE-BASE',
+        title: 'CABE Architecture',
+        draft: 'CABE-ARCH',
+        desc: 'Base architecture specification.',
+        status: 'First draft published',
+        statusType: 'active',
+        slug: 'arch',
+      },
+      {
+        title: 'CABE Base Message Format',
+        draft: 'CBMF',
         desc: 'Base architecture, core envelope format and encoding for CABE-protected messages.',
         status: 'Pending first draft',
         statusType: 'pending',
