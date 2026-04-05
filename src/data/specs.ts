@@ -27,7 +27,7 @@ export const specGroups: SpecGroup[] = [
         slug: 'arch',
       },
       {
-        title: 'CABE Base Envelope Structure',
+        title: 'CABE Baseline Envelope Structure',
         draft: 'CBES',
         desc: 'Core envelope encapsulation format for CABE-protected messages.',
         status: 'First draft published',
