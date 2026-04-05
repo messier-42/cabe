@@ -24,15 +24,15 @@ CABE defines:
 
 - An overall architecture specification (this document);
 
-- The [**CABE Base Envelope Structure (CBES)**](./cbes) defining how messages
+- The [**CABE Base Envelope Structure (CBES)**](../cbes/) defining how messages
   are encapsulated securely into opaque envelopes and subsequently decapsulated
   back into intelligible messages.
 
-- The [**CABE Key Access Protocol (CKAP)**](./ckap) defining communications
+- The [**CABE Key Access Protocol (CKAP)**](../ckap/) defining communications
   between a CABE client and key server, and how keys are retrieved from key
   servers for use with the Base Envelope Structure.
 
-- [Additional specifications](../specification) providing augmented functionality building on
+- [Additional specifications](../../specification/) providing augmented functionality building on
   the base CABE architecture created by the synthesis of this document, CBMF
   and CKAP.
 
@@ -375,7 +375,7 @@ based on new entropy, which are not derived from other Keys (Non-Derived Keys),
 is often desirable to facilitate recovery from any leakage of any key material.
 These considerations can be balanced to achieve a reasonable balance between
 key storage requirements and security. Further discussion of possible key
-derivation architectures can be found in the [CKAP](./ckap) specification.
+derivation architectures can be found in the [CKAP](../ckap/) specification.
 
 Both temporal and spatial partitioning of access are desirable properties.
 Temporal partitioning refers to enlargement or contraction of the authorized
@@ -436,7 +436,7 @@ which cause Asynchronous Rollover, can cause the Current Key for a Key Series
 to change suddenly, in which case a Client might continue to encapsulate
 Messages with an out of date Lease Key (which is derived from the Current Key)
 for some period of time (the Rollover Period).  Further discussion of the
-issues around this can be found in the [CKAP specification](./ckap).
+issues around this can be found in the [CKAP specification](../ckap/).
 
 ### Retrograde Resolution
 
@@ -462,7 +462,7 @@ Envelope timestamp.
 
 In the case of a Non-Captive Key, Key Access is straightforward as it is
 provided directly in the Key Server's response. The means by which the Lease Key
-is used to create Envelopes is discussed in detail in the [CBES](./cbes)
+is used to create Envelopes is discussed in detail in the [CBES](../cbes/)
 specification.
 
 In the case of a Captive Key, direct access to the Lease Key's bit pattern is

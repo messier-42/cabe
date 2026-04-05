@@ -11,7 +11,7 @@ abstract: "This document specifies the CABE Baseline Envelope Structure."
 
 This document specifies the Concise Attribute-Bound Encapsulation (CABE) Base
 Envelope Structure (CBES). It comprises one of the core specifications of the
-CABE Architecture, as defined in the [CABE Architecture Specification](./arch).
+CABE Architecture, as defined in the [CABE Architecture Specification](../arch/).
 
 # Definitions
 
@@ -21,7 +21,7 @@ document are to be interpreted as specified in [BCP
 14](https://www.rfc-editor.org/info/bcp14) when, and only when, they appear in
 all capitals, as shown here.
 
-All definitions given in the [CABE Architecture Specification](./arch) are
+All definitions given in the [CABE Architecture Specification](../arch/) are
 reused for the purposes of this document.
 
 # Envelope Format
@@ -107,7 +107,7 @@ of the the following header fields:
 
 - `CABE_AttributeSet`: This field MUST be set to a byte string containing the
   deterministic serialization of the Attribute Set (as defined in
-  [CABE-ARCH](./arch)) of the Message used to create the Envelope.  A CABE
+  [CABE-ARCH](../arch/)) of the Message used to create the Envelope.  A CABE
   implementation MUST NOT accept an Envelope without this field.
 
 - `CABE_LeaseRef`: This field MUST be set to a byte string which is the Lease Reference
@@ -168,7 +168,7 @@ Upon receiving the Lease:
 ## Normative References
 
 - [BCP 14](https://www.rfc-editor.org/info/bcp14): *Best Current Practice 14*
-- [CABE-ARCH](./arch): *CABE Architecture Specification*
+- [CABE-ARCH](../arch/): *CABE Architecture Specification*
 - [RFC 8949](https://www.rfc-editor.org/rfc/rfc8949.html): *Concise Binary Object Representation (CBOR)*
 - [RFC 9052](https://www.rfc-editor.org/rfc/rfc9052.html): *CBOR Object Signing and Encryption (COSE): Structures and Process*
 - [RFC 9053](https://www.rfc-editor.org/rfc/rfc9053.html): *CBOR Object Signing and Encryption (COSE): Initial Algorithms*
