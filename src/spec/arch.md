@@ -24,13 +24,13 @@ CABE defines:
 
 - An overall architecture specification (this document);
 
-- The [**CABE Base Message Format (CBMF)**](./cbmf) defining how messages are
-  encapsulated securely into opaque envelopes and subsequently decapsulated
+- The [**CABE Base Envelope Structure (CBES)**](./cbes) defining how messages
+  are encapsulated securely into opaque envelopes and subsequently decapsulated
   back into intelligible messages.
 
 - The [**CABE Key Access Protocol (CKAP)**](./ckap) defining communications
   between a CABE client and key server, and how keys are retrieved from key
-  servers for use with the Base Message Format.
+  servers for use with the Base Envelope Structure.
 
 - [Additional specifications](../specification) providing augmented functionality building on
   the base CABE architecture created by the synthesis of this document, CBMF
@@ -68,10 +68,10 @@ The following terms are defined:
 
 - **Attribute Key**: The key of a key-value pair in an Attribute, which is a
   textual, human-readable string of non-zero length and which matches the
-  grammar given in Annex A.
+  grammar given in the section “Attribute Sets”.
 
 - **Attribute Value**: A CBOR data item within the CBOR Basic Data Model as
-  defined in RFC 8949.
+  defined in [RFC 8949](https://www.rfc-editor.org/rfc/rfc8949.html).
 
 - **Attribute Set**: A unique set of Attributes in relation to a Message,
   Envelope, Key or Lease.
@@ -215,6 +215,43 @@ The following terms are defined:
   in response to arbitrary system events, such as the addition of newly
   authorized Principals, the revocation of existing Principals, or at operator
   request.
+
+- **CSPRNG**: A cryptographically secure psuedo-random number generator.
+
+# Attribute Sets
+
+## Definition
+
+An Attribute Set is a unique unordered set of Attributes. Each Attribute is a
+key-value metadata item which characterises a Message, Envelope, Key or Lease.
+
+The key of an Attribute is a textual string meeting the following requirements:
+
+- It comprises at least one character ("" is not a valid key);
+- The UTF-8 representation of the string does not exceed 255 bytes; and
+- It satisfies the [ABNF (RFC 5234)](https://www.rfc-editor.org/rfc/rfc5234)
+  grammar shown below.
+
+```ABNF
+ALNUM         = ALPHA / DIGIT
+ATTRIBUTE_KEY = ALPHA *ALNUM *('-' 1*ALNUM)
+```
+
+The value of an Attribute is a data item within the CBOR Basic Data Model as
+defined in [RFC 8949](https://www.rfc-editor.org/rfc/rfc8949.html).
+
+## Serialization
+
+The serialization of an Attribute Set MUST be the serialization of a CBOR Map
+data item using Deterministically Encoded CBOR as defined in [RFC
+8949](https://www.rfc-editor.org/rfc/rfc8949.html). The CBOR encoding MUST
+satisfy the core deteministic encoding requirements as defined in section 4.2.1
+of [RFC
+8949](https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding).
+
+## Equality
+
+Two Attribute Sets are the same if their serializations are the same byte string.
 
 # Architectural Overview
 
@@ -446,6 +483,14 @@ The following invariants are worth noting explicitly:
 
 - A Key Reference identifies exactly one Key within a Domain. The reverse is
   not necessarily true; a Key can be identified by more than one Key Reference.
+
+# References
+
+## Normative References
+
+- [BCP 14](https://www.rfc-editor.org/info/bcp14): *Best Current Practice 14*
+- [RFC 5234](https://www.rfc-editor.org/rfc/rfc5234#section-6.1): *Augmented BNF for Syntax Specification: ABNF*
+- [RFC 8949](https://www.rfc-editor.org/rfc/rfc8949.html): *Concise Binary Object Representation (CBOR)*
 
 # Colophon
 
