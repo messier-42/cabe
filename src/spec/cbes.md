@@ -51,12 +51,13 @@ A CABE Envelope is defined as a `COSE_Encrypt0` or `COSE_Encrypt` (or
 as follows:
 
 - In the Non-Captive Key case, it makes use of direct encryption using a COSE
-  Content Encryption Key (CEK) using a symmetric AEAD. Where a Captive Key is
-  used, the Key Wrap construction is used using a random CEK.
+  Content Encryption Key (CEK) (namely, the Lease Key) using a symmetric AEAD.
+
+  Where a Captive Key is used, the Key Wrap construction is used using a random
+  CEK wrapped using the Lease Key.
+
 - The COSE Header contains fields as specified in the 'Header fields' section
   of this document.
-- The CEK is obtained by the implementation according to the 'Key schedule'
-  section of this document.
 
 ## Operations
 
@@ -64,17 +65,24 @@ as follows:
 
 A Message is Encapsulated to create an Envelope as follows:
 
-1. The Client obtains a Lease and Lease Key pertaining to the Message's
-Attribute Set. It may already have a relevant cached non-expired Lease;
-otherwise, it obtains one by performing Prograde Key Resolution via interaction
-with a Key Server.
+1. The Client obtains a Lease and LKAI pertaining to the Message's Attribute
+Set. It may already have a relevant cached non-expired Lease; otherwise, it
+obtains one by performing Prograde Key Resolution via interaction with a Key
+Server.
 
-2. The Client chooses a partial IV to be combined with the Lease Key.
+2. The Client chooses a partial IV to be used with the Lease Key.
 
 3. The Client performs COSE encryption using a symmetric AEAD of its choice,
 generating a `COSE_Encrypt0` or `COSE_Encrypt` structure with headers including
 the partial IV and Message's Attribute Set, and other Lease-related headers as
 specified in 'Header fields'.
+
+   In the case of a Non-Captive Lease Key, the Lease Key is available in the LKAI
+   and is used directly to perform COSE direct encryption.
+
+   In the case of a Captive Lease Key, the Client generates a random CEK, asks
+   the Key Server to encrypt it using an Assisted Encapsulation operation, and
+   adds the COSE Key Wrap recipient to the `COSE_Encrypt` structure.
 
 ### Decapsulation
 
@@ -84,10 +92,17 @@ An Envelope is Decapsulated to recover a Message as follows:
 headers.
 
 2. The Client performs Retrograde Key Resolution using the Lease Reference via
-interaction with a Key Server, and obtains the Lease Key.
+interaction with a Key Server, and obtains the LKAI.
 
 3. The Client performs COSE authenticated decryption of the `COSE_Encrypt0` or
-`COSE_Encrypt` structure using the Lease Key.
+`COSE_Encrypt` structure using the LKAI.
+
+   In the case of a Non-Captive Lease Key, the Lease Key is available in the LKAI
+   and is used directly to perform COSE direct decryption.
+
+   In the case of a Captive Lease Key, the Client asks the Key Server to
+   decrypt the COSE Key Wrapped CEK using an Assisted Decapsulation operation,
+   and then decrypts the payload using the CEK.
 
 ## Header fields
 
@@ -95,7 +110,7 @@ A CABE Envelope's `COSE_Encrypt0` or `COSE_Encrypt` structure has one or more
 of the following header fields:
 
 - `content type`: This field is specified by COSE and SHOULD be set to the
-  content type of the plaintext Message. This field is not used to determine
+  content type of the plain-text Message. This field is not used to determine
   that CABE is in use, which can instead be determined by the presence of the
   `CABE_AttributeSet` header field in the Envelope header.
 

@@ -48,7 +48,7 @@ all capitals, as shown here.
 
 The following terms are defined:
 
-- **Payload**: The sequence of zero or more bytes constituting the plaintext
+- **Payload**: The sequence of zero or more bytes constituting the plain-text
   body of a Message, which has application-specific meaning opaque to CABE.
 
 - **Metadata**: Information characterising the Payload of a Message other than
@@ -145,7 +145,7 @@ The following terms are defined:
   Clients to use, either by being provided by the Key's bit pattern (as in the
   case of a Non-Captive Key), or via Assisted Encapsulation/Decapsulation
   performed by the Key Server on behalf of a Client. In this version of the
-  speification, the only defined kind of Access Key is a Lease Key.
+  specification, the only defined kind of Access Key is a Lease Key.
 
 - **Set Key**: An Access Key assigned to a given Envelope Set at a given point
   in time.
