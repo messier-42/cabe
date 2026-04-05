@@ -65,24 +65,27 @@ as follows:
 
 A Message is Encapsulated to create an Envelope as follows:
 
-1. The Client obtains a Lease and LKAI pertaining to the Message's Attribute
-Set. It may already have a relevant cached non-expired Lease; otherwise, it
-obtains one by performing Prograde Key Resolution via interaction with a Key
-Server.
+1. The Client obtains a Lease (with associated LKAI) pertaining to the
+Message's Attribute Set. It may already have a relevant cached non-expired
+Lease; otherwise, it obtains one by performing Prograde Key Resolution via
+interaction with a Key Server.
 
-2. The Client chooses a partial IV to be used with the Lease Key.
+2. In the case of a Non-Captive Lease Key, the Client chooses a partial IV to
+be used with the Lease Key.
 
 3. The Client performs COSE encryption using a symmetric AEAD of its choice,
 generating a `COSE_Encrypt0` or `COSE_Encrypt` structure with headers including
 the partial IV and Message's Attribute Set, and other Lease-related headers as
 specified in 'Header fields'.
 
-   In the case of a Non-Captive Lease Key, the Lease Key is available in the LKAI
-   and is used directly to perform COSE direct encryption.
+   - In the case of a Non-Captive Lease Key, the Lease Key is available in the
+     LKAI and is used directly to perform COSE direct encryption.
 
-   In the case of a Captive Lease Key, the Client generates a random CEK, asks
-   the Key Server to encrypt it using an Assisted Encapsulation operation, and
-   adds the COSE Key Wrap recipient to the `COSE_Encrypt` structure.
+   - In the case of a Captive Lease Key, the Client generates a random CEK and
+     associated IV, asks the Key Server to encrypt the CEK using an Assisted
+     Encapsulation operation, and adds the COSE Key Wrap recipient to the
+     `COSE_Encrypt` structure. In this case, the Key Server determines the IV
+     used for the Lease Key.
 
 ### Decapsulation
 
@@ -95,14 +98,14 @@ headers.
 interaction with a Key Server, and obtains the LKAI.
 
 3. The Client performs COSE authenticated decryption of the `COSE_Encrypt0` or
-`COSE_Encrypt` structure using the LKAI.
+`COSE_Encrypt` structure using the LKAI:
 
-   In the case of a Non-Captive Lease Key, the Lease Key is available in the LKAI
-   and is used directly to perform COSE direct decryption.
+   - In the case of a Non-Captive Lease Key, the Lease Key is available in the
+     LKAI and is used directly to perform COSE direct decryption.
 
-   In the case of a Captive Lease Key, the Client asks the Key Server to
-   decrypt the COSE Key Wrapped CEK using an Assisted Decapsulation operation,
-   and then decrypts the payload using the CEK.
+   - In the case of a Captive Lease Key, the Client asks the Key Server to
+     decrypt the COSE Key Wrapped CEK using an Assisted Decapsulation
+     operation, and then decrypts the payload using the CEK.
 
 ## Header fields
 

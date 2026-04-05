@@ -474,9 +474,10 @@ In the case of a Captive Key, direct access to the Lease Key's bit pattern is
 not available. Instead, a Client makes Assisted Encapsulation/Decapsulation
 calls to the Key Server.
 
-Since these merely perform cryptographic operations on temporal keys used to
-encrypt a specific Message, the bandwidth consumed by these calls is a function
-of the number of Messages encrypted, not the size of the Messages encrypted.
+Since these merely perform key wrap operations on Content Encryption Keys
+(CEKs) used to encrypt a specific Message, the bandwidth consumed by these
+calls is a function of the number of Messages encrypted, not the size of the
+Messages encrypted.
 
 An advantage of the use of Captive Keys is that there is no Rollover Period in
 which an updated Policy is not yet fully effective, as a new Policy can begin
