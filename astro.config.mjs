@@ -5,4 +5,9 @@ import {defineConfig} from 'astro/config';
 export default defineConfig({
   site: 'https://cabespec.org',
   trailingSlash: 'ignore',
+  markdown: {
+    shikiConfig: {
+      theme: 'github-light',
+    },
+  },
 });

@@ -12,8 +12,9 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const tocHeadings = headings.filter(h => h.depth === 1 || h.depth === 2);
 ---
 
 <Layout title={`${entry.data.title} — CABE`} description={entry.data.abstract}>
@@ -37,9 +38,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
 
     <div class="page__body">
-      <div class="container">
-        <div class="spec-prose">
-          <Content />
+      <div class="spec-layout">
+        {tocHeadings.length > 0 && (
+          <nav class="spec-toc" aria-label="Table of contents">
+            <div class="spec-toc__label">Contents</div>
+            <ol class="spec-toc__list">
+              {tocHeadings.map(h => (
+                <li class={`spec-toc__item spec-toc__item--depth-${h.depth}`}>
+                  <a href={`#${h.slug}`}>{h.text}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )}
+        <div class="container">
+          <div class="spec-prose">
+            <Content />
+          </div>
         </div>
       </div>
     </div>
@@ -48,6 +63,75 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 </Layout>
 
 <style is:global>
+  /* ── Spec two-column layout ──────────────────────────────────── */
+  .spec-layout {
+    display: flex;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .spec-layout {
+      flex-direction: column;
+    }
+    .spec-toc {
+      width: 100% !important;
+      position: static !important;
+      border-right: none !important;
+      border-bottom: 1px solid var(--border-dim);
+      padding: 1.5rem clamp(1.5rem, 5vw, 3rem) !important;
+    }
+  }
+
+  /* ── Table of contents ───────────────────────────────────────── */
+  .spec-toc {
+    flex-shrink: 0;
+    width: 220px;
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    padding: 2.5rem 1.5rem 2.5rem clamp(1.5rem, 5vw, 3rem);
+    border-right: 1px solid var(--border-dim);
+  }
+  .spec-toc__label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-4);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-dim);
+  }
+  .spec-toc__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .spec-toc__item a {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--ink-4);
+    text-decoration: none;
+    line-height: 1.4;
+    padding: 0.3rem 0.6rem;
+    border-left: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .spec-toc__item a:hover {
+    color: var(--amber);
+    border-left-color: var(--amber-border);
+  }
+  .spec-toc__item--depth-2 a {
+    padding-left: 1.4rem;
+    font-size: 0.73rem;
+    opacity: 0.75;
+  }
+  .spec-toc__item--depth-2 a:hover { opacity: 1; }
+
   .spec-doc-meta {
     display: flex;
     align-items: center;
