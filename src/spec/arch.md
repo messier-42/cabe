@@ -147,8 +147,8 @@ The following terms are defined:
   performed by the Key Server on behalf of a Client. In this version of the
   specification, the only defined kind of Access Key is a Lease Key.
 
-- **Set Key**: An Access Key assigned to a given Envelope Set at a given point
-  in time.
+- **Set Key**: An Internal Key assigned to a given Envelope Set at a given point
+  in time, which is used to derive Lease Keys.
 
 - **Non-Derived Key**: A Key which is directly derived from an entropy source
   and therefore must be stored by a Key Server if it is to be subsequently
