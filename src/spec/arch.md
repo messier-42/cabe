@@ -142,7 +142,10 @@ The following terms are defined:
   one or more Derived Keys but which is never disclosed to any Client.
 
 - **Access Key**: A Key which is not an Internal Key and which is available for
-  Clients to use.
+  Clients to use, either by being provided by the Key's bit pattern (as in the
+  case of a Non-Captive Key), or via Assisted Encapsulation/Decapsulation
+  performed by the Key Server on behalf of a Client. In this version of the
+  speification, the only defined kind of Access Key is a Lease Key.
 
 - **Set Key**: An Access Key assigned to a given Envelope Set at a given point
   in time.
@@ -216,7 +219,8 @@ The following terms are defined:
   that Key Series.
 
 - **Rollover Period**: The (approximate) period for which Clients are liable to
-  encapsulate Messages using non-current Set Keys for a given Key Series.
+  encapsulate Messages using Lease Keys derived from non-Current Set Keys for a
+  given Key Series.
 
 - **Synchronous Rollover**: Rollover which occurs predictably and on a
   chronological schedule.
@@ -226,7 +230,7 @@ The following terms are defined:
   authorized Principals, the revocation of existing Principals, or at operator
   request.
 
-- **CSPRNG**: A cryptographically secure psuedo-random number generator.
+- **CSPRNG**: A cryptographically secure pseudo-random number generator.
 
 # Attribute Sets
 
@@ -258,7 +262,7 @@ encounters an Attribute Set with duplicate keys MUST refuse to process it.
 The serialization of an Attribute Set MUST be the serialization of a CBOR Map
 data item using Deterministically Encoded CBOR as defined in [RFC
 8949](https://www.rfc-editor.org/rfc/rfc8949.html). The CBOR encoding MUST
-satisfy the core deteministic encoding requirements as defined in section 4.2.1
+satisfy the core deterministic encoding requirements as defined in section 4.2.1
 of [RFC
 8949](https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding).
 
@@ -315,7 +319,7 @@ The key aspects of CABE are:
   CABE Client. Both "in-memory" (non-captive) and "out-of-memory" (captive,
   i.e., RPC-based) use of Keys "at a distance" is envisaged. The need to
   transmit large messages to a Key Server is avoided as only an ephemeral
-  Envelope Key and the Attribute Set are provided to the Key Server (in the
+  Content Encryption Key (CEK) is provided to the Key Server (in the
   out-of-memory case) for encapsulation/decapsulation.
 
   Key Access represents the key policy enforcement point of CABE, as the Key
@@ -496,6 +500,8 @@ The following invariants are worth noting explicitly:
 - A given Envelope is bound to exactly one Lease Key and Lease Reference.
 
 - A Lease Reference identifies exactly one Lease Key within a Domain.
+
+- A Lease Key is derived from a specific Set Key in a specific Key Epoch.
 
 # References
 

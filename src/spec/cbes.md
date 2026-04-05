@@ -9,9 +9,10 @@ abstract: "This document specifies the CABE Baseline Envelope Structure."
 
 # Introduction
 
-This document specifies the Concise Attribute-Bound Encapsulation (CABE) Base
-Envelope Structure (CBES). It comprises one of the core specifications of the
-CABE Architecture, as defined in the [CABE Architecture Specification](../arch/).
+This document specifies the Concise Attribute-Bound Encapsulation (CABE)
+Baseline Envelope Structure (CBES). It comprises one of the core specifications
+of the CABE Architecture, as defined in the [CABE Architecture
+Specification](../arch/).
 
 # Definitions
 
@@ -49,8 +50,9 @@ A CABE Envelope is defined as a `COSE_Encrypt0` or `COSE_Encrypt` (or
 `COSE_Encrypt0_Tagged` or `COSE_Encrypt_Tagged`) structure which is organized
 as follows:
 
-- It makes use of direct encryption using a COSE Content Encryption Key (CEK)
-  using a symmetric AEAD.
+- In the Non-Captive Key case, it makes use of direct encryption using a COSE
+  Content Encryption Key (CEK) using a symmetric AEAD. Where a Captive Key is
+  used, the Key Wrap construction is used using a random CEK.
 - The COSE Header contains fields as specified in the 'Header fields' section
   of this document.
 - The CEK is obtained by the implementation according to the 'Key schedule'
@@ -112,13 +114,13 @@ of the following header fields:
 
   This field MUST be serialized as a protected header.
 
-- `CABE_LeaseRef`: This field MUST be set to a byte string which is the Lease Reference
-  which was produced by the Key Server when returning a Lease. This value is used
-  by the Key Server in Retrograde Key Resolution to locate the Set Key which was
-  used to derive the Lease Key and re-derive that Lease Key. In other words,
-  for a Client and suitably authorized Principal, the Attribute Set and Lease
-  Reference is necessary and sufficient to re-obtain the corresponding Lease
-  Key from the Key Server.
+- `CABE_LeaseRef`: This field MUST be set to a byte string which is the Lease
+  Reference which was produced by the Key Server when returning a Lease. This
+  value is used by the Key Server in Retrograde Key Resolution to recover the
+  Lease Key. In other words, for a Client and suitably authorized Principal,
+  the Attribute Set and Lease Reference is necessary and sufficient to
+  re-obtain the corresponding LKAI from the Key Server and execute Key Access
+  for the Lease Key.
 
   This field MUST be serialized as a protected header.
 
@@ -172,8 +174,9 @@ Upon receiving the Lease:
 
 - In the case of a Captive Key, the Client generates a random CEK to encrypt
   the Message and makes a request to the Key Server for Assisted Encapsulation
-  to wrap the CEK using the Lease Key. The `COSE_Encrypt` structure must be
-  used, and the CEK is serialized using a COSE Key Wrap recipient.
+  to wrap the CEK using the Lease Key. The `COSE_Encrypt` structure MUST be
+  used in this case, and the CEK MUST be serialized using a COSE Key Wrap
+  recipient.
 
 # References
 
