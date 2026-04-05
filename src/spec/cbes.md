@@ -97,15 +97,15 @@ headers.
 2. The Client performs Retrograde Key Resolution using the Lease Reference via
 interaction with a Key Server, and obtains the LKAI.
 
-3. The Client performs COSE authenticated decryption of the `COSE_Encrypt0` or
-`COSE_Encrypt` structure using the LKAI:
+3. The Client performs decapsulation using the LKAI:
 
    - In the case of a Non-Captive Lease Key, the Lease Key is available in the
-     LKAI and is used directly to perform COSE direct decryption.
+     LKAI and is used directly to perform COSE direct decryption of the
+     `COSE_Encrypt0` or `COSE_Encrypt` structure.
 
    - In the case of a Captive Lease Key, the Client asks the Key Server to
      decrypt the COSE Key Wrapped CEK using an Assisted Decapsulation
-     operation, and then decrypts the payload using the CEK.
+     operation, and then performs COSE decryption using the CEK.
 
 ## Header fields
 
@@ -142,28 +142,39 @@ of the following header fields:
 
   This field MUST be serialized as a protected header.
 
-- `Partial IV`: This field is specified by COSE. This field MUST be set to a
-  value which is unique within the scope of a given Lease Key. One way of
-  satisfying this requirement is to use a simple counter which starts at 0 and
-  increments by one for each Message encrypted under a Lease. However, because
-  a `Partial IV` only needs to be unique within the context of a Lease, the
-  choice of allocation method is left to an implementation.
+- `Partial IV`: This field is specified by COSE. In the Non-Captive Lease Key
+  case, this field MUST be set to a value which is unique within the scope of a
+  given Lease Key. One way of satisfying this requirement is to use a simple
+  counter which starts at 0 and increments by one for each Message encrypted
+  under a Lease. However, because a `Partial IV` only needs to be unique within
+  the context of a Lease Key, the choice of allocation method is left to an
+  implementation.
 
   Implementations MUST ensure uniqueness of the Partial IV within the scope of
   a given Lease Key, including in the event of faults (e.g. crashes, restarted
   services). A simple way to ensure this is to only keep Lease details in
   memory and to obtain a new Lease whenever an implementation is restarted.
 
-  This field MUST be serialized as an unprotected header.
+  This field MUST be serialized as an unprotected header if a Non-Captive Lease
+  Key is in use. In the Captive Lease Key case, the `IV` field MUST be used
+  instead.
+
+- `IV`: This field is specified by COSE. In the Captive Lease Key case, this
+  field MUST be set to a value chosen by the Client to use with the CEK to
+  encrypt the Message.
+
+  This field MUST be serialized as an unprotected header if a Captive Lease Key
+  is in use. In the Non-Captive Lease Key case, the `Partial IV` field MUST be
+  used instead.
 
 ## Key schedule
 
 Encapsulating a Message to create an Envelope involves examining the Attribute
-Set for the Message to be Encapsulated and obtaining a Lease (and Lease Key)
-for that Attribute Set. A Lease is obtained by making a Prograde Key Resolution
-Request to a Key Server; if authorized, the Key Server creates a Lease and
-returns a Key Resolution Response including information about the Lease,
-including the Lease Key Access Information (LKAI).
+Set for the Message to be Encapsulated and obtaining a Lease (and associated
+Lease Key Access Information (LKAI)) for that Attribute Set. A Lease is
+obtained by making a Prograde Key Resolution Request to a Key Server; if
+authorized, the Key Server creates a Lease and returns a Key Resolution
+Response including information about the Lease, including the LKAI.
 
 Each Lease has an expiration time indicating the point in time at which the Key
 Resolution Response and its selection of a specific Set Key and derived Lease
@@ -191,10 +202,11 @@ Upon receiving the Lease:
   more efficient serialization.
 
 - In the case of a Captive Key, the Client generates a random CEK to encrypt
-  the Message and makes a request to the Key Server for Assisted Encapsulation
-  to wrap the CEK using the Lease Key. The `COSE_Encrypt` structure MUST be
-  used in this case, and the CEK MUST be serialized using a COSE Key Wrap
-  recipient.
+  the Message, chooses an IV to use with the CEK, and makes a request to the
+  Key Server for Assisted Encapsulation to wrap the CEK using the Lease Key.
+  The Key Server chooses the IV used as part of the Key Wrap operation.  The
+  `COSE_Encrypt` structure MUST be used in this case, and the CEK MUST be
+  serialized using a COSE Key Wrap recipient.
 
 # References
 
