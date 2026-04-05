@@ -24,16 +24,16 @@ CABE defines:
 
 - An overall architecture specification (this document);
 
-- The [**CABE Base Envelope Structure (CBES)**](../cbes/) defining how messages
+- The [**CABE Baseline Envelope Structure (CBES)**](../cbes/) defining how messages
   are encapsulated securely into opaque envelopes and subsequently decapsulated
   back into intelligible messages.
 
 - The [**CABE Key Access Protocol (CKAP)**](../ckap/) defining communications
   between a CABE client and key server, and how keys are retrieved from key
-  servers for use with the Base Envelope Structure.
+  servers for use with the Baseline Envelope Structure.
 
 - [Additional specifications](../../specification/) providing augmented functionality building on
-  the base CABE architecture created by the synthesis of this document, CBMF
+  the base CABE architecture created by the synthesis of this document, CBES
   and CKAP.
 
 <figure style="text-align: center;"><img src="/images/cabe-example.svg" alt="CABE Architecture Diagram" /></figure>
@@ -131,10 +131,9 @@ The following terms are defined:
   of a new Message, and receives information about the Current Key in the form
   of a Lease.
 
-- **Retrograde Resolution**: Key Resolution wherein a Client requests a
-  specific Key (which may be Current or Retired) by providing a Key Reference
-  for the purposes of performing Decapsulation of an existing Envelope, and
-  receives information about that Key.
+- **Retrograde Resolution**: Key Resolution wherein a Client quotes a Lease
+  Reference for the purposes of obtaining a previously used Lease Key's LKAI,
+  for the purposes of performing Decapsulation of an existing Envelope.
 
 - **Lease**: A temporary object with a specific expiration time managed and
   tracked by a Key Server in response to a Prograde Resolution request.
@@ -192,15 +191,14 @@ The following terms are defined:
   which is a Captive Key.
 
 - **Key Access**: The process in which a Client obtains (for a Non-Captive
-  Key), or indirectly makes use of (for a Captive Key) a Set Key, for the
+  Key), or indirectly makes use of (for a Captive Key) a Lease Key, for the
   purposes of facilitating access to some contiguous temporal subset of an
   Envelope Set. Key Access is distinct from, and occurs subsequently to, Key
   Resolution.
 
-- **Key Reference**: An opaque byte string produced by a Key Server which it
-  can use to subsequently identify a given Key. Key References must be globally
-  and permanently unique; a Key Reference can never be reused for a different
-  Key.
+- **Lease Reference**: An opaque byte string produced by a Key Server which it
+  can use to subsequently recover a given Lease Key and corresponding LKAI.
+  Lease References MUST be globally and permanently unique.
 
 - **Policy**: An arbitrary rule or logic used by a Key Server to determine
   which Principals may access which Envelope Sets, and which Key Epochs within
@@ -251,6 +249,9 @@ ATTRIBUTE_KEY = ALPHA *ALNUM *('-' 1*ALNUM)
 
 The value of an Attribute is a data item within the CBOR Basic Data Model as
 defined in [RFC 8949](https://www.rfc-editor.org/rfc/rfc8949.html).
+
+Duplicate keys MUST NOT be present in an Attribute Set. An implementation which
+encounters an Attribute Set with duplicate keys MUST refuse to process it.
 
 ## Serialization
 

@@ -90,17 +90,17 @@ interaction with a Key Server, and obtains the Lease Key.
 ## Header fields
 
 A CABE Envelope's `COSE_Encrypt0` or `COSE_Encrypt` structure has one or more
-of the the following header fields:
+of the following header fields:
 
 - `content type`: This field is specified by COSE and SHOULD be set to the
   content type of the plaintext Message. This field is not used to determine
-  that CABE is in use, which can instead be determined by the presence of one
-  or more of the CABE-specific header fields below in the Envelope headers.
+  that CABE is in use, which can instead be determined by the presence of the
+  `CABE_AttributeSet` header field in the Envelope header.
 
 - `kid`: This field is specified by COSE. Its use in CABE is OPTIONAL. CABE
   deliberately avoids normative use of this field as its semantics are
   unspecified and may vary from circumstance to circumstance. In the context of
-  CABE, this field is reserved for diagnostic use; for example, a CABE
+  CABE, this field is set aside for diagnostic use; for example, a CABE
   implementation may assign Keys and Messages `kid` values to assist debugging,
   or forego use of this field entirely. An implementation MUST NOT make use of
   this field for Key Resolution, or any other CABE operation.
@@ -110,6 +110,8 @@ of the the following header fields:
   [CABE-ARCH](../arch/)) of the Message used to create the Envelope.  A CABE
   implementation MUST NOT accept an Envelope without this field.
 
+  This field MUST be serialized as a protected header.
+
 - `CABE_LeaseRef`: This field MUST be set to a byte string which is the Lease Reference
   which was produced by the Key Server when returning a Lease. This value is used
   by the Key Server in Retrograde Key Resolution to locate the Set Key which was
@@ -118,12 +120,21 @@ of the the following header fields:
   Reference is necessary and sufficient to re-obtain the corresponding Lease
   Key from the Key Server.
 
+  This field MUST be serialized as a protected header.
+
 - `Partial IV`: This field is specified by COSE. This field MUST be set to a
   value which is unique within the scope of a given Lease Key. One way of
   satisfying this requirement is to use a simple counter which starts at 0 and
   increments by one for each Message encrypted under a Lease. However, because
   a `Partial IV` only needs to be unique within the context of a Lease, the
   choice of allocation method is left to an implementation.
+
+  Implementations MUST ensure uniqueness of the Partial IV within the scope of
+  a given Lease Key, including in the event of faults (e.g. crashes, restarted
+  services). A simple way to ensure this is to only keep Lease details in
+  memory and to obtain a new Lease whenever an implementation is restarted.
+
+  This field MUST be serialized as an unprotected header.
 
 ## Key schedule
 
@@ -146,9 +157,10 @@ other requests made by other Clients which resolve to the same Set Key.
 Upon receiving the Lease:
 
 - In the case of a Non-Captive Key, the Client notionally constructs a
-  `COSE_Key` structure which holds the key's bit pattern and relevant details.
-  The `Base IV` parameter is also provided by the Key Server copied from the
-  LKAI. This Key, including the Base IV, is combined with the Client's choice of
+  `COSE_Key` structure which holds the Lease Key's bit pattern and relevant
+  details. The Lease Key is used as the Content Encryption Key (CEK).  The
+  `Base IV` parameter is also provided by the Key Server copied from the LKAI.
+  This Key, including the Base IV, is combined with the Client's choice of
   Partial IV for each Envelope it creates.
 
   An implementation does not need to actually use the `COSE_Key` structure
@@ -158,10 +170,10 @@ Upon receiving the Lease:
   COSE Key Wrap. As such, it is able to use the `COSE_Encrypt0` structure for
   more efficient serialization.
 
-- In the case of a Captive Key, the Client makes a request to the Key Server
-  for Assisted Encapsulation or Assisted Decapsulation using and creates
-  Envelopes using COSE Key Wrap; as a result, the use of the `COSE_Encrypt`
-  structure is necessary.
+- In the case of a Captive Key, the Client generates a random CEK to encrypt
+  the Message and makes a request to the Key Server for Assisted Encapsulation
+  to wrap the CEK using the Lease Key. The `COSE_Encrypt` structure must be
+  used, and the CEK is serialized using a COSE Key Wrap recipient.
 
 # References
 
