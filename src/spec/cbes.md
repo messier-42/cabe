@@ -28,40 +28,33 @@ reused for the purposes of this document.
 
 ## Overview
 
-CABE Envelopes are COSE structures, as defined in [RFC
-9052](https://www.rfc-editor.org/rfc/rfc9052.html). Specifically, COSE
-Envelopes use the `COSE_Encrypt0` structure to minimise overhead. A CABE
-implementation MUST serialize a CABE Envelope as a `COSE_Encrypt0` structure
-and MUST NOT generate or accept a `COSE_Encrypt` structure, or any other
-top-level structure defined in RFC 9052.
+A CABE Envelope is a COSE structure, as defined in [RFC
+9052](https://www.rfc-editor.org/rfc/rfc9052.html). Specifically, a CABE
+Envelope uses the `COSE_Encrypt0` or `COSE_Encrypt` structure.
+
+A CABE implementation SHOULD serialize a CABE Envelope as a `COSE_Encrypt0`
+structure when it is possible to do so in order to minimise overhead.
 
 ### Use of tagged COSE structures
 
-An implementation MAY generate the `COSE_Encrypt0_Tagged` structure and
-implementations MUST be able to consume CABE Envelopes whether or not they are
-so tagged. Whether the use of tagging is desirable or useful depends on the
-context in which CABE is used; as such, this is left as an implementation
-choice.
+An implementation MAY generate the `COSE_Encrypt0_Tagged` or
+`COSE_Encrypt_Tagged` structure and implementations MUST be able to consume
+CABE Envelopes whether or not they are so tagged. Whether the use of tagging is
+desirable or useful depends on the context in which CABE is used; as such, this
+is left as an implementation choice.
 
 ### Construction
 
-A CABE Envelope is defined as a `COSE_Encrypt0` (or `COSE_Encrypt0_Tagged`)
-structure which is organized as follows:
+A CABE Envelope is defined as a `COSE_Encrypt0` or `COSE_Encrypt` (or
+`COSE_Encrypt0_Tagged` or `COSE_Encrypt_Tagged`) structure which is organized
+as follows:
 
 - It makes use of direct encryption using a COSE Content Encryption Key (CEK)
   using a symmetric AEAD.
 - The COSE Header contains fields as specified in the 'Header fields' section
   of this document.
-- The CEK is derived by the implementation according to the 'Key schedule'
+- The CEK is obtained by the implementation according to the 'Key schedule'
   section of this document.
-
-CABE Key Derivation for the purposes of envelope encryption does not use the
-key derivation functionality defined in RFC 9052 and RFC 9053; as such, the
-Envelope Key generated as specified in this document becomes the CEK and, along
-with the payload itself, is the primary input to a standard COSE encryption or
-decryption process as defined in RFC 9052. This is chosen as the key derivation
-functionality defined in RFC 9052 requires the use of `COSE_Recipient`, adding
-overhead, and is contextually not needed in the context of CABE.
 
 ## Operations
 
@@ -69,40 +62,35 @@ overhead, and is contextually not needed in the context of CABE.
 
 A Message is Encapsulated to create an Envelope as follows:
 
-1. The Client obtains a Lease and Set Key pertaining to the Message's Attribute
-Set. It may already have a relevant cached non-expired Lease; otherwise, it
-obtains one by performing Prograde Key Resolution via interaction with a Key
-Server.
+1. The Client obtains a Lease and Lease Key pertaining to the Message's
+Attribute Set. It may already have a relevant cached non-expired Lease;
+otherwise, it obtains one by performing Prograde Key Resolution via interaction
+with a Key Server.
 
-2. The Client derives the Lease Key as specified in this document.
+2. The Client chooses a partial IV to be combined with the Lease Key.
 
-3. The Client chooses a partial IV to be combined with the Lease Key.
-
-4. The Client performs COSE encryption using a symmetric AEAD of its choice,
-generating a `COSE_Encrypt0` structure with headers including the partial IV
-and Message's Attribute Set, and other Lease-related headers as specified in
-'Header fields'.
+3. The Client performs COSE encryption using a symmetric AEAD of its choice,
+generating a `COSE_Encrypt0` or `COSE_Encrypt` structure with headers including
+the partial IV and Message's Attribute Set, and other Lease-related headers as
+specified in 'Header fields'.
 
 ### Decapsulation
 
 An Envelope is Decapsulated to recover a Message as follows:
 
-1. The Client obtains the Attribute Set, Key Reference and Lease Discriminator
-   from the Envelope's headers.
+1. The Client obtains the Attribute Set and Lease Reference from the Envelope's
+headers.
 
-2. The Client performs Retrograde Key Resolution using the Key Reference
-   via interaction with a Key Server, and obtains the Set Key.
+2. The Client performs Retrograde Key Resolution using the Lease Reference via
+interaction with a Key Server, and obtains the Lease Key.
 
-3. The Client derives the Lease Key using the Set Key and the Lease
-   Discriminator.
-
-4. The Client performs COSE authenticated decryption of the `COSE_Encrypt0`
-   structure using the Lease Key.
+3. The Client performs COSE authenticated decryption of the `COSE_Encrypt0` or
+`COSE_Encrypt` structure using the Lease Key.
 
 ## Header fields
 
-A CABE Envelope's `COSE_Encrypt0` structure has one or more of the the
-following header fields:
+A CABE Envelope's `COSE_Encrypt0` or `COSE_Encrypt` structure has one or more
+of the the following header fields:
 
 - `content type`: This field is specified by COSE and SHOULD be set to the
   content type of the plaintext Message. This field is not used to determine
@@ -122,124 +110,58 @@ following header fields:
   [CABE-ARCH](./arch)) of the Message used to create the Envelope.  A CABE
   implementation MUST NOT accept an Envelope without this field.
 
-- `CABE_KeyRef`: This field MUST be set to a byte string provided by a Key
-  Server in the Lease which was used to create a given Envelope.  This value is
-  used by Clients to de-encapsulate Envelope by quoting the same Key Reference
-  back to a Key Server as part of Retrograde Key Resolution. A Key Server can
-  use the Key Reference to find the correct Key unambiguously.
-
-- `CABE_LeaseDiscriminator`: This field MUST be set to the Lease Discriminator
-  byte string provided by the Key Server in the Lease used to create the
-  Envelope. This field is used to perform key derivation over a Set Key to
-  obtain a unique Lease Key. Implementations MUST reject Envelopes which lack
-  this field.
+- `CABE_LeaseRef`: This field MUST be set to a byte string which is the Lease Reference
+  which was produced by the Key Server when returning a Lease. This value is used
+  by the Key Server in Retrograde Key Resolution to locate the Set Key which was
+  used to derive the Lease Key and re-derive that Lease Key. In other words,
+  for a Client and suitably authorized Principal, the Attribute Set and Lease
+  Reference is necessary and sufficient to re-obtain the corresponding Lease
+  Key from the Key Server.
 
 - `Partial IV`: This field is specified by COSE. This field MUST be set to a
-  value which is unique within the scope of a given Lease. One way of
+  value which is unique within the scope of a given Lease Key. One way of
   satisfying this requirement is to use a simple counter which starts at 0 and
-  increments by one for each Message encrypted under a lease. However, because
-  a `Partial IV` only needs to be unique within the context of a Lease,
-  the choice of allocation method is left to an implementation.
+  increments by one for each Message encrypted under a Lease. However, because
+  a `Partial IV` only needs to be unique within the context of a Lease, the
+  choice of allocation method is left to an implementation.
 
 ## Key schedule
 
 Encapsulating a Message to create an Envelope involves examining the Attribute
-Set for the Message to be Encapsulated and obtaining a current Set Key and
-Lease for that Attribute Set. A Set Key is obtained by making a Prograde Key
-Resolution Request to a Key Server; if authorized, the Key Server creates a
-Lease and returns a Key Resolution Response including information about the
-Lease and information about the Set Key associated with it.
+Set for the Message to be Encapsulated and obtaining a Lease (and Lease Key)
+for that Attribute Set. A Lease is obtained by making a Prograde Key Resolution
+Request to a Key Server; if authorized, the Key Server creates a Lease and
+returns a Key Resolution Response including information about the Lease,
+including the Lease Key Access Information (LKAI).
 
-Each Lease has
+Each Lease has an expiration time indicating the point in time at which the Key
+Resolution Response and its selection of a specific Set Key and derived Lease
+Key is no longer valid.
 
-- A globally unique identifier (the lease ID);
+The Lease Key is derived deterministically from the Set Key but is unique to
+the created Lease; thus, the Lease Key is unique to the Prograde Key Resolution
+request which was made by the Client, and there is no risk of collision with
+other requests made by other Clients which resolve to the same Set Key.
 
-- An expiration time indicating the point in time at which the Key Resolution
-  Response and its selection of a specific Set Key is no longer valid.
+Upon receiving the Lease:
 
-The Client then generates a Lease Nonce for this Lease, such that the
-combination of the Set Key and the Lease Nonce, when passed into a suitable key
-derivation function, creates a unique key which can be safely allocated with a
-sequentially allocated Partial IV.
+- In the case of a Non-Captive Key, the Client notionally constructs a
+  `COSE_Key` structure which holds the key's bit pattern and relevant details.
+  The `Base IV` parameter is also provided by the Key Server copied from the
+  LKAI. This Key, including the Base IV, is combined with the Client's choice of
+  Partial IV for each Envelope it creates.
 
-An Envelope Key is derived using HKDF with SHA-512 as a PRF as follows:
+  An implementation does not need to actually use the `COSE_Key` structure
+  so long as its behavior is functionally equivalent.
 
-```
-  EnvelopeKey, EnvelopeBaseIV = HKDF-SHA-512(
-    secret=SetKey, salt='', context,
-    length=n+m
-  )
-```
+  The Client creates Envelopes using the Lease Key directly and MUST NOT use
+  COSE Key Wrap. As such, it is able to use the `COSE_Encrypt0` structure for
+  more efficient serialization.
 
-In other words, the Envelope Key is the first `n` bits produced by the
-`HKDF` operation, and the Envelope Base IV is the subsequent `m` bits
-produced by that operation, where `n` and `m` are the respective key length and
-IV lengths required by the symmetric encryption algorithm in use.
-
-The `context` input to HKDF is the `COSE_KDF_Context` structure as defined in
-Section 11.2 of [RFC 8152](https://www.rfc-editor.org/rfc/rfc8152.html).
-Because the `context` must be deterministically re-derived on the receiving end
-to derive the same key, the context MUST be constructed exactly as described below
-and deterministically serialized:
-
-- `AlgorithmID` MUST be set to the algorithm identifier in use, which MUST be
-  the integer code point assigned for the algorithm `direct+HKDF-SHA-512`.
-- `PartyUInfo` MUST be an CBOR Array containing a single CBOR Map, which shall have `identity` and `other` set to nil, and `nonce` set to the Lease Nonce;
-- `PartyVInfo` MUST be set to an empty CBOR Array;
-- `SuppPubInfo` MUST Be set to a map with `keyDataLength` set to `n+m` and `protected` set to a zero-length byte string.
-
-be set to an arraymap as follows:
-```
-COSE_KDF_Context = [
-  AlgorithmID,
-  PartyUInfo = [
-    (
-      identity = nil,
-      nonce = leaseNonce,
-      other = nil
-    )
-  ],
-  PartyVInfo = [],
-  SuppPubInfo = [
-    keyDataLength,
-    protected = {}
-  ]
-]
-```
-
-The Message Base IV is of a length determined by the symmetric encryption
-algorithm in use, and is combined with the partial IV as defined in COSE.
-
-
-
-```
-
-
-    direct   - implicit CEK = HKDF(...) custom
-    SymKEK   - recipient:E[KEK](CEK)
-
-
-```
-
-
-
-
-```
-
-func main() {
-  e := &cose.EncryptMessage[[]byte] {
-    Payload: []byte("foo"),
-  }
-
-  e.Encrypt(encryptor, nil)
-  e.AddRecipient()
-  XXXXX;wq
-}
-
-```
-
-
-# Security Considerations
+- In the case of a Captive Key, the Client makes a request to the Key Server
+  for Assisted Encapsulation or Assisted Decapsulation using and creates
+  Envelopes using COSE Key Wrap; as a result, the use of the `COSE_Encrypt`
+  structure is necessary.
 
 # References
 
@@ -251,3 +173,7 @@ func main() {
 - [RFC 9052](https://www.rfc-editor.org/rfc/rfc9052.html): *CBOR Object Signing and Encryption (COSE): Structures and Process*
 - [RFC 9053](https://www.rfc-editor.org/rfc/rfc9053.html): *CBOR Object Signing and Encryption (COSE): Initial Algorithms*
 
+# Colophon
+
+**Author**<br/>
+[Hugo Landau](mailto:hl@messier42.com)

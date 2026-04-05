@@ -179,6 +179,18 @@ The following terms are defined:
 
 - **Retired Key**: A Key within a given Key Series which is not a Current Key.
 
+- **Lease Key**: A Derived Key generated from the Current Key for a Key Series
+  and which is associated with, and unique to, a Lease.
+
+- **Lease Key Access Information (LKAI)**: Information needed to make use of a
+  Lease Key, whether it is a Captive Key (in which case it comprises the Lease
+  Key Access Token (LKAT)) or Non-Captive Key (in which case it comprises the
+  bit pattern of the Lease Key).
+
+- **Lease Key Access Token (LKAT)**: An opaque byte string quoted to the Key
+  Server to perform Assisted Encapsulation or Decapsulation using a Lease Key
+  which is a Captive Key.
+
 - **Key Access**: The process in which a Client obtains (for a Non-Captive
   Key), or indirectly makes use of (for a Captive Key) a Set Key, for the
   purposes of facilitating access to some contiguous temporal subset of an
@@ -390,26 +402,25 @@ There are two circumstances in which Key Resolution occurs:
 ### Prograde Resolution
 
 In Prograde Resolution, the Client sends the relevant Attribute Set to the Key
-Server and requests the Current Key to use as the Set Key for the purposes of
-constructing an encrypted Envelope. The Key Server determines whether the
-Principal should be allowed to access the given Key Series according to its
-configured Policy, and if allowed, creates a Lease and returns information about it.
+Server and requests a Lease Key to use for the purposes of constructing an
+encrypted Envelope. The Key Server determines whether the Principal should be
+allowed to access the given Key Series according to its configured Policy, and
+if allowed, creates a Lease and returns information about it.
 
 A Lease provides the following information:
 
-- The results of the Key Resolution operation, most importantly:
+- Lease Key Access Information (LKAI), which is information needed for Key Access to the Lease Key, namely:
 
-  - A unique identifier for the Key which was chosen according to the Key Mapping;
+    - In the case of a Non-Captive Key, this is the memory image of the Lease Key itself;
 
-  - Information needed for Key Access:
+    - In the case of a Captive Key, this is an opaque reference token (the
+      Lease Key Access Token (LKAT)) which can be used to make subsequent calls
+      to the Key Server to perform assisted Encapsulation or Decapsulation
+      using the Lease Key.
 
-    - In the case of a Non-Captive Key, this is the memory image of the Key itself;
-
-    - In the case of a Captive Key, this is an opaque reference token which can be
-      used to make subsequent calls to the Key Server to perform assisted Encapsulation
-      or Decapsulation.
-
-- A unique identifier identifying the Lease; and
+- A Lease Reference, which is an opaque byte string which a Client can quote to
+  a Key Server to facilitate subsequent Key Access to the same Lease Key, by
+  performing Retrograde Key Resolution.
 
 - The point in time at which the Lease expires.
 
@@ -423,9 +434,9 @@ exact, nor is it intended to be. The lease expiry time can only account for
 Synchronous Rollover of a Key Series. Factors such as clock skew, or events
 which cause Asynchronous Rollover, can cause the Current Key for a Key Series
 to change suddenly, in which case a Client might continue to encapsulate
-Messages with an out of date Key for some period of time (the Rollover Period).
-Further discussion of the issues around this can be found in the [CKAP
-specification](./ckap).
+Messages with an out of date Lease Key (which is derived from the Current Key)
+for some period of time (the Rollover Period).  Further discussion of the
+issues around this can be found in the [CKAP specification](./ckap).
 
 ### Retrograde Resolution
 
@@ -434,27 +445,29 @@ Unlike Prograde Resolution, a Key was already chosen when the Envelope was
 created, which is specifically requested by the Client, as it is the only Key
 which can be used to decapsulate the Envelope.
 
-Each Envelope's header contains a Key Reference which is an opaque byte string
-uniquely identifying a Key to a Key Server. The Client quotes this Key
-Reference to the Key Server, which verifies the Principal's access according to
-its Policy before providing the result of the resolution process. The Client
-can then proceed to Key Access in the same way as for Prograde Resolution.
+Each Envelope's header contains a Lease Reference which is an opaque byte
+string uniquely identifying a previously issued Lease Key to a Key Server. The
+Client quotes this Lease Reference to the Key Server, which verifies the
+Principal's access according to its Policy before providing the result of the
+resolution process. The Client can then proceed to Key Access in the same way
+as for Prograde Resolution.
 
 Due to the temporal imprecision noted in the previous section, the Key chosen
-to create a given Envelope may not have been the Current Key at the time the
-Envelope was created. Thus, Keys are identified by a unique Key Reference
-rather than being inferred from an Envelope Timestamp.
+to derive a Lease Key used to create a given Envelope may not have been the
+Current Key at the time the Envelope was created. Thus, Lease Keys are
+identified by a unique Lease Reference rather than being inferred from an
+Envelope timestamp.
 
 ## Key Access
 
 In the case of a Non-Captive Key, Key Access is straightforward as it is
-provided directly in the Key Server's response. The means by which the Set Key
-is used to create Envelopes is discussed in detail in the [CBMF](./cbmf)
+provided directly in the Key Server's response. The means by which the Lease Key
+is used to create Envelopes is discussed in detail in the [CBES](./cbes)
 specification.
 
-In the case of a Captive Key, direct access to the Set Key's bit pattern is not
-available. Instead, a Client makes Assisted Encapsulation/Decapsulation calls
-to the Key Server.
+In the case of a Captive Key, direct access to the Lease Key's bit pattern is
+not available. Instead, a Client makes Assisted Encapsulation/Decapsulation
+calls to the Key Server.
 
 Since these merely perform cryptographic operations on temporal keys used to
 encrypt a specific Message, the bandwidth consumed by these calls is a function
@@ -479,10 +492,9 @@ The following invariants are worth noting explicitly:
 
 - Each Key Epoch has exactly one Set Key.
 
-- A given Envelope is bound to exactly one Key Reference.
+- A given Envelope is bound to exactly one Lease Key and Lease Reference.
 
-- A Key Reference identifies exactly one Key within a Domain. The reverse is
-  not necessarily true; a Key can be identified by more than one Key Reference.
+- A Lease Reference identifies exactly one Lease Key within a Domain.
 
 # References
 
