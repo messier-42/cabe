@@ -1,6 +1,6 @@
 
 ---
-title: "CABE Baseline Envelope Structure"
+title: "CABE Baseline Envelope Structure (CBES)"
 draft: "CBES"
 status: "Active Draft"
 date: "April 2026"
