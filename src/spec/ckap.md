@@ -465,6 +465,18 @@ to ensure that all valid byte strings under the `application/ckap+cbor` content
 type are unambiguous. This field MUST be set to the name of the structure (e.g.
 `GetSelfRequest`, `Error`).
 
+## Client Identity
+
+It is REQUIRED that a Key Server implement a means of authenticating Clients
+and assigning Principals to Clients based on a Client's authenticated identity.
+
+CKAP does not define a specific mechanism for Client authentication. Key
+Servers MAY use a mechanism of their choice to authenticate Clients and
+associate Principals with them. In the case of the HTTP transport, this may
+include client certificates presented during establishment of a TLS connection,
+or a defined HTTP authentication scheme presented in the `Authorization`
+header, any other mechanism, or some combination thereof.
+
 # HTTP Asynchronous Resolution Invalidation Notification (ARIN)
 
 A Client using the HTTP transport SHOULD implement Asynchronous Resolution
