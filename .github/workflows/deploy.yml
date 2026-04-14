@@ -20,6 +20,13 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v5
+
+      - name: Download cabe-game
+        run: |
+          curl -fsSL https://m42-prod-cabe-game.s3-us-west-2.amazonaws.com/cabe-game.zip -o cabe-game.zip
+          unzip -q cabe-game.zip
+          mv cabe-game public/game
+
       - name: Install, build, and upload your site
         uses: withastro/action@v5
 
