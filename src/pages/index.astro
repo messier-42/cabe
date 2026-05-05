@@ -120,6 +120,50 @@ const additionalGroup = specGroups[1];
     </div>
   </section>
 
+  <!-- GAME INVITATION -->
+  <section class="game-invite" id="game">
+    <div class="game-invite__grid" aria-hidden="true"></div>
+    <div class="game-invite__scan" aria-hidden="true"></div>
+    <div class="game-invite__corners" aria-hidden="true">
+      <span class="gi-corner gi-corner--tl"></span>
+      <span class="gi-corner gi-corner--tr"></span>
+      <span class="gi-corner gi-corner--bl"></span>
+      <span class="gi-corner gi-corner--br"></span>
+    </div>
+    <div class="container game-invite__inner">
+      <div class="game-invite__meta">
+        <span class="gi-tag"><span class="gi-tag__dot"></span>INTERACTIVE SIMULATOR</span>
+        <span class="gi-id">CABE</span>
+      </div>
+
+      <h2 class="game-invite__title">
+        Try the simulation.
+      </h2>
+
+      <p class="game-invite__lede">
+        Get your hands on with CABE concepts with the <strong>CABE Policy
+        Simulator</strong> — an interactive browser-based introduction to
+        attribute-based encapsulation based around a live demonstration of
+        a real Cedar policy evaluation engine driving key management.
+      </p>
+
+      <ul class="game-invite__points">
+        <li><span class="gi-bullet">▸</span> Explore an example mission scenario</li>
+        <li><span class="gi-bullet">▸</span> Test policies in the real Cedar policy engine</li>
+        <li><span class="gi-bullet">▸</span> See how CABE message envelopes are constructed</li>
+      </ul>
+
+      <div class="game-invite__action">
+        <a href="/game/" class="gi-btn">
+          <span class="gi-btn__bracket">[</span>
+          <span class="gi-btn__label">LAUNCH&nbsp;CABE&nbsp;Policy&nbsp;Simulator</span>
+          <span class="gi-btn__bracket">]</span>
+          <span class="gi-btn__arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- SPEC -->
   <section class="spec" id="spec">
     <div class="container">
@@ -428,6 +472,264 @@ const additionalGroup = specGroups[1];
     .scalable__inner {
       grid-template-columns: 1fr;
       gap: 1.5rem;
+    }
+  }
+
+  /* ─── GAME INVITATION ──────────────────────────────────────── */
+  .game-invite {
+    --gi-cyan: #00c8ff;
+    --gi-cyan-soft: #7ee3ff;
+    --gi-cyan-glow: rgba(0, 200, 255, 0.18);
+    --gi-bg: #030d12;
+    --gi-bg-deep: #020608;
+    --gi-amber: #ffb300;
+    --gi-text: #d8e5ef;
+    --gi-text-mute: #8aa2b3;
+
+    position: relative;
+    padding: clamp(4rem, 8vw, 6.5rem) 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,200,255,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 100%, rgba(255,179,0,0.06) 0%, transparent 60%),
+      linear-gradient(180deg, var(--gi-bg-deep) 0%, var(--gi-bg) 100%);
+    color: var(--gi-text);
+    border-top: 1px solid rgba(0, 200, 255, 0.18);
+    border-bottom: 1px solid rgba(0, 200, 255, 0.18);
+    overflow: hidden;
+    font-family: 'JetBrains Mono', ui-monospace, 'Menlo', monospace;
+  }
+
+  .game-invite__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 200, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 200, 255, 0.06) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(ellipse 90% 100% at 50% 50%, black 35%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .game-invite__scan {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 3px,
+      rgba(0, 200, 255, 0.025) 3px,
+      rgba(0, 200, 255, 0.025) 4px
+    );
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  .game-invite__corners {
+    position: absolute;
+    inset: 1.5rem;
+    pointer-events: none;
+  }
+
+  .gi-corner {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-color: var(--gi-cyan);
+    border-style: solid;
+    border-width: 0;
+    opacity: 0.7;
+  }
+  .gi-corner--tl { top: 0; left: 0; border-top-width: 1px; border-left-width: 1px; }
+  .gi-corner--tr { top: 0; right: 0; border-top-width: 1px; border-right-width: 1px; }
+  .gi-corner--bl { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
+  .gi-corner--br { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
+
+  .game-invite__inner {
+    position: relative;
+    z-index: 2;
+    max-width: 820px;
+  }
+
+  .game-invite__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+    flex-wrap: wrap;
+  }
+
+  .gi-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.35rem 0.85rem;
+    border: 1px solid rgba(0, 200, 255, 0.4);
+    background: rgba(0, 200, 255, 0.06);
+    border-radius: 2px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    color: var(--gi-cyan-soft);
+    text-transform: uppercase;
+  }
+
+  .gi-tag__dot {
+    width: 6px;
+    height: 6px;
+    background: var(--gi-cyan);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--gi-cyan);
+    animation: gi-pulse 1.6s ease-in-out infinite;
+  }
+
+  .gi-id {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    color: var(--gi-text-mute);
+    text-transform: uppercase;
+  }
+
+  .game-invite__title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2.25rem, 5.5vw, 3.75rem);
+    line-height: 1.0;
+    letter-spacing: 0.02em;
+    color: #ffffff;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 24px var(--gi-cyan-glow);
+  }
+
+  .game-invite__lede {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 1.7;
+    color: var(--gi-text);
+    font-weight: 300;
+    max-width: 60ch;
+    margin-bottom: 1.75rem;
+  }
+
+  .game-invite__lede strong {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--gi-cyan-soft);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .game-invite__points {
+    list-style: none;
+    margin: 0 0 2.5rem 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .game-invite__points li {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--gi-text);
+  }
+
+  .gi-bullet {
+    color: var(--gi-cyan);
+    margin-right: 0.6rem;
+    font-weight: 700;
+  }
+
+  .game-invite__action {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .gi-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 1rem 1.6rem;
+    background: linear-gradient(180deg, rgba(0, 200, 255, 0.18) 0%, rgba(0, 200, 255, 0.08) 100%);
+    border: 1px solid var(--gi-cyan);
+    border-radius: 2px;
+    color: #ffffff;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.18s ease;
+    box-shadow:
+      0 0 0 0 rgba(0, 200, 255, 0),
+      inset 0 0 22px rgba(0, 200, 255, 0.08);
+    position: relative;
+  }
+
+  .gi-btn:hover {
+    background: linear-gradient(180deg, rgba(0, 200, 255, 0.32) 0%, rgba(0, 200, 255, 0.16) 100%);
+    color: #ffffff;
+    box-shadow:
+      0 0 24px rgba(0, 200, 255, 0.45),
+      inset 0 0 28px rgba(0, 200, 255, 0.18);
+    transform: translateY(-1px);
+  }
+
+  .gi-btn__bracket {
+    color: var(--gi-cyan);
+    font-weight: 500;
+    opacity: 0.85;
+  }
+
+  .gi-btn__arrow {
+    margin-left: 0.35rem;
+    color: var(--gi-cyan-soft);
+    transition: transform 0.18s ease;
+  }
+
+  .gi-btn:hover .gi-btn__arrow {
+    transform: translateX(3px);
+  }
+
+  .gi-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    color: #4ade80;
+    text-transform: uppercase;
+  }
+
+  .gi-status__pulse {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 8px #4ade80;
+    animation: gi-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes gi-pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.35; }
+  }
+
+  @media (max-width: 600px) {
+    .game-invite__action {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .gi-btn {
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>
