@@ -1,12 +1,13 @@
 ---
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
+// priority: 1 = highest (last to drop into hamburger), higher numbers drop first
 const links = [
-  { href: `${base}/`,              label: 'Home' },
-  { href: `${base}/specification`, label: 'Specification' },
-  { href: `${base}/software`,      label: 'Software' },
-  { href: `${base}/faq`,           label: 'FAQ' },
-  { href: `${base}/get-involved`,  label: 'Get Involved' },
+  { href: `${base}/`,              label: 'Home',          priority: 5 },
+  { href: `${base}/specification`, label: 'Specification', priority: 1 },
+  { href: `${base}/software`,      label: 'Software',      priority: 2 },
+  { href: `${base}/faq`,           label: 'FAQ',           priority: 3 },
+  { href: `${base}/get-involved`,  label: 'Get Involved',  priority: 4 },
 ];
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -20,7 +21,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
     </a>
     <ul class="nav__links">
       {links.map(link => (
-        <li>
+        <li class={`nav__links-item nav__links-item--p${link.priority}`}>
           <a
             href={link.href}
             class:list={['nav__link', { 'nav__link--active': currentPath === link.href.replace(/\/$/, '') }]}
@@ -29,9 +30,31 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
           </a>
         </li>
       ))}
-      <li>
+      <li class="nav__links-item nav__links-item--cta">
         <a href={`${base}/#mc-email`} class="nav__cta">Find out more</a>
       </li>
     </ul>
+    <details class="nav__menu">
+      <summary class="nav__menu-toggle" aria-label="Toggle navigation menu">
+        <span class="nav__menu-bar"></span>
+        <span class="nav__menu-bar"></span>
+        <span class="nav__menu-bar"></span>
+      </summary>
+      <ul class="nav__menu-panel">
+        {links.map(link => (
+          <li>
+            <a
+              href={link.href}
+              class:list={['nav__menu-link', { 'nav__menu-link--active': currentPath === link.href.replace(/\/$/, '') }]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+        <li>
+          <a href={`${base}/#mc-email`} class="nav__menu-link nav__menu-link--cta">Find out more</a>
+        </li>
+      </ul>
+    </details>
   </div>
 </nav>
