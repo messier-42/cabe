@@ -1,0 +1,277 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="Software — CABE">
+  <Nav />
+
+  <main class="page">
+    <div class="page__header">
+      <div class="container">
+        <span class="section-label">Software</span>
+        <h1 class="page__title">CABE software</h1>
+        <p class="page__subtitle">
+          The CABE specifications are realised through a growing ecosystem of
+          open implementations.
+        </p>
+      </div>
+    </div>
+
+    <div class="page__body">
+      <div class="container">
+
+        <!-- Featured: khaled -->
+        <section class="khaled-feature" aria-labelledby="khaled-title">
+          <span class="khaled-feature__tag">Reference Implementation</span>
+
+          <img
+            src={`${base}/images/khaled-logo.svg`}
+            alt="khaled"
+            class="khaled-feature__logo"
+            width="532"
+            height="173"
+          />
+
+          <p id="khaled-title" class="khaled-feature__body">
+            <strong>khaled</strong> is the reference implementation of a CABE
+            Key Server, the centerpiece of any CABE deployment. It has a
+            plugin-based architecture enabling it to be refitted to support a wide
+            variety of operating scenarios.
+          </p>
+
+          <div class="khaled-feature__actions">
+            <a href="https://khaled.cabespec.org/" class="khaled-feature__btn khaled-feature__btn--primary">
+              Visit khaled site →
+            </a>
+            <a href="https://github.com/messier-42/khaled" class="khaled-feature__btn khaled-feature__btn--ghost">
+              Source on GitHub
+            </a>
+          </div>
+        </section>
+
+        <!-- Supporting software -->
+        <div class="software-grid">
+          <a href="https://github.com/messier-42/cabe-go" class="software-card software-card--link">
+            <span class="software-card__tag software-card__tag--live">Available now</span>
+            <h3 class="software-card__title">cabe-go</h3>
+            <p class="software-card__body">
+              The cabe-go client library allows CABE to be integrated into
+              arbitrary Go applications.
+            </p>
+            <span class="software-card__link">View cabe-go on GitHub →</span>
+          </a>
+
+          <a href="https://github.com/messier-42/cabe-go" class="software-card software-card--link">
+            <span class="software-card__tag software-card__tag--live">Available now</span>
+            <h3 class="software-card__title">cabetool</h3>
+            <p class="software-card__body">
+              The cabetool command line tool allows you to perform CABE
+              encapsulation and decapsulation from the command line.
+            </p>
+            <span class="software-card__link">View cabe-go on GitHub →</span>
+          </a>
+
+          <a href="/game/" class="software-card software-card--link">
+            <span class="software-card__tag software-card__tag--live">Available now</span>
+            <h3 class="software-card__title">CABE Policy Simulator</h3>
+            <p class="software-card__body">
+              A browser-based interactive simulator demonstrating Cedar
+              policy evaluation against CABE envelopes — useful for learning.
+            </p>
+            <span class="software-card__link">Launch simulator →</span>
+          </a>
+
+          <a href={`${base}/specification`} class="software-card software-card--link">
+            <span class="software-card__tag software-card__tag--live">Available now</span>
+            <h3 class="software-card__title">Build your own</h3>
+            <p class="software-card__body">
+              The CABE specifications are open. Implement CABE in the
+              language and environment of your choice and help grow the
+              ecosystem of interoperable implementations.
+            </p>
+            <span class="software-card__link">Read the specification →</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  /* khaled palette — taken from the khaled logo */
+  .khaled-feature {
+    --kh-ink:        #0f233f;
+    --kh-blue:       #0b415c;
+    --kh-blue-mid:   #0c5a6f;
+    --kh-teal:       #0d6c7d;
+    --kh-teal-bright:#1aa0b8;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.25rem;
+    padding: clamp(2rem, 4vw, 2.75rem);
+    border-radius: 10px;
+    background: var(--bg-1);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--kh-teal);
+    margin: 0 auto 4rem;
+    max-width: 720px;
+  }
+
+  .khaled-feature__tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--kh-teal);
+    background: rgba(13, 108, 125, 0.08);
+    border: 1px solid rgba(13, 108, 125, 0.25);
+    padding: 0.25rem 0.7rem;
+    border-radius: 100px;
+  }
+
+  .khaled-feature__logo {
+    display: block;
+    width: 240px;
+    max-width: 80%;
+    height: auto;
+    margin: 0.25rem 0 0.25rem;
+  }
+
+  .khaled-feature__body {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--ink-3);
+    font-weight: 300;
+    max-width: 60ch;
+  }
+
+  .khaled-feature__body strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .khaled-feature__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 0.5rem;
+  }
+
+  .khaled-feature__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1.15rem;
+    border-radius: 4px;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: all 0.18s;
+  }
+
+  .khaled-feature__btn--primary {
+    background: var(--kh-teal);
+    color: #ffffff;
+    border: 1px solid var(--kh-teal);
+  }
+  .khaled-feature__btn--primary:hover {
+    color: #ffffff;
+    background: var(--kh-teal-bright);
+    border-color: var(--kh-teal-bright);
+  }
+
+  .khaled-feature__btn--ghost {
+    background: transparent;
+    color: var(--kh-blue);
+    border: 1px solid rgba(13, 108, 125, 0.35);
+  }
+  .khaled-feature__btn--ghost:hover {
+    color: var(--kh-teal-bright);
+    border-color: var(--kh-teal);
+    background: rgba(13, 108, 125, 0.05);
+  }
+
+  /* ─── Supporting software grid ─── */
+  .software-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .software-card {
+    padding: 1.75rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .software-card--link {
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  }
+  .software-card--link:hover {
+    color: inherit;
+    border-color: var(--amber-border);
+    box-shadow: 0 4px 18px rgba(184, 108, 0, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .software-card__tag {
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 100px;
+    background: var(--bg-3);
+    color: var(--ink-4);
+    border: 1px solid var(--border);
+  }
+
+  .software-card__tag--live {
+    color: var(--success);
+    background: #e8f5ef;
+    border-color: #b0dfc8;
+  }
+
+  .software-card__title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .software-card__body {
+    font-size: 0.9rem;
+    color: var(--ink-3);
+    line-height: 1.65;
+    font-weight: 300;
+    flex: 1;
+  }
+
+  .software-card__link {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--amber);
+    align-self: flex-start;
+  }
+  .software-card__link:hover { color: var(--amber-bright); }
+
+  @media (max-width: 900px) {
+    .software-grid { grid-template-columns: 1fr; }
+  }
+</style>

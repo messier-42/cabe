@@ -205,6 +205,61 @@ const additionalGroup = specGroups[1];
     </div>
   </section>
 
+  <!-- SOFTWARE TEASER -->
+  <section class="sw-teaser" id="software">
+    <div class="sw-teaser__grid-bg" aria-hidden="true"></div>
+    <div class="sw-teaser__glow" aria-hidden="true"></div>
+    <div class="container sw-teaser__inner">
+      <div class="sw-teaser__copy">
+        <span class="section-label sw-teaser__label">004 · Software</span>
+        <h2 class="sw-teaser__heading">Deploy CABE-compatible software.</h2>
+        <p class="sw-teaser__body">
+          The CABE specifications are open for implementation. <strong>khaled</strong>
+          is our reference implementation of a CABE Key Server; a highly pluggable,
+          configurable key server designed to support a wide variety of operating
+          scenarios based around attribute-based policy enforcement.
+        </p>
+        <ul class="sw-teaser__points">
+          <li>Plugin-based architecture</li>
+          <li>SPIFFE and Kubernetes-aware workload attestation</li>
+          <li>Cedar-based ABAC policy evaluation</li>
+        </ul>
+        <div class="sw-teaser__actions">
+          <a href={`${base}/software`} class="btn sw-teaser__btn">View Implementations</a>
+          <a href="https://khaled.cabespec.org/" class="sw-teaser__inline-link">Visit khaled docs →</a>
+        </div>
+      </div>
+
+      <a href="https://khaled.cabespec.org/" class="sw-teaser__card" aria-label="khaled — CABE Key Server">
+        <div class="sw-teaser__card-corner sw-teaser__card-corner--tl"></div>
+        <div class="sw-teaser__card-corner sw-teaser__card-corner--tr"></div>
+        <div class="sw-teaser__card-corner sw-teaser__card-corner--bl"></div>
+        <div class="sw-teaser__card-corner sw-teaser__card-corner--br"></div>
+
+        <div class="sw-teaser__card-tag">
+          <span class="sw-teaser__card-dot"></span>
+          Reference Implementation
+        </div>
+
+        <img
+          src={`${base}/images/khaled-logo.svg`}
+          alt="khaled"
+          class="sw-teaser__card-logo"
+          width="532"
+          height="173"
+        />
+
+        <p class="sw-teaser__card-tagline">
+          A plugin-based CABE Key Server.
+        </p>
+
+        <span class="sw-teaser__card-cta">
+          Learn more <span class="sw-teaser__card-arrow">→</span>
+        </span>
+      </a>
+    </div>
+  </section>
+
   <!-- CTA / MAILING LIST -->
   <section class="mc-section" id="cta">
     <div class="mc-glow" aria-hidden="true"></div>
@@ -730,6 +785,278 @@ const additionalGroup = specGroups[1];
     .gi-btn {
       width: 100%;
       justify-content: center;
+    }
+  }
+
+  /* ─── SOFTWARE TEASER (khaled palette) ─────────────────────── */
+  .sw-teaser {
+    --kh-deep:       #0b1d33;
+    --kh-deeper:     #081627;
+    --kh-blue:       #0b415c;
+    --kh-blue-mid:   #0c5a6f;
+    --kh-teal:       #0d6c7d;
+    --kh-teal-bright:#1aa0b8;
+    --kh-line:       rgba(13, 108, 125, 0.32);
+    --kh-line-soft:  rgba(13, 108, 125, 0.14);
+    --kh-text:       #d6e6ee;
+    --kh-text-mute:  #93b3c1;
+
+    position: relative;
+    padding: var(--section-pad) 0;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 60% 50% at 0% 0%, rgba(13, 108, 125, 0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 60% at 100% 100%, rgba(11, 65, 92, 0.30) 0%, transparent 70%),
+      linear-gradient(180deg, var(--kh-deep) 0%, var(--kh-deeper) 100%);
+    color: var(--kh-text);
+    border-top: 1px solid var(--kh-line);
+    border-bottom: 1px solid var(--kh-line);
+  }
+
+  .sw-teaser__grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--kh-line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--kh-line-soft) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 90% 100% at 50% 50%, black 30%, transparent 95%);
+    pointer-events: none;
+  }
+
+  .sw-teaser__glow {
+    position: absolute;
+    top: -10%;
+    right: -8%;
+    width: 50%;
+    height: 70%;
+    background: radial-gradient(ellipse, rgba(26, 160, 184, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .sw-teaser__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4.5rem;
+    align-items: center;
+  }
+
+  .sw-teaser__label {
+    color: var(--kh-teal-bright) !important;
+  }
+
+  .sw-teaser__heading {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.85rem, 3.6vw, 2.85rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+    margin-bottom: 1.25rem;
+    max-width: 18ch;
+  }
+
+  .sw-teaser__body {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--kh-text);
+    font-weight: 300;
+    max-width: 52ch;
+    margin-bottom: 1.5rem;
+  }
+
+  .sw-teaser__body strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  .sw-teaser__points {
+    list-style: none;
+    margin: 0 0 2rem 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .sw-teaser__points li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: 0.92rem;
+    color: var(--kh-text-mute);
+    line-height: 1.5;
+  }
+
+  .sw-teaser__points li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--kh-teal-bright);
+    font-weight: 700;
+  }
+
+  .sw-teaser__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+
+  .sw-teaser__btn {
+    background: linear-gradient(180deg, var(--kh-teal-bright) 0%, var(--kh-teal) 100%);
+    color: #ffffff;
+    font-weight: 700;
+    border: 1px solid rgba(155, 224, 238, 0.55);
+    box-shadow:
+      0 0 0 1px rgba(26, 160, 184, 0.15) inset,
+      0 8px 22px rgba(8, 22, 39, 0.45);
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  }
+  .sw-teaser__btn:hover {
+    color: #ffffff;
+    background: linear-gradient(180deg, #2dbcd6 0%, var(--kh-teal-bright) 100%);
+    border-color: #9be0ee;
+    box-shadow:
+      0 0 0 1px rgba(155, 224, 238, 0.35) inset,
+      0 12px 28px rgba(26, 160, 184, 0.35);
+    transform: translateY(-1px);
+  }
+
+  .sw-teaser__inline-link {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: #9be0ee;
+    text-transform: uppercase;
+  }
+  .sw-teaser__inline-link:hover { color: var(--kh-teal-bright); }
+
+  .sw-teaser__card {
+    position: relative;
+    display: block;
+    padding: 2.75rem 2.5rem;
+    border-radius: 12px;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(26, 160, 184, 0.16) 0%, transparent 70%),
+      linear-gradient(180deg, rgba(11, 29, 51, 0.85) 0%, rgba(8, 22, 39, 0.95) 100%);
+    border: 1px solid var(--kh-line);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 30px 80px -40px rgba(8, 22, 39, 0.7);
+    overflow: hidden;
+  }
+
+  .sw-teaser__card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--kh-line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--kh-line-soft) 1px, transparent 1px);
+    background-size: 36px 36px;
+    mask-image: radial-gradient(ellipse 90% 100% at 50% 0%, black 30%, transparent 90%);
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  .sw-teaser__card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(26, 160, 184, 0.55);
+    box-shadow:
+      0 30px 80px -30px rgba(8, 22, 39, 0.8),
+      0 0 0 1px rgba(26, 160, 184, 0.18);
+    color: inherit;
+  }
+
+  .sw-teaser__card-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 0 solid var(--kh-teal-bright);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .sw-teaser__card-corner--tl { top: 10px; left: 10px;  border-top-width: 1px; border-left-width: 1px; }
+  .sw-teaser__card-corner--tr { top: 10px; right: 10px; border-top-width: 1px; border-right-width: 1px; }
+  .sw-teaser__card-corner--bl { bottom: 10px; left: 10px;  border-bottom-width: 1px; border-left-width: 1px; }
+  .sw-teaser__card-corner--br { bottom: 10px; right: 10px; border-bottom-width: 1px; border-right-width: 1px; }
+
+  .sw-teaser__card-tag {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.3rem 0.85rem;
+    margin-bottom: 1.75rem;
+    border: 1px solid rgba(26, 160, 184, 0.45);
+    background: rgba(13, 108, 125, 0.15);
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: #9be0ee;
+    text-transform: uppercase;
+    z-index: 1;
+  }
+
+  .sw-teaser__card-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--kh-teal-bright);
+    box-shadow: 0 0 8px rgba(26, 160, 184, 0.7);
+    animation: gi-pulse 2s ease-in-out infinite;
+  }
+
+  .sw-teaser__card-logo {
+    position: relative;
+    display: block;
+    width: 280px;
+    max-width: 80%;
+    height: auto;
+    margin-bottom: 1.5rem;
+    filter: invert(1) hue-rotate(180deg) brightness(1.05) saturate(1.15);
+    z-index: 1;
+  }
+
+  .sw-teaser__card-tagline {
+    position: relative;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--kh-text);
+    font-weight: 300;
+    margin-bottom: 1.75rem;
+    max-width: 32ch;
+    z-index: 1;
+  }
+
+  .sw-teaser__card-cta {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--kh-teal-bright);
+    z-index: 1;
+  }
+
+  .sw-teaser__card-arrow {
+    transition: transform 0.2s ease;
+  }
+  .sw-teaser__card:hover .sw-teaser__card-arrow {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 900px) {
+    .sw-teaser__inner {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
     }
   }
 </style>
