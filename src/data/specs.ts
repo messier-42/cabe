@@ -49,6 +49,14 @@ export const specGroups: SpecGroup[] = [
     desc: 'Additional specifications provide extended functionality.',
     specs: [
       {
+        title: 'CABE Federation and Resilience',
+        draft: 'CFAR',
+        desc: 'Defines an architecture for operation of multi-Key Server CABE domains including federation, high availability, and resilient operation in DDIL environments.',
+        status: 'Pending first draft',
+        statusType: 'pending',
+        slug: null,
+      },
+      {
         title: 'NATO ACP240 Attribute Mapping',
         draft: 'CABE-ACP240',
         desc: 'Defines an isomorphic mapping between NATO ACP240 information classification labelling and CABE Attribute Sets.',
