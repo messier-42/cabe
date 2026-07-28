@@ -61,7 +61,7 @@ export const specGroups: SpecGroup[] = [
       {
         title: 'NATO ACP240 Attribute Mapping',
         draft: 'CABE-ACP240',
-        desc: 'Defines an isomorphic mapping between NATO ACP240 information classification labelling and CABE Attribute Sets.',
+        desc: 'Defines an mapping between a subset of NATO ACP240 and STANAG 4774 information classification labelling and CABE Attribute Sets.'
         status: 'First draft published',
         statusType: 'active',
         slug: 'acp240',
