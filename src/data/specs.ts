@@ -48,6 +48,7 @@ export const specGroups: SpecGroup[] = [
     label: 'Additional Specifications',
     desc: 'Additional specifications provide extended functionality.',
     specs: [
+      /*
       {
         title: 'CABE Federation and Resilience',
         draft: 'CFAR',
@@ -56,6 +57,7 @@ export const specGroups: SpecGroup[] = [
         statusType: 'pending',
         slug: null,
       },
+      */
       {
         title: 'NATO ACP240 Attribute Mapping',
         draft: 'CABE-ACP240',
@@ -64,6 +66,7 @@ export const specGroups: SpecGroup[] = [
         statusType: 'active',
         slug: 'acp240',
       },
+      /*
       {
         title: 'CABE Associated Messaging',
         draft: 'CABE-ASSOC',
@@ -72,6 +75,7 @@ export const specGroups: SpecGroup[] = [
         statusType: 'pending',
         slug: null,
       },
+      */
     ],
   },
 ];
