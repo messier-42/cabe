@@ -3,7 +3,7 @@
 title: "CABE Baseline Envelope Structure (CBES)"
 draft: "CBES"
 status: "Active Draft"
-date: "April 2026"
+date: "September 2026"
 abstract: "This document specifies the CABE Baseline Envelope Structure."
 ---
 
@@ -68,7 +68,7 @@ A Message is Encapsulated to create an Envelope as follows:
 1. The Client obtains a Lease (with associated LKAI) pertaining to the
 Message's Attribute Set. It may already have a relevant cached non-expired
 Lease; otherwise, it obtains one by performing Prograde Key Resolution via
-interaction with a Key Server.
+interaction with a Key Service.
 
 2. In the case of a Non-Captive Lease Key, the Client chooses a partial IV to
 be used with the Lease Key.
@@ -82,9 +82,9 @@ specified in 'Header fields'.
      LKAI and is used directly to perform COSE direct encryption.
 
    - In the case of a Captive Lease Key, the Client generates a random CEK and
-     associated IV, asks the Key Server to encrypt the CEK using an Assisted
+     associated IV, asks the Key Service to encrypt the CEK using an Assisted
      Encapsulation operation, and adds the COSE Key Wrap recipient to the
-     `COSE_Encrypt` structure. In this case, the Key Server determines the IV
+     `COSE_Encrypt` structure. In this case, the Key Service determines the IV
      used for the Lease Key.
 
 ### Decapsulation
@@ -95,7 +95,7 @@ An Envelope is Decapsulated to recover a Message as follows:
 headers.
 
 2. The Client performs Retrograde Key Resolution using the Lease Reference via
-interaction with a Key Server, and obtains the LKAI.
+interaction with a Key Service, and obtains the LKAI.
 
 3. The Client performs decapsulation using the LKAI:
 
@@ -103,7 +103,7 @@ interaction with a Key Server, and obtains the LKAI.
      LKAI and is used directly to perform COSE direct decryption of the
      `COSE_Encrypt0` or `COSE_Encrypt` structure.
 
-   - In the case of a Captive Lease Key, the Client asks the Key Server to
+   - In the case of a Captive Lease Key, the Client asks the Key Service to
      decrypt the COSE Key Wrapped CEK using an Assisted Decapsulation
      operation, and then performs COSE decryption using the CEK.
 
@@ -133,11 +133,11 @@ of the following header fields:
   This field MUST be serialized as a protected header.
 
 - `CABE_LeaseRef`: This field MUST be set to a byte string which is the Lease
-  Reference which was produced by the Key Server when returning a Lease. This
-  value is used by the Key Server in Retrograde Key Resolution to recover the
+  Reference which was produced by the Key Service when returning a Lease. This
+  value is used by the Key Service in Retrograde Key Resolution to recover the
   Lease Key. In other words, for a Client and suitably authorized Principal,
   the Attribute Set and Lease Reference is necessary and sufficient to
-  re-obtain the corresponding LKAI from the Key Server and execute Key Access
+  re-obtain the corresponding LKAI from the Key Service and execute Key Access
   for the Lease Key.
 
   This field MUST be serialized as a protected header.
@@ -172,8 +172,8 @@ of the following header fields:
 Encapsulating a Message to create an Envelope involves examining the Attribute
 Set for the Message to be Encapsulated and obtaining a Lease (and associated
 Lease Key Access Information (LKAI)) for that Attribute Set. A Lease is
-obtained by making a Prograde Key Resolution Request to a Key Server; if
-authorized, the Key Server creates a Lease and returns a Key Resolution
+obtained by making a Prograde Key Resolution Request to a Key Service; if
+authorized, the Key Service creates a Lease and returns a Key Resolution
 Response including information about the Lease, including the LKAI.
 
 Each Lease has an expiration time indicating the point in time at which the Key
@@ -190,7 +190,7 @@ Upon receiving the Lease:
 - In the case of a Non-Captive Key, the Client notionally constructs a
   `COSE_Key` structure which holds the Lease Key's bit pattern and relevant
   details. The Lease Key is used as the Content Encryption Key (CEK).  The
-  `Base IV` parameter is also provided by the Key Server copied from the LKAI.
+  `Base IV` parameter is also provided by the Key Service copied from the LKAI.
   This Key, including the Base IV, is combined with the Client's choice of
   Partial IV for each Envelope it creates.
 
@@ -203,8 +203,8 @@ Upon receiving the Lease:
 
 - In the case of a Captive Key, the Client generates a random CEK to encrypt
   the Message, chooses an IV to use with the CEK, and makes a request to the
-  Key Server for Assisted Encapsulation to wrap the CEK using the Lease Key.
-  The Key Server chooses the IV used as part of the Key Wrap operation.  The
+  Key Service for Assisted Encapsulation to wrap the CEK using the Lease Key.
+  The Key Service chooses the IV used as part of the Key Wrap operation.  The
   `COSE_Encrypt` structure MUST be used in this case, and the CEK MUST be
   serialized using a COSE Key Wrap recipient.
 
