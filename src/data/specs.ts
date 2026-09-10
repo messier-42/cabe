@@ -57,6 +57,14 @@ export const specGroups: SpecGroup[] = [
         slug: 'cha',
       },
       {
+        title: 'CABE Federation and Resilience',
+        draft: 'CFAR',
+        desc: 'Defines requirements for operation of CABE in federated and disconnected environments.',
+        status: 'First draft published',
+        statusType: 'active',
+        slug: 'cfar',
+      },
+      {
         title: 'NATO ACP240 Attribute Mapping',
         draft: 'CABE-ACP240',
         desc: 'Defines an mapping between a subset of NATO ACP240 and STANAG 4774 information classification labelling and CABE Attribute Sets.',
