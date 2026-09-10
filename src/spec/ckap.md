@@ -413,14 +413,9 @@ security mechanism MUST be used.
 A CKAP Base URL (such as `https://example.com/ckap/`) identifies an endpoint
 which can be used to access a Key Service. A given CKAP Base URL MAY route
 requests adaptively to an arbitrary Key Server providing the Key Service, or to
-a specific Key Server within that Key Service.
-
-Clients MAY include support for accessing Key Services which (such as for
-reasons of availability) are accessible via multiple CKAP Base URLs. Clients
-which provide such support SHOULD use timeouts and failover if a request made
-using one CKAP Base URL fails. Clients MUST treat all CKAP Base URLs configured
-for a CABE Domain as semantically equivalent in terms of the Key Service
-accessed.
+a specific Key Server within that Key Service.  Clients MUST treat all CKAP
+Base URLs configured for a CABE Domain as semantically equivalent in terms of
+the Key Service accessed.
 
 Except where otherwise specified, operations in the abstract service interface
 defined in the previous section are uniformly converted to HTTP requests as
