@@ -3,7 +3,7 @@
 title: "CABE Architecture Specification"
 draft: "CABE-ARCH"
 status: "Active Draft"
-date: "April 2026"
+date: "September 2026"
 abstract: "This document specifies the CABE Architecture and provides the architectural framework into which the other CABE specifications fall."
 ---
 
@@ -20,7 +20,7 @@ highly flexible access control policy to be expressed and enforced using data
 encryption, facilitating multi-level data transfer, storage, and interchange in
 otherwise untrusted operating environments.
 
-CABE defines:
+CABE is defined as a set of core specifications, namely:
 
 - An overall architecture specification (this document);
 
@@ -32,9 +32,8 @@ CABE defines:
   between a CABE client and key server, and how keys are retrieved from key
   servers for use with the Baseline Envelope Structure.
 
-- [Additional specifications](../../specification/) providing augmented functionality building on
-  the base CABE architecture created by the synthesis of this document, CBES
-  and CKAP.
+CABE is further extended by [additional specifications](../../specification/)
+providing augmented functionality building on these core specifications.
 
 <figure style="text-align: center;"><img src="/images/cabe-example.svg" alt="CABE Architecture Diagram" /></figure>
 
@@ -102,13 +101,19 @@ The following terms are defined:
 - **Client**: The component of an Agent which implements CKAP, and which
   communicates with a Key Server.
 
-- **Key Server**: A server which responds to requests by Clients to facilitate
-  Encapsulation/Decapsulation, primarily by performing Key Resolution and
-  tracking Leases, and which manages an arbitrarily large set of Keys to
-  facilitate this.
+- **CABE Domain**: A CABE deployment comprising a single logical Key Service
+  and one or more Clients.
 
-- **CABE Domain**: A CABE deployment comprising a Key Server and one or more
-  Clients.
+- **Key Service**: The logical service which handles requests by Clients for a
+  CABE Domain to facilitate Encapsulation and Decapsulation. A Key Service is
+  provided by one or more Key Servers which collectively provide the logical
+  Key Service. The use of multiple Key Servers is intended to facilitate high
+  availability.
+
+- **Key Server**: A server which is capable of handling requests by Clients
+  made to a given Key Service to facilitate Encapsulation/Decapsulation,
+  primarily by performing Key Resolution and tracking Leases, and which manages
+  an arbitrarily large set of keys to facilitate this.
 
 - **Key**: A secret value used, directly or indirectly, to
   encapsulate/decapsulate Messages/Envelopes. Note that:
@@ -119,51 +124,52 @@ The following terms are defined:
         - Captive (Access) Keys; and
         - Non-Captive (Access) Keys.
 
-- **Key Mapping**: The process of mapping Attribute Sets to Set Keys, as
-  managed by a Key Server.
+- **Key Mapping**: The scheme by which a Key Service selects a Set Key in the
+  context of a given Prograde Resolution request and associated Attribute
+  Set.
 
 - **Key Resolution**: The operation of resolving an Attribute Set to a Set Key
   as requested by a Client. Key Resolution refers either in the form of
   Prograde Resolution or Retrograde Resolution.
 
-- **Prograde Resolution**: Key Resolution wherein a Client requests the Current
-  Key for a given Attribute Set, for the purposes of performing Encapsulation
-  of a new Message, and receives information about the Current Key in the form
-  of a Lease.
+- **Prograde Resolution**: Key Resolution wherein a Client requests key
+  information for a given Attribute Set, for the purposes of performing
+  Encapsulation of a new Message, and receives key information in the form of a
+  Lease.
 
 - **Retrograde Resolution**: Key Resolution wherein a Client quotes a Lease
   Reference for the purposes of obtaining a previously used Lease Key's LKAI,
   for the purposes of performing Decapsulation of an existing Envelope.
 
 - **Lease**: A temporary object with a specific expiration time managed and
-  tracked by a Key Server in response to a Prograde Resolution request.
+  tracked by a Key Service in response to a Prograde Resolution request.
 
-- **Internal Key**: A Key which is used internally by the Key Server to derive
+- **Internal Key**: A Key which is used internally by the Key Service to derive
   one or more Derived Keys but which is never disclosed to any Client.
 
 - **Access Key**: A Key which is not an Internal Key and which is available for
   Clients to use, either by being provided by the Key's bit pattern (as in the
   case of a Non-Captive Key), or via Assisted Encapsulation/Decapsulation
-  performed by the Key Server on behalf of a Client. In this version of the
+  performed by the Key Service on behalf of a Client. In this version of the
   specification, the only defined kind of Access Key is a Lease Key.
 
 - **Set Key**: An Internal Key assigned to a given Envelope Set at a given point
   in time, which is used to derive Lease Keys.
 
 - **Non-Derived Key**: A Key which is directly derived from an entropy source
-  and therefore must be stored by a Key Server if it is to be subsequently
+  and therefore must be stored by a Key Service if it is to be subsequently
   recalled.
 
 - **Derived Key**: A Key which is derived from another Key (which in turn may
   be a Non-Derived Key or a Derived Key), and which therefore does not need to
-  be stored by a Key Server in order to be subsequently re-derived.
+  be stored by a Key Service in order to be subsequently re-derived.
 
-- **Non-Captive Key**: An Access Key which a Key Server is willing to provide a
+- **Non-Captive Key**: An Access Key which a Key Service is willing to provide a
   copy of to a suitably authorized Client, so that it can
   encapsulate/decapsulate corresponding Messages/Envelopes without further
-  interaction with the Key Server.
+  interaction with the Key Service.
 
-- **Captive Key**: An Access Key which a Key Server does not disclose to any
+- **Captive Key**: An Access Key which a Key Service does not disclose to any
   Client, but is willing to perform operations using on behalf of a Client to
   allow it to accomplish encapsulation/decapsulation of corresponding
   Messages/Envelopes.
@@ -173,13 +179,14 @@ The following terms are defined:
   each Key in a Key Series corresponds exactly to a single Key Epoch.
 
 - **Key Epoch**: A contiguous period of time used to manage the rollover of
-  Keys for an arbitrarily large number of Key Series managed by a Key Server.
+  Keys for an arbitrarily large number of Key Series managed by a Key Service.
   Key Epochs succeed one another consecutively and no time passes between a Key
   Epoch and its successor.
 
-- **Current Key**: The Current Key for a given Key Series.
+- **Current Key**: A key for a given Key Series which is non-retired and may be
+  used by a Key Service to derive Lease Keys in response to a Prograde request.
 
-- **Retired Key**: A Key within a given Key Series which is not a Current Key.
+- **Retired Key**: A Key within a given Key Series which is not the Current Key.
 
 - **Lease Key**: A Derived Key generated from the Current Key for a Key Series
   and which is associated with, and unique to, a Lease.
@@ -199,11 +206,11 @@ The following terms are defined:
   Envelope Set. Key Access is distinct from, and occurs subsequently to, Key
   Resolution.
 
-- **Lease Reference**: An opaque byte string produced by a Key Server which it
+- **Lease Reference**: An opaque byte string produced by a Key Service which it
   can use to subsequently recover a given Lease Key and corresponding LKAI.
   Lease References MUST be globally and permanently unique.
 
-- **Policy**: An arbitrary rule or logic used by a Key Server to determine
+- **Policy**: An arbitrary rule or logic used by a Key Service to determine
   which Principals may access which Envelope Sets, and which Key Epochs within
   a given Envelope Set, based on its Claims. The nature of a Policy is not
   defined in this specification, and is left as an implementation detail. A
@@ -277,7 +284,7 @@ attribute-based metadata and encrypting them in the process, and subsequently
 Decapsulating envelopes into messages, decrypting them, obtaining their
 contents and associated attribute-based metadata in the process. CABE Agents
 are responsible for Encapsulation and Decapsulation and perform these
-operations in coordination with a Key Server, which they communicate with using
+operations in coordination with a Key Service, which they communicate with using
 the CKAP protocol.
 
 <figure style="text-align: center;"><img src="/images/cabe-arch-overview.svg" alt="CABE Architectural Overview"/></figure>
@@ -297,15 +304,15 @@ The key aspects of CABE are:
   to the specific system of classification and metadata used.
 
 - **Key mapping.** The Attribute Set for a Message is mapped to a (symmetric)
-  Key. This function is performed by the Key Server, which is responsible for
+  Key. This function is performed by the Key Service, which is responsible for
   maintaining a repository of Keys corresponding to each unique Attribute Set
   used within the CABE Domain.
 
-- **Key resolution.** The CABE Key Server automatically maintains the Key Mapping
+- **Key resolution.** The CABE Key Service automatically maintains the Key Mapping
   needed according to the Attribute Sets used within the scope of the CABE
   Domain. When a CABE Client needs to Encapsulate a Message to create an
-  encrypted CABE Envelope, it asks the Key Server to perform Key Resolution, in
-  which the Key Server examines the Attribute Set in use and determines the
+  encrypted CABE Envelope, it asks the Key Service to perform Key Resolution, in
+  which the Key Service examines the Attribute Set in use and determines the
   correct Key to use within its existing, automatically maintained Key Mapping.
   Having determined the correct Key, a CABE Agent proceeds to Key Access.
 
@@ -318,8 +325,8 @@ The key aspects of CABE are:
   "Use of" a Key does not necessarily imply its bit pattern is provided to the
   CABE Client. Both "in-memory" (non-captive) and "out-of-memory" (captive,
   i.e., RPC-based) use of Keys "at a distance" is envisaged. The need to
-  transmit large messages to a Key Server is avoided as only an ephemeral
-  Content Encryption Key (CEK) is provided to the Key Server (in the
+  transmit large messages to a Key Service is avoided as only an ephemeral
+  Content Encryption Key (CEK) is provided to the Key Service (in the
   out-of-memory case) for encapsulation/decapsulation.
 
   Key Access represents the key policy enforcement point of CABE, as the Key
@@ -330,10 +337,12 @@ The key aspects of CABE are:
 
 ## Key Mapping
 
-The Key Server maintains a Key Mapping for every needed Key Series. A Key
-Series corresponds exactly to a unique Attribute Set and represents the
+The Key Service maintains a Key Mapping for every needed Key Series. A Key
+Series corresponds exactly to a unique Attribute Set and represents a
 succession of Keys used to secure Envelopes which possess that Attribute Set. A
-Key Server maintains a Key Series for every Attribute Set in use.
+Key Service maintains at least one Key Series for every Attribute Set in use,
+though a Key Service MAY choose to maintain multiple Key Series for a given
+Attribute Set.
 
 A Key Series is essentially a temporal sequence of Keys which are used to
 encrypt Messages and decrypt Envelopes for a given Attribute Set. At any given
@@ -356,16 +365,16 @@ facilitate the following invariants:
   decapsulate Envelopes created prior to the time of authorization (where such
   a restriction is desired).
 
-For keys which are allowed to be exported from the Key Server for in-memory use
+For keys which are allowed to be exported from the Key Service for in-memory use
 (Non-Captive Keys), any contraction *or* expansion in the set of authorized
 Principals must cause the rollover of a Key Series to enforce the above
-invariants. For Captive Keys, which never leave the Key Server and are held
-captive by it, this is optional, as the Key Server can enforce the updated
+invariants. For Captive Keys, which never leave the Key Service and are held
+captive by it, this is optional, as the Key Service can enforce the updated
 policy. Non-Captive Keys therefore avoid the need for a Client to continually
-query the Key Server and is therefore more performant, at the cost of being
+query the Key Service and is therefore more performant, at the cost of being
 less secure.
 
-A Key Server thus conceptually manages the set of all Key Series (essentially,
+A Key Service thus conceptually manages the set of all Key Series (essentially,
 the set of all possible Attribute Sets), each of which represents a temporal
 succession of actual Keys:
 
@@ -388,27 +397,45 @@ Principals over time for a given Attribute Set as shown above. Spatial
 partitioning is better achieved by simply using a suitably designed metadata
 scheme to construct suitable Attribute Sets.
 
+An example of a circumstance in which an implementation might choose to
+maintain multiple Key Series for a given Attribute Set is to facilitate high
+availability.
+
+A single Key Server within a CABE Domain is not required to select the same Key
+Series, Set Key or Key Epoch when processing a Prograde request at a given
+point in time for a given Attribute Set as another Key Server within the same
+CABE Domain.
+
+However, once a Lease has been created and returned, *all* Key Servers within a
+Key Service MUST be able to fulfill any future Retrograde request for that
+Lease's Lease Reference. Therefore, a Key Server MUST NOT return a Lease in
+response to a Prograde request unless and until it has guaranteed that all
+other Key Servers comprising part of the Key Service (if any) will be capable
+of handling a Retrograde request made immediately or at any future point in
+time which quotes the returned Lease Reference; as such, a Key Server unable to
+guarantee this in a particular circumstance MUST NOT return a Lease and MUST
+instead refuse to process the Prograde request.
+
 ## Key Resolution
 
-The Key Server automatically maintains the Key Mapping as needed. A Client then,
-as needed, requests a Key from the Key Server. This process is known as Key
+The Key Service automatically maintains the Key Mapping as needed. A Client then,
+as needed, requests a Key from the Key Service. This process is known as Key
 Resolution.
 
 There are two circumstances in which Key Resolution occurs:
 
 - **Prograde resolution.** When a Client wants to Encapsulate a Message, and
-  desires the Current Key for the relevant Key Series given the Message's
-  Attribute Set;
+  desires a Lease Key corresponding to the Message's Attribute Set;
 
 - **Retrograde resolution.** When a Client wants to Decapsulate an Envelope,
   and desires the Key which was used to create the Envelope (which may not be
-  the Current Key).
+  a Current Key).
 
 ### Prograde Resolution
 
 In Prograde Resolution, the Client sends the relevant Attribute Set to the Key
 Server and requests a Lease Key to use for the purposes of constructing an
-encrypted Envelope. The Key Server determines whether the Principal should be
+encrypted Envelope. The Key Service determines whether the Principal should be
 allowed to access the given Key Series according to its configured Policy, and
 if allowed, creates a Lease and returns information about it.
 
@@ -420,11 +447,11 @@ A Lease provides the following information:
 
     - In the case of a Captive Key, this is an opaque reference token (the
       Lease Key Access Token (LKAT)) which can be used to make subsequent calls
-      to the Key Server to perform assisted Encapsulation or Decapsulation
+      to the Key Service to perform assisted Encapsulation or Decapsulation
       using the Lease Key.
 
 - A Lease Reference, which is an opaque byte string which a Client can quote to
-  a Key Server to facilitate subsequent Key Access to the same Lease Key, by
+  a Key Service to facilitate subsequent Key Access to the same Lease Key, by
   performing Retrograde Key Resolution.
 
 - The point in time at which the Lease expires.
@@ -451,11 +478,18 @@ created, which is specifically requested by the Client, as it is the only Key
 which can be used to decapsulate the Envelope.
 
 Each Envelope's header contains a Lease Reference which is an opaque byte
-string uniquely identifying a previously issued Lease Key to a Key Server. The
-Client quotes this Lease Reference to the Key Server, which verifies the
+string uniquely identifying a previously issued Lease Key to a Key Service. The
+Client quotes this Lease Reference to the Key Service, which verifies the
 Principal's access according to its Policy before providing the result of the
 resolution process. The Client can then proceed to Key Access in the same way
 as for Prograde Resolution.
+
+All Key Servers within a Key Service MUST be able to process Lease References
+issued by any Key Server within that Key Service. A logical consequence of this
+is that a Key Server MUST NOT issue a Lease unless and until it has ensured
+that the contained Lease Reference will be processable by any and all Key
+Servers within the CABE Domain as part of a Retrograde operation occurring at
+the point in time that the Lease is issued and at any subsequent point in time.
 
 Due to the temporal imprecision noted in the previous section, the Key chosen
 to derive a Lease Key used to create a given Envelope may not have been the
@@ -466,13 +500,13 @@ Envelope timestamp.
 ## Key Access
 
 In the case of a Non-Captive Key, Key Access is straightforward as it is
-provided directly in the Key Server's response. The means by which the Lease Key
+provided directly in the Key Service's response. The means by which the Lease Key
 is used to create Envelopes is discussed in detail in the [CBES](../cbes/)
 specification.
 
 In the case of a Captive Key, direct access to the Lease Key's bit pattern is
 not available. Instead, a Client makes Assisted Encapsulation/Decapsulation
-calls to the Key Server.
+calls to the Key Service.
 
 Since these merely perform key wrap operations on Content Encryption Keys
 (CEKs) used to encrypt a specific Message, the bandwidth consumed by these
@@ -481,18 +515,19 @@ Messages encrypted.
 
 An advantage of the use of Captive Keys is that there is no Rollover Period in
 which an updated Policy is not yet fully effective, as a new Policy can begin
-being enforced immediately by the Key Server.
+being enforced immediately by the Key Service.
 
-On the other hand, the need for interaction with the Key Server for each
+On the other hand, the need for interaction with the Key Service for each
 encapsulation or decapsulation operation means that performance is bounded by
-the round-trip time between the Client and the Key Server, though this can be
+the round-trip time between the Client and the Key Service, though this can be
 ameliorated by pipelining.
 
 ## Architectural Invariants
 
 The following invariants are worth noting explicitly:
 
-- There is a 1:1 mapping between a given unique Attribute Set and a Key Series.
+- Every Key Series is associated with exactly one Attribute Set. One Attribute
+  Set MAY be associated with more than one Key Series.
 
 - A Key Series is an ordered sequence of non-overlapping Key Epochs.
 
@@ -500,9 +535,12 @@ The following invariants are worth noting explicitly:
 
 - A given Envelope is bound to exactly one Lease Key and Lease Reference.
 
-- A Lease Reference identifies exactly one Lease Key within a Domain.
+- A Lease Reference identifies exactly one Lease Key within a CABE Domain.
 
 - A Lease Key is derived from a specific Set Key in a specific Key Epoch.
+
+- Resolution of a Lease Reference via a Retrograde operation is independent
+  of the Key Server through which the Lease Reference was obtained.
 
 # References
 
@@ -516,4 +554,3 @@ The following invariants are worth noting explicitly:
 
 **Author**<br/>
 [Hugo Landau](mailto:hl@messier42.com)
-
