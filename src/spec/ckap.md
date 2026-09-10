@@ -2,7 +2,7 @@
 title: "CABE Key Access Protocol (CKAP)"
 draft: "CKAP"
 status: "Active Draft"
-date: "April 2026"
+date: "September 2026"
 abstract: "This document specifies the CABE Key Access Protocol (CKAP)."
 ---
 
@@ -27,13 +27,17 @@ reused for the purposes of this document.
 
 ## Overview
 
-To support the objectives given in [CABE-ARCH](../arch/), a Key Server
-maintains multiple Key Series and multiple Key Epochs. Key Series represents
-the temporal and contiguous sequence of Keys maintained for a given Attribute
-Set. A Key Epoch represents one contiguous unit of time for which a given Key
-Series uses a given Key as its current Key.
+CKAP supports [CABE-ARCH](../arch/) by defining the concrete interface between
+a Client and a Key Service. A CABE Domain incorporates a Key Service, which may
+be provided by one or several Key Servers.
 
-A Key Series rolls over into a new Key Epoch, causing rotation of the current Key in that Key Series, for one or more of the following reasons:
+A Key Service maintains one or more Key Series associated with each Attribute
+Set in use. A Key Series represents a temporal and contiguous sequence of Keys
+maintained for a given Attribute Set. A Key Epoch represents one contiguous
+unit of time for which a given Key Series uses a given Key as its current Key.
+
+A Key Series rolls over into a new Key Epoch, causing rotation of the current
+Key in that Key Series, for one or more of the following reasons:
 
 - Periodically, as part of routine key rotation.
 
@@ -406,10 +410,21 @@ Due to the sensitive nature of CKAP operations, and since CKAP is used to
 transport key material, Transport Layer Security (TLS) or a comparable channel
 security mechanism MUST be used.
 
-A CKAP server has a base URL which is used to access it, such as
-`https://example.com/ckap/`. Except where otherwise specified, operations in
-the abstract service interface defined in the previous section are uniformly
-converted to HTTP requests as follows:
+A CKAP Base URL (such as `https://example.com/ckap/`) identifies an endpoint
+which can be used to access a Key Service. A given CKAP Base URL MAY route
+requests adaptively to an arbitrary Key Server providing the Key Service, or to
+a specific Key Server within that Key Service.
+
+Clients MAY include support for accessing Key Services which (such as for
+reasons of availability) are accessible via multiple CKAP Base URLs. Clients
+which provide such support SHOULD use timeouts and failover if a request made
+using one CKAP Base URL fails. Clients MUST treat all CKAP Base URLs configured
+for a CABE Domain as semantically equivalent in terms of the Key Service
+accessed.
+
+Except where otherwise specified, operations in the abstract service interface
+defined in the previous section are uniformly converted to HTTP requests as
+follows:
 
 - The request method shall be `POST`;
 
@@ -438,6 +453,9 @@ If an error occurs during processing of an operation and the Key Server
 responds with an `Error` structure, the HTTP status code MUST be an error
 status code. If the Key Server responds with an `xResponse` structure, the HTTP
 status code MUST be 200.
+
+A response returned with an HTTP status code of 500, 502, 503 or 504 can be
+safely retried, either at the same or a different CKAP Base URL.
 
 ## Example
 
