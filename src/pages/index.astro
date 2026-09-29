@@ -1,1062 +1,337 @@
----
-import Layout from '../layouts/Layout.astro';
-import Nav from '../components/Nav.astro';
-import { specGroups } from '../data/specs';
-
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const coreGroup = specGroups[0];
-const additionalGroup = specGroups[1];
----
-
-<Layout>
-  <Nav />
-
-  <!-- HERO -->
-  <section class="hero" id="top">
-    <div class="hero__grid-bg" aria-hidden="true"></div>
-    <div class="hero__circuit" aria-hidden="true">
-      <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-        <g stroke="#b86c00" stroke-width="0.5" fill="none" opacity="0.2">
-          <path d="M0,150 H200 V50 H400 V150 H600 V250 H800" />
-          <path d="M0,350 H100 V450 H300 V350 H500 V550 H700 V450 H800" />
-          <path d="M200,50 V0" /><path d="M400,150 V0" /><path d="M600,250 V150" />
-          <path d="M100,450 V600" /><path d="M300,350 V600" /><path d="M700,450 V600" />
-          <circle cx="200" cy="50" r="4" fill="#b86c00" opacity="0.5" />
-          <circle cx="400" cy="150" r="4" fill="#b86c00" opacity="0.5" />
-          <circle cx="600" cy="250" r="4" fill="#b86c00" opacity="0.5" />
-          <circle cx="100" cy="450" r="4" fill="#b86c00" opacity="0.5" />
-          <circle cx="300" cy="350" r="4" fill="#b86c00" opacity="0.5" />
-          <circle cx="700" cy="450" r="4" fill="#b86c00" opacity="0.5" />
-          <rect x="190" y="40" width="20" height="20" rx="2" stroke="#b86c00" opacity="0.35"/>
-          <rect x="390" y="140" width="20" height="20" rx="2" stroke="#b86c00" opacity="0.35"/>
-          <rect x="590" y="240" width="20" height="20" rx="2" stroke="#b86c00" opacity="0.35"/>
-        </g>
-      </svg>
-    </div>
-
-    <div class="container hero__content">
-      <div class="hero__badge">
-        <span class="hero__badge-dot"></span>
-        <span class="hero__badge-text">Draft Specification</span>
-      </div>
-
-      <h1 class="hero__title">
-        <span class="hero__title-line hero__title-line--3">CABE:</span>
-        <span class="hero__title-line hero__title-line--2">Concise Attribute-Bound Encapsulation</span>
-      </h1>
-
-      <div class="hero__sub-row">
-        <div class="hero__mono-tag">CABE</div>
-        <p class="hero__subtitle">
-          Low-overhead data encryption bound by attribute-based policy.
-          Isolate and compartmentalise information flow based on arbitrary metadata.
-        </p>
-      </div>
-
-      <div class="hero__actions">
-        <a href="#spec" class="btn btn--primary">Read Specification</a>
-        <a href="#overview" class="btn btn--ghost">Learn the Standard →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- OVERVIEW -->
-  <section class="overview" id="overview">
-    <div class="container overview__inner">
-      <div class="overview__label">
-        <span class="section-label">001 · Overview</span>
-      </div>
-      <div class="overview__body">
-        <h2 class="overview__heading">
-          Encryption that understands<br /><em style="font-style:normal;">context.</em>
-        </h2>
-        <div class="overview__columns">
-          <div class="overview__col">
-            <p>
-              With CABE, data of any size can be safely encrypted for transport through
-              untrusted and hostile environments, while being labeled according to the
-              identity and context of the producer. CABE can support any labelling schema
-              as needed to support mission objectives — label data according to
-              sensitivity, compartment, or based on any other selector.
-            </p>
-          </div>
-          <div class="overview__col">
-            <p>
-              Every object is bound to its associated label metadata and encrypted before
-              transport or storage. Decryption is gated by attribute-based access control
-              (ABAC) policy which can be configured as needed for the mission environment.
-              Both protected data objects and workloads accessing objects are assigned a
-              set of metadata labels, and system policy determines which workloads can
-              access which data according to arbitrary metadata predicates.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SCALABLE -->
-  <section class="scalable" id="scalable">
-    <div class="container scalable__inner">
-      <div class="scalable__label">
-        <span class="section-label">002 · Performance</span>
-      </div>
-      <div class="scalable__body">
-        <h2 class="scalable__heading">Scalable to any object size.</h2>
-        <p class="scalable__text">
-          CABE is built on cryptographic primitives which are post-quantum safe, and
-          state-of-the-art internet ecosystem standards such as the IETF's COSE and
-          CBOR, providing a compact, low-overhead envelope format. CABE can scale
-          performantly to messages which are arbitrarily large — or arbitrarily small,
-          even a single byte.
-        </p>
-        <div class="scalable__tags">
-          <span class="scalable__tag">Post-quantum safe primitives</span>
-          <span class="scalable__tag">IETF COSE &amp; CBOR</span>
-          <span class="scalable__tag">Compact envelope format</span>
-          <span class="scalable__tag">Arbitrary message size</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- GAME INVITATION -->
-  <section class="game-invite" id="game">
-    <div class="game-invite__grid" aria-hidden="true"></div>
-    <div class="game-invite__scan" aria-hidden="true"></div>
-    <div class="game-invite__corners" aria-hidden="true">
-      <span class="gi-corner gi-corner--tl"></span>
-      <span class="gi-corner gi-corner--tr"></span>
-      <span class="gi-corner gi-corner--bl"></span>
-      <span class="gi-corner gi-corner--br"></span>
-    </div>
-    <div class="container game-invite__inner">
-      <div class="game-invite__meta">
-        <span class="gi-tag"><span class="gi-tag__dot"></span>INTERACTIVE SIMULATOR</span>
-        <span class="gi-id">CABE</span>
-      </div>
-
-      <h2 class="game-invite__title">
-        Try the simulation.
-      </h2>
-
-      <p class="game-invite__lede">
-        Get your hands on with CABE concepts with the <strong>CABE Policy
-        Simulator</strong> — an interactive browser-based introduction to
-        attribute-based encapsulation based around a live demonstration of
-        a real Cedar policy evaluation engine driving key management.
-      </p>
-
-      <ul class="game-invite__points">
-        <li><span class="gi-bullet">▸</span> Explore an example mission scenario</li>
-        <li><span class="gi-bullet">▸</span> Test policies in the real Cedar policy engine</li>
-        <li><span class="gi-bullet">▸</span> See how CABE message envelopes are constructed</li>
-      </ul>
-
-      <div class="game-invite__action">
-        <a href="/game/" class="gi-btn">
-          <span class="gi-btn__bracket">[</span>
-          <span class="gi-btn__label">LAUNCH&nbsp;CABE&nbsp;Policy&nbsp;Simulator</span>
-          <span class="gi-btn__bracket">]</span>
-          <span class="gi-btn__arrow">→</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- SPEC -->
-  <section class="spec" id="spec">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-label">003 · Specification</span>
-        <h2 class="section-heading">An open specification.</h2>
-        <p class="section-subheading">
-          CABE is a family of publicly-available specifications that fit together in a
-          cohesive framework.
-        </p>
-      </div>
-
-      {specGroups.map((group, i) => (
-        <div class:list={['spec__group', { 'spec__group--secondary': i > 0 }]}>
-          <h3 class="spec__group-title">{group.label}</h3>
-          <p class="spec__group-desc">{group.desc}</p>
-          <div class="spec__list">
-            {group.specs.map(spec => (
-              <div class:list={['spec-item', { 'spec-item--wip': !spec.slug }]}>
-                <div class="spec-item__header">
-                  <h4 class="spec-item__title">{spec.title}</h4>
-                  <span class:list={['spec-item__status', `spec-item__status--${spec.statusType}`]}>
-                    {spec.status}
-                  </span>
-                </div>
-                <p class="spec-item__desc">{spec.desc}</p>
-                {spec.slug && (
-                  <a href={`${base}/spec/${spec.slug}`} class="spec-item__link">Read specification →</a>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-
-      <div class="spec__cta">
-        <a href={`${base}/specification`} class="btn btn--primary">View all specifications</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- SOFTWARE TEASER -->
-  <section class="sw-teaser" id="software">
-    <div class="sw-teaser__grid-bg" aria-hidden="true"></div>
-    <div class="sw-teaser__glow" aria-hidden="true"></div>
-    <div class="container sw-teaser__inner">
-      <div class="sw-teaser__copy">
-        <span class="section-label sw-teaser__label">004 · Software</span>
-        <h2 class="sw-teaser__heading">Deploy CABE-compatible software.</h2>
-        <p class="sw-teaser__body">
-          The CABE specifications are open for implementation. <strong>khaled</strong>
-          is our reference implementation of a CABE Key Server; a highly pluggable,
-          configurable key server designed to support a wide variety of operating
-          scenarios based around attribute-based policy enforcement.
-        </p>
-        <ul class="sw-teaser__points">
-          <li>Plugin-based architecture</li>
-          <li>SPIFFE and Kubernetes-aware workload attestation</li>
-          <li>Cedar-based ABAC policy evaluation</li>
-        </ul>
-        <div class="sw-teaser__actions">
-          <a href={`${base}/software`} class="btn sw-teaser__btn">View Implementations</a>
-          <a href="https://khaled.cabespec.org/" class="sw-teaser__inline-link">Visit khaled docs →</a>
-        </div>
-      </div>
-
-      <a href="https://khaled.cabespec.org/" class="sw-teaser__card" aria-label="khaled — CABE Key Server">
-        <div class="sw-teaser__card-corner sw-teaser__card-corner--tl"></div>
-        <div class="sw-teaser__card-corner sw-teaser__card-corner--tr"></div>
-        <div class="sw-teaser__card-corner sw-teaser__card-corner--bl"></div>
-        <div class="sw-teaser__card-corner sw-teaser__card-corner--br"></div>
-
-        <div class="sw-teaser__card-tag">
-          <span class="sw-teaser__card-dot"></span>
-          Reference Implementation
-        </div>
-
-        <img
-          src={`${base}/images/khaled-logo.svg`}
-          alt="khaled"
-          class="sw-teaser__card-logo"
-          width="532"
-          height="173"
-        />
-
-        <p class="sw-teaser__card-tagline">
-          A plugin-based CABE Key Server.
-        </p>
-
-        <span class="sw-teaser__card-cta">
-          Learn more <span class="sw-teaser__card-arrow">→</span>
-        </span>
-      </a>
-    </div>
-  </section>
-
-  <!-- CTA / MAILING LIST -->
-  <section class="mc-section" id="cta">
-    <div class="mc-glow" aria-hidden="true"></div>
-    <div class="container mc-inner">
-      <div class="mc-text">
-        <span class="section-label mc-label">Find out more</span>
-        <h2 class="mc-heading">Join the CABE ecosystem.</h2>
-        <p class="mc-body">
-          Sign up and receive more information on:
-        </p>
-        <ul class="mc-list">
-          <li><strong>Adoptees.</strong> Adopting CABE in your organization</li>
-          <li><strong>Incorporators.</strong> Incorporating CABE technology into your products</li>
-          <li><strong>Collaborators.</strong> Getting involved in the specification process</li>
-        </ul>
-      </div>
-
-      <div class="mc-form-wrap">
-        <!-- Mailchimp embedded form -->
-        <form
-          action="https://messier42.us19.list-manage.com/subscribe/post?u=f91016b8b104eeb6c1e840cc8&amp;id=edafba7923&amp;f_id=0094c2e1f0"
-          method="post"
-          target="_blank"
-          novalidate
-          class="mc-form"
-        >
-          <!-- Real field -->
-          <div class="mc-field">
-            <label for="mc-email" class="mc-field__label">Email address</label>
-            <div class="mc-field__row">
-              <input
-                type="email"
-                name="EMAIL"
-                id="mc-email"
-                placeholder="you@example.com"
-                required
-                class="mc-field__input"
-              />
-              <button type="submit" name="subscribe" class="mc-field__btn btn btn--primary">
-                Subscribe
-              </button>
-            </div>
-          </div>
-          <!-- Mailchimp bot-trap — do not remove -->
-          <div style="position:absolute;left:-5000px" aria-hidden="true">
-            <input type="text" name="b_f91016b8b104eeb6c1e840cc8_edafba7923" tabindex="-1" value="" />
-          </div>
-          <input type="hidden" name="tags" value="410" />
-          <p class="mc-note">
-            By subscribing you agree to receive CABE-related updates.
-            Unsubscribe at any time.
-          </p>
-        </form>
-      </div>
-    </div>
-  </section>
-
-</Layout>
-
+<!doctype html>
+<html lang="en-GB"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="only light">
+<meta name="description" content="CABE is a concise encrypted message format and key access protocol for attribute-based access control over encrypted data.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" href="/favicon.ico">
+<title>CABE — Attribute-based access control for encrypted data</title>
+<noscript><style>#load-simulator,.menu,.copy-button{display:none!important}@media(max-width:620px){.nav{flex-wrap:wrap;padding-block:16px}.nav .navlinks{display:flex;position:static;order:3;width:100%;flex-direction:row;flex-wrap:wrap;padding:8px 0 0;border:0;box-shadow:none;gap:14px}}</style></noscript>
 <style>
-  /* ─── SCALABLE SECTION ─────────────────────────────────────── */
-  .scalable {
-    padding: var(--section-pad) 0;
-    background: var(--bg-2);
-    border-top: 1px solid var(--border-dim);
-    border-bottom: 1px solid var(--border-dim);
-  }
-
-  .scalable__inner {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    gap: 4rem;
-    align-items: start;
-  }
-
-  .scalable__heading {
-    font-family: var(--font-display);
-    font-size: clamp(1.75rem, 4vw, 2.75rem);
-    font-weight: 800;
-    color: var(--ink);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin-bottom: 1.25rem;
-  }
-
-  .scalable__text {
-    font-size: 1rem;
-    color: var(--ink-3);
-    line-height: 1.8;
-    font-weight: 300;
-    max-width: 62ch;
-    margin-bottom: 2rem;
-  }
-
-  .scalable__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .scalable__tag {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--amber);
-    background: var(--amber-trace);
-    border: 1px solid var(--amber-border);
-    padding: 0.3rem 0.75rem;
-    border-radius: 100px;
-  }
-
-  /* ─── SPEC SECTION ─────────────────────────────────────────── */
-  .section-subheading {
-    font-size: 1rem;
-    color: var(--ink-3);
-    font-weight: 300;
-    line-height: 1.7;
-    max-width: 56ch;
-    margin-top: 0.75rem;
-  }
-
-  .spec__group {
-    margin-top: 3.5rem;
-  }
-
-  .spec__group--secondary {
-    margin-top: 3rem;
-    padding-top: 3rem;
-    border-top: 1px solid var(--border-dim);
-  }
-
-  .spec__group-title {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ink-4);
-    margin-bottom: 0.4rem;
-  }
-
-  .spec__group-desc {
-    font-size: 0.9rem;
-    color: var(--ink-3);
-    font-weight: 300;
-    margin-bottom: 1.75rem;
-  }
-
-  .spec__list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  .spec-item {
-    padding: 1.75rem 2rem;
-    background: var(--bg-1);
-    border-bottom: 1px solid var(--border-dim);
-  }
-
-  .spec-item:last-child {
-    border-bottom: none;
-  }
-
-  .spec-item--wip {
-    background: var(--bg);
-    opacity: 0.75;
-  }
-
-  .spec-item__header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 0.6rem;
-    flex-wrap: wrap;
-  }
-
-  .spec-item__title {
-    font-family: var(--font-display);
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--ink);
-  }
-
-  .spec-item__status {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 0.2rem 0.6rem;
-    border-radius: 100px;
-    flex-shrink: 0;
-  }
-
-  .spec-item__status--active {
-    color: var(--success);
-    background: #e8f5ef;
-    border: 1px solid #b0dfc8;
-  }
-
-  .spec-item__status--pending {
-    color: var(--ink-4);
-    background: var(--bg-3);
-    border: 1px solid var(--border);
-  }
-
-  .spec-item__desc {
-    font-size: 0.9rem;
-    color: var(--ink-3);
-    line-height: 1.7;
-    font-weight: 300;
-    margin-bottom: 1rem;
-    max-width: 68ch;
-  }
-
-  .spec-item__link {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--amber);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .spec-item__link:hover { color: var(--amber-bright); }
-
-  .spec__cta {
-    margin-top: 2.5rem;
-  }
-
-  /* ─── MAILING LIST LIST ─────────────────────────────────────── */
-  .mc-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    margin-top: 0.75rem;
-  }
-
-  .mc-list li {
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.7);
-    font-weight: 300;
-    line-height: 1.6;
-    padding-left: 1rem;
-    position: relative;
-  }
-
-  .mc-list li::before {
-    content: '—';
-    position: absolute;
-    left: 0;
-    color: var(--amber);
-    font-weight: 400;
-  }
-
-  .mc-list li strong {
-    color: rgba(255,255,255,0.9);
-    font-weight: 500;
-  }
-
-  @media (max-width: 900px) {
-    .scalable__inner {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-  }
-
-  /* ─── GAME INVITATION ──────────────────────────────────────── */
-  .game-invite {
-    --gi-cyan: #00c8ff;
-    --gi-cyan-soft: #7ee3ff;
-    --gi-cyan-glow: rgba(0, 200, 255, 0.18);
-    --gi-bg: #030d12;
-    --gi-bg-deep: #020608;
-    --gi-amber: #ffb300;
-    --gi-text: #d8e5ef;
-    --gi-text-mute: #8aa2b3;
-
-    position: relative;
-    padding: clamp(4rem, 8vw, 6.5rem) 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,200,255,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 80% 100%, rgba(255,179,0,0.06) 0%, transparent 60%),
-      linear-gradient(180deg, var(--gi-bg-deep) 0%, var(--gi-bg) 100%);
-    color: var(--gi-text);
-    border-top: 1px solid rgba(0, 200, 255, 0.18);
-    border-bottom: 1px solid rgba(0, 200, 255, 0.18);
-    overflow: hidden;
-    font-family: 'JetBrains Mono', ui-monospace, 'Menlo', monospace;
-  }
-
-  .game-invite__grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0, 200, 255, 0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 200, 255, 0.06) 1px, transparent 1px);
-    background-size: 42px 42px;
-    mask-image: radial-gradient(ellipse 90% 100% at 50% 50%, black 35%, transparent 100%);
-    pointer-events: none;
-  }
-
-  .game-invite__scan {
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent 0px,
-      transparent 3px,
-      rgba(0, 200, 255, 0.025) 3px,
-      rgba(0, 200, 255, 0.025) 4px
-    );
-    pointer-events: none;
-    mix-blend-mode: screen;
-  }
-
-  .game-invite__corners {
-    position: absolute;
-    inset: 1.5rem;
-    pointer-events: none;
-  }
-
-  .gi-corner {
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    border-color: var(--gi-cyan);
-    border-style: solid;
-    border-width: 0;
-    opacity: 0.7;
-  }
-  .gi-corner--tl { top: 0; left: 0; border-top-width: 1px; border-left-width: 1px; }
-  .gi-corner--tr { top: 0; right: 0; border-top-width: 1px; border-right-width: 1px; }
-  .gi-corner--bl { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
-  .gi-corner--br { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
-
-  .game-invite__inner {
-    position: relative;
-    z-index: 2;
-    max-width: 820px;
-  }
-
-  .game-invite__meta {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1.75rem;
-    flex-wrap: wrap;
-  }
-
-  .gi-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    padding: 0.35rem 0.85rem;
-    border: 1px solid rgba(0, 200, 255, 0.4);
-    background: rgba(0, 200, 255, 0.06);
-    border-radius: 2px;
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.14em;
-    color: var(--gi-cyan-soft);
-    text-transform: uppercase;
-  }
-
-  .gi-tag__dot {
-    width: 6px;
-    height: 6px;
-    background: var(--gi-cyan);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--gi-cyan);
-    animation: gi-pulse 1.6s ease-in-out infinite;
-  }
-
-  .gi-id {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.18em;
-    color: var(--gi-text-mute);
-    text-transform: uppercase;
-  }
-
-  .game-invite__title {
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 900;
-    font-size: clamp(2.25rem, 5.5vw, 3.75rem);
-    line-height: 1.0;
-    letter-spacing: 0.02em;
-    color: #ffffff;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    text-shadow: 0 0 24px var(--gi-cyan-glow);
-  }
-
-  .game-invite__lede {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    font-size: clamp(1rem, 1.6vw, 1.15rem);
-    line-height: 1.7;
-    color: var(--gi-text);
-    font-weight: 300;
-    max-width: 60ch;
-    margin-bottom: 1.75rem;
-  }
 
-  .game-invite__lede strong {
-    font-family: 'Orbitron', sans-serif;
-    color: var(--gi-cyan-soft);
-    font-weight: 700;
-    letter-spacing: 0.04em;
-  }
-
-  .game-invite__points {
-    list-style: none;
-    margin: 0 0 2.5rem 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
-  }
-
-  .game-invite__points li {
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: var(--gi-text);
-  }
-
-  .gi-bullet {
-    color: var(--gi-cyan);
-    margin-right: 0.6rem;
-    font-weight: 700;
-  }
-
-  .game-invite__action {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  .gi-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    padding: 1rem 1.6rem;
-    background: linear-gradient(180deg, rgba(0, 200, 255, 0.18) 0%, rgba(0, 200, 255, 0.08) 100%);
-    border: 1px solid var(--gi-cyan);
-    border-radius: 2px;
-    color: #ffffff;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: all 0.18s ease;
-    box-shadow:
-      0 0 0 0 rgba(0, 200, 255, 0),
-      inset 0 0 22px rgba(0, 200, 255, 0.08);
-    position: relative;
-  }
-
-  .gi-btn:hover {
-    background: linear-gradient(180deg, rgba(0, 200, 255, 0.32) 0%, rgba(0, 200, 255, 0.16) 100%);
-    color: #ffffff;
-    box-shadow:
-      0 0 24px rgba(0, 200, 255, 0.45),
-      inset 0 0 28px rgba(0, 200, 255, 0.18);
-    transform: translateY(-1px);
-  }
-
-  .gi-btn__bracket {
-    color: var(--gi-cyan);
-    font-weight: 500;
-    opacity: 0.85;
-  }
-
-  .gi-btn__arrow {
-    margin-left: 0.35rem;
-    color: var(--gi-cyan-soft);
-    transition: transform 0.18s ease;
-  }
-
-  .gi-btn:hover .gi-btn__arrow {
-    transform: translateX(3px);
-  }
-
-  .gi-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.16em;
-    color: #4ade80;
-    text-transform: uppercase;
-  }
-
-  .gi-status__pulse {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #4ade80;
-    box-shadow: 0 0 8px #4ade80;
-    animation: gi-pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes gi-pulse {
-    0%, 100% { opacity: 1; }
-    50%      { opacity: 0.35; }
-  }
-
-  @media (max-width: 600px) {
-    .game-invite__action {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1rem;
-    }
-    .gi-btn {
-      width: 100%;
-      justify-content: center;
-    }
-  }
-
-  /* ─── SOFTWARE TEASER (khaled palette) ─────────────────────── */
-  .sw-teaser {
-    --kh-deep:       #0b1d33;
-    --kh-deeper:     #081627;
-    --kh-blue:       #0b415c;
-    --kh-blue-mid:   #0c5a6f;
-    --kh-teal:       #0d6c7d;
-    --kh-teal-bright:#1aa0b8;
-    --kh-line:       rgba(13, 108, 125, 0.32);
-    --kh-line-soft:  rgba(13, 108, 125, 0.14);
-    --kh-text:       #d6e6ee;
-    --kh-text-mute:  #93b3c1;
-
-    position: relative;
-    padding: var(--section-pad) 0;
-    overflow: hidden;
-    background:
-      radial-gradient(ellipse 60% 50% at 0% 0%, rgba(13, 108, 125, 0.18) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 60% at 100% 100%, rgba(11, 65, 92, 0.30) 0%, transparent 70%),
-      linear-gradient(180deg, var(--kh-deep) 0%, var(--kh-deeper) 100%);
-    color: var(--kh-text);
-    border-top: 1px solid var(--kh-line);
-    border-bottom: 1px solid var(--kh-line);
-  }
-
-  .sw-teaser__grid-bg {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(var(--kh-line-soft) 1px, transparent 1px),
-      linear-gradient(90deg, var(--kh-line-soft) 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse 90% 100% at 50% 50%, black 30%, transparent 95%);
-    pointer-events: none;
-  }
-
-  .sw-teaser__glow {
-    position: absolute;
-    top: -10%;
-    right: -8%;
-    width: 50%;
-    height: 70%;
-    background: radial-gradient(ellipse, rgba(26, 160, 184, 0.15) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .sw-teaser__inner {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4.5rem;
-    align-items: center;
-  }
-
-  .sw-teaser__label {
-    color: var(--kh-teal-bright) !important;
-  }
-
-  .sw-teaser__heading {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(1.85rem, 3.6vw, 2.85rem);
-    line-height: 1.1;
-    letter-spacing: -0.01em;
-    color: #ffffff;
-    margin-bottom: 1.25rem;
-    max-width: 18ch;
-  }
-
-  .sw-teaser__body {
-    font-size: 1rem;
-    line-height: 1.75;
-    color: var(--kh-text);
-    font-weight: 300;
-    max-width: 52ch;
-    margin-bottom: 1.5rem;
-  }
-
-  .sw-teaser__body strong {
-    color: #ffffff;
-    font-weight: 700;
-  }
-
-  .sw-teaser__points {
-    list-style: none;
-    margin: 0 0 2rem 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
-  }
-
-  .sw-teaser__points li {
-    position: relative;
-    padding-left: 1.5rem;
-    font-size: 0.92rem;
-    color: var(--kh-text-mute);
-    line-height: 1.5;
-  }
-
-  .sw-teaser__points li::before {
-    content: '▸';
-    position: absolute;
-    left: 0;
-    color: var(--kh-teal-bright);
-    font-weight: 700;
-  }
-
-  .sw-teaser__actions {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1.25rem;
-  }
-
-  .sw-teaser__btn {
-    background: linear-gradient(180deg, var(--kh-teal-bright) 0%, var(--kh-teal) 100%);
-    color: #ffffff;
-    font-weight: 700;
-    border: 1px solid rgba(155, 224, 238, 0.55);
-    box-shadow:
-      0 0 0 1px rgba(26, 160, 184, 0.15) inset,
-      0 8px 22px rgba(8, 22, 39, 0.45);
-    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
-  }
-  .sw-teaser__btn:hover {
-    color: #ffffff;
-    background: linear-gradient(180deg, #2dbcd6 0%, var(--kh-teal-bright) 100%);
-    border-color: #9be0ee;
-    box-shadow:
-      0 0 0 1px rgba(155, 224, 238, 0.35) inset,
-      0 12px 28px rgba(26, 160, 184, 0.35);
-    transform: translateY(-1px);
-  }
-
-  .sw-teaser__inline-link {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    letter-spacing: 0.04em;
-    color: #9be0ee;
-    text-transform: uppercase;
-  }
-  .sw-teaser__inline-link:hover { color: var(--kh-teal-bright); }
-
-  .sw-teaser__card {
-    position: relative;
-    display: block;
-    padding: 2.75rem 2.5rem;
-    border-radius: 12px;
-    background:
-      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(26, 160, 184, 0.16) 0%, transparent 70%),
-      linear-gradient(180deg, rgba(11, 29, 51, 0.85) 0%, rgba(8, 22, 39, 0.95) 100%);
-    border: 1px solid var(--kh-line);
-    text-decoration: none;
-    color: inherit;
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-    box-shadow: 0 30px 80px -40px rgba(8, 22, 39, 0.7);
-    overflow: hidden;
-  }
-
-  .sw-teaser__card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(var(--kh-line-soft) 1px, transparent 1px),
-      linear-gradient(90deg, var(--kh-line-soft) 1px, transparent 1px);
-    background-size: 36px 36px;
-    mask-image: radial-gradient(ellipse 90% 100% at 50% 0%, black 30%, transparent 90%);
-    pointer-events: none;
-    opacity: 0.7;
-  }
-
-  .sw-teaser__card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(26, 160, 184, 0.55);
-    box-shadow:
-      0 30px 80px -30px rgba(8, 22, 39, 0.8),
-      0 0 0 1px rgba(26, 160, 184, 0.18);
-    color: inherit;
-  }
-
-  .sw-teaser__card-corner {
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    border: 0 solid var(--kh-teal-bright);
-    opacity: 0.7;
-    pointer-events: none;
-  }
-  .sw-teaser__card-corner--tl { top: 10px; left: 10px;  border-top-width: 1px; border-left-width: 1px; }
-  .sw-teaser__card-corner--tr { top: 10px; right: 10px; border-top-width: 1px; border-right-width: 1px; }
-  .sw-teaser__card-corner--bl { bottom: 10px; left: 10px;  border-bottom-width: 1px; border-left-width: 1px; }
-  .sw-teaser__card-corner--br { bottom: 10px; right: 10px; border-bottom-width: 1px; border-right-width: 1px; }
-
-  .sw-teaser__card-tag {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    padding: 0.3rem 0.85rem;
-    margin-bottom: 1.75rem;
-    border: 1px solid rgba(26, 160, 184, 0.45);
-    background: rgba(13, 108, 125, 0.15);
-    border-radius: 100px;
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
-    color: #9be0ee;
-    text-transform: uppercase;
-    z-index: 1;
-  }
-
-  .sw-teaser__card-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--kh-teal-bright);
-    box-shadow: 0 0 8px rgba(26, 160, 184, 0.7);
-    animation: gi-pulse 2s ease-in-out infinite;
-  }
-
-  .sw-teaser__card-logo {
-    position: relative;
-    display: block;
-    width: 280px;
-    max-width: 80%;
-    height: auto;
-    margin-bottom: 1.5rem;
-    filter: invert(1) hue-rotate(180deg) brightness(1.05) saturate(1.15);
-    z-index: 1;
-  }
-
-  .sw-teaser__card-tagline {
-    position: relative;
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--kh-text);
-    font-weight: 300;
-    margin-bottom: 1.75rem;
-    max-width: 32ch;
-    z-index: 1;
-  }
-
-  .sw-teaser__card-cta {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--kh-teal-bright);
-    z-index: 1;
-  }
-
-  .sw-teaser__card-arrow {
-    transition: transform 0.2s ease;
-  }
-  .sw-teaser__card:hover .sw-teaser__card-arrow {
-    transform: translateX(4px);
-  }
-
-  @media (max-width: 900px) {
-    .sw-teaser__inner {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
-    }
-  }
-</style>
+:root{color-scheme:only light;--bg:#fff;--ink:#181a1d;--muted:#5f6670;--quiet:#68717c;--line:#e1e5e9;--soft:#f7f8fa;--blue:#265f99;--blue-soft:#f1f6fc;--pass:#176543;--deny:#a33636}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}a:hover{color:var(--blue)}button{font:inherit;cursor:pointer}h1,h2,h3,p,figure{margin:0}h1,h2,h3{font-weight:600}h1{font-size:clamp(45px,4.6vw,65px);letter-spacing:-.052em;line-height:1.08}h2{font-size:29px;line-height:1.25;letter-spacing:-.035em}h3{font-size:18px;line-height:1.4;letter-spacing:-.02em}p+p{margin-top:16px}a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:4px}.wrap{width:min(1120px,calc(100% - 80px));margin:auto}.icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle;flex:none}.skip{position:fixed;top:-100px;left:12px;background:white;padding:12px;z-index:99}.skip:focus{top:8px}.header{border-bottom:1px solid var(--line)}.nav{display:flex;align-items:center;gap:35px;min-height:72px}.brand{font-size:27px;line-height:1;font-weight:750;letter-spacing:-1.3px}.navlinks{display:flex;align-items:center;gap:25px;font-size:13px;color:var(--muted)}.source-link{margin-left:auto;font-size:13px;display:flex;align-items:center;gap:8px}.menu{display:none;min-width:38px;min-height:38px;padding:8px;background:white;border:1px solid var(--line);border-radius:6px}.hero{padding:72px 0 82px;display:block;max-width:880px}.eyebrow{font-size:12px;color:var(--muted);margin-bottom:20px}.hero-copy{font-size:18px;line-height:1.75;color:var(--muted);max-width:790px;margin-top:25px}.actions{display:flex;align-items:center;flex-wrap:wrap;gap:11px;margin-top:26px}.button{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:43px;border-radius:6px;border:1px solid #d2d7df;padding:10px 15px;font-size:12px;font-weight:500;line-height:1.5;background:white;color:var(--ink)}.button:hover{background:var(--soft);color:var(--ink)}.button.primary{background:var(--ink);color:white;border-color:var(--ink)}.button.primary:hover{background:#353a40}.button .icon{width:14px;height:14px}.facts{margin:0 0 5px;border-left:1px solid var(--line);padding-left:25px}.facts>div+div{margin-top:19px}.facts dt{font-size:10px;color:var(--quiet);margin-bottom:4px}.facts dd{font-size:12px;margin:0}.facts a{border-bottom:1px solid var(--line)}.section{padding:43px 0;border-top:1px solid var(--line)}.split{display:grid;grid-template-columns:280px 1fr;gap:65px}.split .prose{color:var(--muted);font-size:15px;line-height:1.85}.prose strong{color:var(--ink);font-weight:550}.purpose .prose p:first-child{color:var(--ink);font-size:18px;line-height:1.75;letter-spacing:-.012em}.purpose h2{font-size:31px}.purpose .side-note{font-size:12px;color:var(--quiet);max-width:210px;margin-top:15px;line-height:1.8}.section-intro{display:grid;grid-template-columns:330px 1fr;gap:50px;align-items:start;margin-bottom:25px}.section-intro p{color:var(--muted);font-size:14px;line-height:1.85}.figure{border:1px solid #d4dbe3;border-radius:8px;overflow:hidden}.figure-top{background:var(--soft);border-bottom:1px solid var(--line);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:12px}.legend{display:flex;gap:20px;color:var(--muted);font-size:11px}.legend span{display:flex;align-items:center;gap:7px}.legend i{display:block;width:23px;border-top:1.5px solid #697582}.legend i.key{border-top:1.5px dashed var(--blue)}.architecture{display:block;width:100%;height:auto}.architecture text{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}.node-title{font-size:17px;font-weight:600;fill:var(--ink)}.node-sub{font-size:13px;fill:var(--muted)}.node-small{font-size:12px;fill:var(--muted)}.caption{padding:12px 20px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);line-height:1.8;background:#fcfcfd}.caption a{color:var(--blue);text-decoration:underline;text-underline-offset:3px}.mobile-architecture{display:none}.explanation{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:24px}.explanation h3{font-size:16px;margin-bottom:9px}.explanation p{color:var(--muted);font-size:14px;line-height:1.85}.more-link{display:inline-flex;align-items:center;gap:8px;color:var(--blue);font-size:12px;font-weight:500;margin-top:18px}.more-link:hover{text-decoration:underline;text-underline-offset:3px}.examples{margin-top:8px}.example-row{padding:25px 0;display:grid;grid-template-columns:280px 1fr;gap:65px;border-bottom:1px solid var(--line)}.example-row:last-child{padding-bottom:0;border-bottom:0}.example-row p{font-size:14px;line-height:1.85;color:var(--muted)}.example-label{font-size:11px;color:var(--quiet);margin-top:8px}.return-flow{display:grid;grid-template-columns:1fr 18px 1.2fr 18px 1fr;gap:10px;align-items:center;text-align:center;border:1px solid var(--line);border-radius:6px;margin-top:20px;padding:15px 12px}.return-flow strong{font-size:11px;font-weight:550;display:block;line-height:1.6}.return-flow small{font-size:10px;line-height:1.6;display:block;color:var(--muted);margin-top:4px}.return-flow .process{padding:10px 8px;background:var(--soft);border:1px dashed #adb8c4;border-radius:4px}.return-flow .icon{width:13px}.micro-note{font-size:11px!important;margin-top:10px!important;color:var(--quiet)!important}.simulator-section{background:var(--soft);padding:38px 0;border-block:1px solid var(--line)}.simulator-intro{display:flex;justify-content:space-between;gap:50px;align-items:start;margin-bottom:23px}.simulator-intro p{font-size:14px;color:var(--muted);margin-top:12px;max-width:640px}.simulator-intro .button{flex:none;margin-top:3px}.simulator-shell{border:1px solid #d5dce4;border-radius:8px;background:white;overflow:hidden}.simulator-bar{background:#fcfcfd;padding:12px 18px;display:flex;justify-content:space-between;gap:20px;font-size:11px;color:var(--muted);border-bottom:1px solid var(--line)}.simulator-launch{display:grid;grid-template-columns:1fr auto;align-items:center;gap:35px;padding:35px 36px;min-height:190px}.simulator-launch h3{font-size:24px;margin-bottom:10px}.simulator-launch p{font-size:14px;color:var(--muted);max-width:530px}.simulator-footer{padding:11px 18px;border-top:1px solid var(--line);font-size:11px;line-height:1.8;color:var(--quiet);display:flex;justify-content:space-between;gap:15px}.simulator-footer a{text-decoration:underline;text-underline-offset:3px}.simulator-host[hidden],.simulator-launch[hidden]{display:none}.simulator-host iframe{width:100%;height:680px;border:0;display:block;background:white}.embed-bar{background:var(--soft);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:12px;color:var(--muted)}.close-embed{border:1px solid var(--line);border-radius:5px;padding:6px 10px;background:white;font-size:11px;white-space:nowrap}.responsibilities{display:grid;grid-template-columns:1fr 1fr;gap:48px}.responsibilities h3{font-size:16px;border-top:1px solid var(--line);padding-top:17px}.responsibilities dl{margin:9px 0 0}.responsibilities dl>div{display:grid;grid-template-columns:118px 1fr;gap:16px;padding:9px 0;font-size:12px;line-height:1.85}.responsibilities dt{font-weight:550}.responsibilities dd{margin:0;color:var(--muted)}.note{border:1px solid var(--line);border-radius:6px;margin-top:25px;padding:16px 19px}.note summary,.faq summary{display:flex;align-items:center;justify-content:space-between;gap:15px;cursor:pointer;list-style:none;font-size:13px;font-weight:550;line-height:1.6}.note summary::-webkit-details-marker,.faq summary::-webkit-details-marker{display:none}.note[open] summary .icon,.faq[open] summary .icon{transform:rotate(180deg)}.note-body{max-width:880px;margin-top:17px;color:var(--muted);font-size:14px;line-height:1.85}.note-type{font-size:10px;color:var(--quiet);font-weight:400;margin-left:auto}.software-grid{display:grid;grid-template-columns:1fr 1fr;gap:45px}.software-list{border-top:1px solid var(--line)}.software-item{display:grid;grid-template-columns:105px 1fr;gap:23px;border-bottom:1px solid var(--line);padding:20px 0}.software-item h3{font:550 14px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace}.software-item p{font-size:13px;color:var(--muted);line-height:1.8}.software-item .more-link{margin-top:9px;font-size:11px}.client-start{padding:22px;background:var(--soft);border:1px solid var(--line);border-radius:6px;align-self:start}.client-start h3{font-size:18px}.client-start p{font-size:13px;color:var(--muted);margin-top:13px;line-height:1.85}.command{background:white;border:1px solid var(--line);border-radius:4px;padding:13px;margin:17px 0;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.8 ui-monospace,SFMono-Regular,Consolas,monospace}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em}.references{display:grid;grid-template-columns:1fr 1fr;gap:48px}.references h2{font-size:26px;margin-bottom:22px}.spec-link{display:grid;grid-template-columns:82px 1fr 15px;gap:15px;padding:15px 0;border-top:1px solid var(--line);align-items:center}.spec-link:last-child{border-bottom:1px solid var(--line)}.spec-link code{color:var(--quiet);font-size:10px}.spec-link strong{font-size:13px;font-weight:550;display:block}.spec-link small{color:var(--muted);font-size:11px;line-height:1.7;display:block;margin-top:3px}.spec-link .icon{width:13px}.faq{border-top:1px solid var(--line);padding:15px 0}.faq:last-child{border-bottom:1px solid var(--line)}.faq summary{font-weight:500}.faq p{font-size:13px;color:var(--muted);margin-top:13px;line-height:1.9}.faq a{color:var(--blue);text-decoration:underline;text-underline-offset:3px}.footer{border-top:1px solid var(--line);background:#fafafa;padding:25px 0}.footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:25px;font-size:11px;color:var(--muted)}.footer-brand{display:flex;align-items:center;gap:17px}.footer .brand{font-size:21px;color:var(--ink)}.footer-links{display:flex;gap:22px}.footer a:hover{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:1000px){.wrap{width:calc(100% - 56px)}.nav{gap:28px}.navlinks{gap:18px;font-size:12px}.hero{max-width:840px}.hero h1{font-size:54px}.split,.example-row{grid-template-columns:235px 1fr;gap:40px}.section-intro{grid-template-columns:260px 1fr;gap:38px}.responsibilities{gap:30px}.responsibilities dl>div{grid-template-columns:102px 1fr;gap:13px}.software-item{grid-template-columns:92px 1fr;gap:15px}.simulator-launch{padding:29px}.references{gap:30px}}
+@media(max-width:800px){.hero{padding:58px 0 64px;max-width:820px}.hero h1{font-size:56px;max-width:720px}.hero-copy{max-width:700px}.facts{display:flex;justify-content:space-between;gap:20px;border-left:0;border-top:1px solid var(--line);padding:19px 0 0;margin:0}.facts>div+div{margin:0}.source-link span{display:none}.section{padding:34px 0}.split,.section-intro{display:block}.split .prose{margin-top:22px}.purpose .side-note{max-width:none;margin-top:9px}.section-intro p{margin-top:14px}.example-row{grid-template-columns:200px 1fr;gap:30px}.explanation{gap:30px}.software-grid{gap:30px}.software-item{grid-template-columns:1fr;gap:8px}.responsibilities dl>div{grid-template-columns:1fr;gap:2px}.simulator-intro{gap:22px}.simulator-intro .button{font-size:11px}.simulator-launch h3{font-size:22px}.spec-link{grid-template-columns:69px 1fr 12px;gap:10px}.spec-link code{font-size:9px}}
+@media(max-width:620px){.wrap{width:calc(100% - 36px)}.nav{position:relative;min-height:65px;gap:18px}.brand{font-size:26px}.source-link{font-size:12px}.source-link span{display:inline}.menu{display:inline-flex;align-items:center;justify-content:center}.navlinks{display:none;position:absolute;top:65px;left:-18px;right:-18px;z-index:20;padding:23px 20px;background:white;border-bottom:1px solid var(--line);flex-direction:column;align-items:flex-start;gap:18px;font-size:14px;box-shadow:0 10px 18px #00000008}.navlinks.is-open{display:flex}.hero{padding:43px 0 49px}.hero h1{font-size:clamp(37px,10vw,53px);text-wrap:balance;line-height:1.1}.hero h1 br{display:none}.eyebrow{font-size:11px;margin-bottom:16px}.hero-copy{font-size:15px;line-height:1.8;margin-top:21px}.actions{gap:9px;margin-top:22px}.button{font-size:11px;padding:10px 12px;gap:7px;min-height:43px}.facts{display:grid;grid-template-columns:1fr 1fr;gap:13px 20px;padding-top:17px}.facts div:last-child{grid-column:1/-1}.facts dt{font-size:10px}.facts dd{font-size:11px}.section{padding:29px 0}h2{font-size:26px}.purpose h2{font-size:28px}.purpose .side-note{font-size:11px}.split .prose{font-size:14px;line-height:1.9;margin-top:20px}.purpose .prose p:first-child{font-size:17px;line-height:1.8}.section-intro p{font-size:14px}.figure-top{display:block;padding:12px 15px;font-size:11px}.legend{margin-top:9px;font-size:10px;gap:18px}.architecture{display:none}.mobile-architecture{display:block;padding:18px 15px}.mobile-key{background:var(--blue-soft);border:1px solid #afc5df;border-radius:5px;padding:14px;font-size:12px;color:var(--muted);line-height:1.8}.mobile-key strong{display:block;color:var(--blue);font-size:15px;margin-bottom:5px}.mobile-flow{list-style:none;padding:0;margin:17px 0 0}.mobile-flow li{border:1px solid var(--line);border-radius:5px;padding:12px 14px;position:relative}.mobile-flow li+li{margin-top:24px}.mobile-flow li+li:before{content:'↓';position:absolute;top:-26px;left:calc(50% - 5px);color:var(--quiet);font-size:18px}.mobile-flow strong{font-size:14px;display:block}.mobile-flow p{font-size:12px;line-height:1.8;color:var(--muted);margin-top:5px}.mobile-flow .allowed{color:var(--pass)}.mobile-flow .denied{color:var(--deny)}.caption{padding:12px 15px;font-size:11px}.explanation{grid-template-columns:1fr;gap:22px}.example-row{grid-template-columns:1fr;gap:12px;padding:23px 0}.example-row h3{font-size:19px}.example-label{margin-top:4px;font-size:11px}.return-flow{grid-template-columns:1fr;gap:10px}.return-flow .icon{transform:rotate(90deg);justify-self:center}.return-flow strong{font-size:12px}.return-flow small{font-size:11px}.return-flow .process{padding:11px}.simulator-section{padding:29px 0}.simulator-intro{display:block}.simulator-intro .button{margin-top:17px}.simulator-launch{grid-template-columns:1fr;gap:21px;padding:23px 19px}.simulator-launch h3{font-size:22px}.simulator-launch p{font-size:13px}.simulator-launch .button{justify-self:start;font-size:12px}.simulator-bar{font-size:10px;padding:11px 14px}.simulator-footer{font-size:10px;padding:11px 14px;display:block}.simulator-footer a{display:inline-block;margin-top:6px}.embed-bar{font-size:11px;align-items:start;padding:11px 14px}.simulator-host iframe{height:660px}.responsibilities{grid-template-columns:1fr;gap:23px}.responsibilities dl>div{grid-template-columns:108px 1fr;gap:12px}.note{padding:15px}.note-type{display:none}.note-body{font-size:13px}.software-grid{grid-template-columns:1fr;gap:25px}.software-item{grid-template-columns:105px 1fr;gap:14px;padding:18px 0}.software-item p{font-size:12px}.software-item h3{font-size:13px}.client-start{padding:20px}.command{font-size:11px}.references{grid-template-columns:1fr;gap:35px}.references h2{font-size:25px;margin-bottom:18px}.spec-link{grid-template-columns:84px 1fr 14px;gap:14px}.spec-link code{font-size:10px}.faq{padding:16px 0}.footer .wrap{flex-direction:column;align-items:flex-start;gap:21px;font-size:10px}.footer-links{font-size:11px;flex-wrap:wrap;gap:21px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
+@media print{.header,.actions,.simulator-section,.footer-links{display:none}.wrap{width:100%}.section{padding:22px 0}.figure,.example-row,.responsibilities{break-inside:avoid}.architecture{display:block}.mobile-architecture{display:none}}
+
+/* Policy-foundations edition. Light-only; no remote font or icon dependency. */
+:root{--line:#e2e5e9;--soft:#f8f9fb;--blue:#245e94}
+html{scroll-padding-top:28px}h4{margin:0;font-size:12px;font-weight:600;line-height:1.6}.wrap{width:min(1160px,calc(100% - 80px))}.nav{min-height:76px;gap:32px}.navlinks{gap:24px}.hero{grid-template-columns:minmax(0,1fr) 208px;gap:72px;padding:59px 0 47px}.hero h1{font-size:clamp(46px,4.7vw,66px);font-weight:600;letter-spacing:-.055em}.hero-copy{font-size:17px;max-width:735px;line-height:1.75}.facts{padding-left:24px}.facts>div+div{margin-top:16px}.facts dt{font-size:11px}.facts dd{font-size:13px}.purpose .prose p:first-child{font-size:17px;line-height:1.8}.split{grid-template-columns:265px 1fr;gap:64px}.section-intro{grid-template-columns:300px 1fr;gap:40px}.section{padding-block:43px}.architecture text{letter-spacing:-.1px}.node-title{font-size:17px}.node-sub{font-size:13px}.node-small{font-size:12px}.caption{font-size:11px}.foundation .section-intro{margin-bottom:27px}.policy-worked{border:1px solid #d4dbe3;border-radius:8px;margin-top:23px;overflow:hidden}.policy-heading{display:flex;align-items:center;justify-content:space-between;gap:25px;padding:21px 24px;border-bottom:1px solid var(--line)}.section-kicker{font-size:11px;color:var(--quiet);margin-bottom:6px}.policy-heading h3{font-size:22px;font-weight:550;letter-spacing:-.025em}.quiet-tag{font-size:10px;color:var(--quiet);padding:4px 8px;background:var(--soft);border:1px solid var(--line);border-radius:4px;white-space:nowrap}.policy-inputs{display:grid;grid-template-columns:.85fr 1.55fr}.object-input,.claims-input{padding:22px 24px}.object-input{border-right:1px solid var(--line);background:#fafbfc}.policy-inputs h4{color:var(--muted);margin-bottom:15px}.object-input pre{margin:0;font:12px/1.9 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}.object-input pre code{font-size:inherit}.policy-inputs p{font-size:11px;color:var(--quiet);line-height:1.75;margin-top:13px}.claims-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}.claims-grid strong{font-size:12px;font-weight:600;display:block;margin-bottom:8px}.claims-grid dl{margin:0}.claims-grid dl>div{display:grid;grid-template-columns:88px 1fr;gap:7px;font-size:11px;line-height:2}.claims-grid dt{color:var(--quiet)}.claims-grid dd{margin:0;overflow-wrap:anywhere;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:10px}.policy-rule{display:grid;grid-template-columns:1fr 350px;gap:45px;padding:18px 24px;border-top:1px solid var(--line);background:var(--soft);align-items:center}.policy-rule h4{font-size:12px}.policy-rule p{font-size:12px;color:var(--muted);line-height:1.8;margin-top:6px;max-width:650px}.function-map{margin:0;font:11px/1.8 ui-monospace,SFMono-Regular,Consolas,monospace}.function-map>div{display:grid;grid-template-columns:110px 1fr;gap:25px}.function-map dt{position:relative}.function-map dt:after{content:'→';position:absolute;right:-10px;color:var(--quiet)}.function-map dd{margin:0;color:var(--muted)}.decision-table-wrap{padding:21px 24px 20px;border-top:1px solid var(--line)}.decision-table{width:100%;border-collapse:collapse;font-size:12px;text-align:left}.decision-table caption{text-align:left;font-size:11px;color:var(--quiet);padding:0 0 16px}.decision-table th{font-weight:500}.decision-table thead th{padding:0 12px 10px 0;border-bottom:1px solid var(--line);font-size:11px;color:var(--muted)}.decision-table thead th:first-child{width:38%}.decision-table td,.decision-table tbody th{padding:11px 16px 9px 0;line-height:1.75;font-size:12px}.decision-table tbody th{color:var(--muted)}.decision-table tfoot th,.decision-table tfoot td{border-top:1px solid var(--line);padding-top:13px;padding-bottom:0}.decision-table tfoot th{font-size:12px}.check{display:inline-flex;align-items:center;justify-content:center;width:15px;margin-right:6px;font-size:14px;font-weight:600}.check.yes{color:var(--pass)}.check.no{color:var(--deny)}.decision-badge{font:600 10px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.025em;display:inline-block;border:1px solid;padding:3px 10px;border-radius:4px}.decision-badge.allow{color:#176543;background:#f1f8f4;border-color:#c6dfd0}.decision-badge.deny{color:#a33636;background:#fdf3f3;border-color:#e8cccc}.policy-foot{border-top:1px solid var(--line);background:#fcfcfd;color:var(--quiet);font-size:11px;line-height:1.8;padding:12px 24px}.cedar-explanation{display:grid;grid-template-columns:265px 1fr;gap:64px;padding-top:24px}.cedar-explanation h3{font-size:19px}.cedar-explanation p{font-size:14px;line-height:1.85;color:var(--muted)}.cedar-explanation strong{font-weight:550;color:var(--ink)}.cedar-explanation .more-link{margin-top:10px}.architecture-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px}.architecture-columns>div{border-top:1px solid var(--line);padding-top:18px}.architecture-columns h3{font-size:17px;margin-bottom:11px}.architecture-columns p{font-size:13px;color:var(--muted);line-height:1.9}.architecture-notes{border-top:0}.architecture-columns .more-link{font-size:11px}.application-list{border-top:1px solid var(--line)}.application-row{display:grid;grid-template-columns:300px 1fr;gap:40px;padding:25px 0;border-bottom:1px solid var(--line)}.application-row:last-child{border-bottom:0;padding-bottom:0}.application-row>div:first-child{display:flex;gap:22px;align-items:start}.application-index{font:11px/1.8 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--quiet);padding-top:4px}.application-row h3{font-size:18px;line-height:1.45;font-weight:550}.application-row p{font-size:14px;line-height:1.85;color:var(--muted)}.application-row p.application-boundary{font-size:12px;margin-top:10px;color:var(--quiet);line-height:1.85}.simulator-launch{min-height:153px;padding:27px 30px}.simulator-launch h3{font-size:22px;font-weight:550}.command-shell{position:relative}.command-shell .command{padding-right:48px;font-size:11px}.copy-button{position:absolute;right:8px;top:8px;height:30px;width:30px;display:flex;align-items:center;justify-content:center;background:white;border:1px solid var(--line);border-radius:4px;padding:0;color:var(--muted)}.copy-button:hover{color:var(--ink);border-color:#b4bdc8}.copy-status{font-size:11px!important;margin:-6px 0 6px!important;min-height:0;color:var(--pass)!important}.copy-status:empty{display:none}.client-start{padding:23px}.software-grid{grid-template-columns:1.1fr 1fr;gap:40px}.note summary{justify-content:space-between}.note-body p{max-width:880px}.spec-link{grid-template-columns:88px 1fr 15px}.button{min-height:43px}.footer-brand span{font-size:11px}
+@media(max-width:1050px){.wrap{width:calc(100% - 56px)}.nav{gap:25px}.navlinks{gap:18px;font-size:12px}.hero{gap:45px;grid-template-columns:minmax(0,1fr) 190px}.hero h1{font-size:54px}.split,.cedar-explanation{grid-template-columns:235px 1fr;gap:40px}.section-intro,.application-row{grid-template-columns:270px 1fr;gap:35px}.policy-inputs{grid-template-columns:.85fr 1.5fr}.object-input,.claims-input{padding:20px}.claims-grid{gap:16px}.claims-grid dl>div{grid-template-columns:1fr;gap:0;line-height:1.65}.claims-grid dl>div+div{margin-top:5px}.claims-grid dd{font-size:11px}.policy-rule{grid-template-columns:1fr 295px;gap:25px}.function-map>div{gap:20px}.decision-table thead th:first-child{width:34%}.architecture-columns{gap:23px}.application-row>div:first-child{gap:15px}}
+@media(max-width:800px){.hero{grid-template-columns:1fr;gap:25px;padding:43px 0 35px}.hero h1{font-size:56px;max-width:720px}.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:18px 0 0}.facts dt{font-size:10px}.facts dd{font-size:11px}.split,.section-intro{display:block}.section-intro p{margin-top:14px}.policy-heading{padding:20px}.policy-inputs{grid-template-columns:1fr 1.35fr}.claims-grid{grid-template-columns:1fr;gap:16px}.claims-grid dl>div{grid-template-columns:90px 1fr;line-height:1.8}.claims-grid dl>div+div{margin:0}.policy-rule{grid-template-columns:1fr;gap:13px;padding:18px 20px}.function-map{display:flex;gap:20px;flex-wrap:wrap}.function-map>div{grid-template-columns:auto auto;gap:28px}.function-map dt:after{right:-20px}.cedar-explanation{grid-template-columns:200px 1fr;gap:30px}.architecture-columns{grid-template-columns:1fr;gap:22px}.architecture-columns p{font-size:14px}.architecture-columns h3{font-size:18px}.application-row{grid-template-columns:210px 1fr;gap:30px}.application-row h3{font-size:17px}.application-row>div:first-child{gap:12px}.source-link{font-size:12px}.decision-table tbody th,.decision-table td{font-size:11px;padding-right:12px}.software-grid{grid-template-columns:1fr 1fr;gap:30px}.command-shell .command{font-size:10px}.policy-heading h3{font-size:21px}}
+@media(max-width:620px){.wrap{width:calc(100% - 36px)}.nav{min-height:65px;gap:17px}.navlinks{font-size:14px;gap:18px}.hero{padding:32px 0 29px;gap:23px}.hero h1{font-size:clamp(36px,10vw,52px);line-height:1.09;letter-spacing:-.052em}.hero-copy{font-size:15px;margin-top:20px}.facts{grid-template-columns:1fr 1fr;gap:13px 20px}.facts div:last-child{grid-column:auto}.facts dd{font-size:12px}.section{padding-block:30px}.purpose .prose p:first-child{font-size:16px}.purpose h2{font-size:27px}.section-intro h2 br{display:none}.policy-heading{padding:18px;display:block}.policy-heading h3{font-size:21px}.section-kicker{font-size:10px}.quiet-tag{display:inline-block;margin-top:12px;font-size:9px}.policy-inputs{grid-template-columns:1fr}.object-input{border-right:0;border-bottom:1px solid var(--line)}.object-input,.claims-input{padding:18px}.object-input pre{font-size:11px}.policy-inputs h4{font-size:12px;margin-bottom:12px}.claims-grid{grid-template-columns:1fr 1fr;gap:16px}.claims-grid dl>div{grid-template-columns:1fr;font-size:10px;line-height:1.7}.claims-grid dl>div+div{margin-top:5px}.claims-grid strong{font-size:11px;min-height:36px;line-height:1.6}.claims-grid dd{font-size:11px}.policy-inputs p{font-size:11px}.policy-rule{padding:17px 18px;gap:14px}.policy-rule p{font-size:12px}.function-map{display:block;font-size:11px}.function-map>div{grid-template-columns:108px 1fr;gap:24px}.function-map dt:after{right:-10px}.decision-table-wrap{padding:19px 16px}.decision-table caption{font-size:10px;padding-bottom:14px}.decision-table{table-layout:fixed;width:100%}.decision-table thead th{font-size:10px;line-height:1.7;vertical-align:bottom;padding:0 8px 10px 0}.decision-table thead th:first-child{width:36%}.decision-table tbody th,.decision-table td{font-size:10px;line-height:1.9;padding:10px 7px 8px 0;vertical-align:top;overflow-wrap:anywhere}.check{font-size:12px;width:10px;margin-right:2px}.decision-table tfoot th{font-size:11px}.decision-badge{font-size:9px;padding:2px 8px}.policy-foot{padding:13px 18px;font-size:10px}.cedar-explanation{grid-template-columns:1fr;gap:16px;padding-top:23px}.cedar-explanation p{font-size:14px}.cedar-explanation .more-link{margin-top:8px}.cedar-explanation h3{font-size:20px}.architecture-columns{gap:23px}.application-row{grid-template-columns:1fr;gap:13px;padding:23px 0}.application-row>div:first-child{gap:15px}.application-row h3{font-size:19px}.application-row h3 br{display:none}.application-row p{font-size:14px}.application-row p.application-boundary{font-size:12px}.simulator-launch{padding:22px 19px}.simulator-launch h3{font-size:21px}.software-grid{grid-template-columns:1fr;gap:25px}.client-start{padding:20px}.command-shell .command{font-size:11px;padding-left:11px}.copy-button{height:28px;width:28px}.spec-link{grid-template-columns:82px 1fr 14px;gap:12px}.footer-brand span{font-size:10px}.node-small{font-size:12px}}
+@media print{.policy-worked{break-inside:avoid}.application-row{break-inside:avoid}.copy-button{display:none}.section{padding-block:22px}.architecture-notes{border-top:1px solid var(--line)}}
+
+.skip:not(:focus){clip-path:inset(50%);height:1px;width:1px;overflow:hidden;white-space:nowrap;padding:0}
+
+#main:focus{outline:none}
+
+</style></head><body>
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;overflow:hidden"><defs>
+<symbol id="arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+<symbol id="external" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+<symbol id="chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+<symbol id="play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7z"/></symbol>
+<symbol id="copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></symbol>
+</defs></svg>
+<a class="skip" href="#main">Skip to content</a>
+<header class="header">
+  <div class="wrap nav">
+    <a class="brand" href="#main" aria-label="CABE home">CABE</a>
+    <nav class="navlinks" id="navlinks" aria-label="Main navigation">
+      <a href="#why-cabe">Why CABE?</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#applications">Applications</a>
+      <a href="#software">Software</a>
+      <a href="#specifications">Specifications</a>
+    </nav>
+    <a class="source-link" href="https://github.com/messier-42/cabe" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
+    <button class="menu" id="menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="navlinks" type="button"><svg class="icon" aria-hidden="true"><use href="#menu"/></svg></button>
+  </div>
+</header>
+<main id="main" tabindex="-1">
+<div class="wrap">
+  <section class="hero" aria-labelledby="hero-title">
+    <div>
+      <p class="eyebrow">Concise Attribute-Bound Encapsulation</p>
+      <h1 id="hero-title">Attribute-based access control<br>for encrypted data</h1>
+      <p class="hero-copy">CABE defines an encrypted message format and a protocol for obtaining keys under an attribute based access policy. Applications can exchange protected data through brokers, relays and storage services which do not need access to the plaintext.</p>
+      <div class="actions">
+        <a class="button primary" href="#simulator">Try the policy simulator <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
+        <a class="button" href="https://cabespec.org/spec/arch/" target="_blank" rel="noopener noreferrer">Read the architecture <svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="section purpose split" id="why-cabe" aria-labelledby="purpose-title">
+    <div><h2 id="purpose-title">Why CABE?</h2></div>
+    <div class="prose">
+      <p>Applications which need to cooperate do not necessarily share the same operators, permissions or assumptions about trust. Putting them on the same network does not resolve those differences.</p>
+      <p>A report may pass through several systems before reaching the application which needs it. A partner may be entitled to selected observations but not the whole collection. The infrastructure carrying that information need not be entitled to read it.</p>
+      <p>We want to make these exchanges possible without requiring each application to invent its own protection and key-distribution scheme. This includes frequent telemetry, live information and work passed between services, as well as files. CABE supplies a common envelope and policy controlled key access which those larger systems can build on.</p>
+    </div>
+  </section>
+
+  <section class="section foundation" id="how-it-works" aria-labelledby="how-title">
+    <div class="section-intro">
+      <h2 id="how-title">A shared broker <br>with two consumers</h2>
+      <p>Suppose a sensor publishes observations through a broker used by an analysis application and a maintenance application. Both can receive the messages. Whether either can read them is a separate question, answered by the key service’s policy.</p>
+    </div>
+
+    <figure class="figure">
+      <div class="figure-top"><span>One CABE domain</span><div class="legend" aria-hidden="true"><span><i></i>Encrypted message</span><span><i class="key"></i>Key service interaction</span></div></div>
+      <svg class="architecture" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 356" role="img" aria-labelledby="architecture-title architecture-desc">
+        <title id="architecture-title">Message delivery and policy controlled key access</title>
+        <desc id="architecture-desc">The producer assigns attributes and requests a lease from the key service. The broker delivers the encrypted observation to both consumers. In this illustrative khaled configuration, authentication and claims mapping supply facts to Cedar. The policy permits the analysis consumer and refuses the maintenance consumer. Neither consumer already has the decryption key.</desc>
+        <defs>
+          <marker id="data-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M1 1l6 3-6 3" fill="none" stroke="#737b85" stroke-width="1.2"/></marker>
+          <marker id="key-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M1 1l6 3-6 3" fill="none" stroke="#356da2" stroke-width="1.2"/></marker>
+        </defs>
+        <path d="M144 217V77H370" fill="none" stroke="#356da2" stroke-width="1.4" stroke-dasharray="5 5" marker-start="url(#key-arrow)" marker-end="url(#key-arrow)"/>
+        <path d="M750 57H934V190" fill="none" stroke="#356da2" stroke-width="1.4" stroke-dasharray="5 5" marker-start="url(#key-arrow)" marker-end="url(#key-arrow)"/>
+        <path d="M750 86H1087V305H1059" fill="none" stroke="#356da2" stroke-width="1.4" stroke-dasharray="5 5" marker-start="url(#key-arrow)" marker-end="url(#key-arrow)"/>
+        <text x="165" y="141" class="node-small">Authenticate and</text><text x="165" y="162" class="node-small">request a lease</text>
+        <text x="778" y="131" class="node-small">Authenticate</text><text x="778" y="152" class="node-small">Request key access</text>
+        <rect x="370" y="27" width="380" height="111" rx="7" fill="#f3f7fb" stroke="#b5c9dc"/>
+        <text x="392" y="55" class="node-title">Key service <tspan class="node-sub">/ khaled</tspan></text>
+        <text x="392" y="81" class="node-small">Authenticated claims + attributes + operation</text>
+        <rect x="391" y="96" width="112" height="25" rx="4" fill="white" stroke="#cad7e2"/>
+        <text x="407" y="113" class="node-small" style="fill:#265f99;font-weight:600">Cedar policy</text>
+        <path d="M514 108H545" stroke="#356da2" stroke-width="1.3" marker-end="url(#key-arrow)"/>
+        <text x="557" y="113" class="node-small">Key access decision</text>
+        <rect x="28" y="218" width="232" height="102" rx="7" fill="white" stroke="#d3d8de"/>
+        <text x="49" y="249" class="node-title">Producer</text><text x="49" y="273" class="node-sub">Assigns attributes</text><text x="49" y="295" class="node-sub">Encrypts the observation</text>
+        <path d="M260 269H393" stroke="#737b85" stroke-width="1.5" marker-end="url(#data-arrow)"/>
+        <text x="276" y="251" class="node-small">CABE envelope</text>
+        <rect x="395" y="218" width="252" height="102" rx="7" fill="#f8f9fb" stroke="#d3d8de"/>
+        <text x="417" y="249" class="node-title">Shared broker</text><text x="417" y="273" class="node-sub">Delivers the same ciphertext</text><text x="417" y="295" class="node-sub">Has no decryption key</text>
+        <path d="M647 269H716M716 224V304" stroke="#737b85" fill="none" stroke-width="1.5"/>
+        <path d="M716 224H807" stroke="#737b85" fill="none" stroke-width="1.5" marker-end="url(#data-arrow)"/><path d="M716 304H807" stroke="#737b85" fill="none" stroke-width="1.5" marker-end="url(#data-arrow)"/>
+        <rect x="810" y="190" width="249" height="67" rx="7" fill="white" stroke="#d3d8de"/><text x="831" y="216" class="node-title">Analysis consumer</text><text x="831" y="240" class="node-small" style="fill:#176543">Key access permitted</text>
+        <rect x="810" y="272" width="249" height="67" rx="7" fill="white" stroke="#d3d8de"/><text x="831" y="298" class="node-title">Maintenance consumer</text><text x="831" y="322" class="node-small" style="fill:#a33636">Key access refused</text>
+      </svg>
+      <div class="mobile-architecture">
+        <div class="mobile-key"><strong>Key service / khaled</strong>Authentication and claims mapping → Cedar policy evaluation → key access decision.</div>
+        <ol class="mobile-flow">
+          <li><strong>Producer</strong><p>Assigns attributes, obtains a lease and encrypts the observation.</p></li>
+          <li><strong>Shared broker</strong><p>Delivers the same ciphertext to both consumers. It has no decryption key.</p></li>
+          <li><strong>Consumers request key access</strong><p class="allowed">Analysis application — key access permitted</p><p class="denied">Maintenance application — key access refused</p></li>
+        </ol>
+      </div>
+      <figcaption class="caption">Illustrative non-captive key flow. The producer is authorised to publish; neither consumer already holds the key. The rule and its inputs are shown below.</figcaption>
+    </figure>
+
+    <div class="policy-worked" aria-labelledby="policy-title">
+      <div class="policy-heading"><div><p class="section-kicker">The decision inside the key service</p><h3 id="policy-title">How access is decided</h3></div><span class="quiet-tag">Illustrative configuration</span></div>
+      <div class="policy-inputs">
+        <div class="object-input">
+          <h4>Message attributes</h4>
+          <pre><code>{
+  "project": "survey",
+  "product": "observation",
+  "release-to": ["ExampleOrg"]
+}</code></pre>
+          <p>The producer assigns these to the message.</p>
+        </div>
+        <div class="claims-input">
+          <h4>Established caller claims</h4>
+          <div class="claims-grid">
+            <div><strong>Analysis application</strong><dl><div><dt>Project</dt><dd>survey</dd></div><div><dt>Organisation</dt><dd>ExampleOrg</dd></div><div><dt>Function</dt><dd>analysis</dd></div></dl></div>
+            <div><strong>Maintenance application</strong><dl><div><dt>Project</dt><dd>survey</dd></div><div><dt>Organisation</dt><dd>ExampleOrg</dd></div><div><dt>Function</dt><dd>maintenance</dd></div></dl></div>
+          </div>
+          <p>Authentication and claims mapping supply these facts. The application’s name grants no permission by itself.</p>
+        </div>
+      </div>
+      <div class="policy-rule">
+        <div><h4>Configured access rule</h4><p>For decryption requests, require the same project, a permitted organisation and an approved function for the product.</p></div>
+        <dl class="function-map"><div><dt>analysis</dt><dd>observation</dd></div><div><dt>maintenance</dt><dd>equipment-status</dd></div></dl>
+      </div>
+      <div class="decision-table-wrap">
+        <table class="decision-table">
+          <caption>Applying the rule to the observation above</caption>
+          <thead><tr><th scope="col">Policy check</th><th scope="col">Analysis application</th><th scope="col">Maintenance application</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Project matches</th><td><span class="check yes">✓</span> survey</td><td><span class="check yes">✓</span> survey</td></tr>
+            <tr><th scope="row">Organisation is permitted</th><td><span class="check yes">✓</span> ExampleOrg</td><td><span class="check yes">✓</span> ExampleOrg</td></tr>
+            <tr><th scope="row">Function permits this product</th><td><span class="check yes">✓</span> Observations permitted</td><td><span class="check no">×</span> Equipment status only</td></tr>
+          </tbody>
+          <tfoot><tr><th scope="row">Key request</th><td><span class="decision-badge allow">ALLOW</span></td><td><span class="decision-badge deny">DENY</span></td></tr></tfoot>
+        </table>
+      </div>
+      <p class="policy-foot">The broker delivered the same envelope to both applications. The key service evaluated their requests separately.</p>
+    </div>
+
+    <div class="cedar-explanation">
+      <div><h3>Where Cedar fits</h3><a class="more-link" href="https://khaled.cabespec.org/overview/arch/" target="_blank" rel="noopener noreferrer">Policy integration <svg class="icon" aria-hidden="true"><use href="#external"/></svg></a></div>
+      <div><p>CABE does not prescribe a policy language. The reference key server <strong>khaled</strong> supports pluggable policy languages; the Cedar policy language is supported out of the box. The server uses the policy decision to control key access; authentication and claims mapping establish the facts on which it depends.</p></div>
+    </div>
+  </section>
+</div>
+
+<section class="simulator-section" id="simulator" aria-labelledby="simulator-title">
+  <div class="wrap">
+    <div class="simulator-intro"><div><h2 id="simulator-title">Try the policy simulator</h2><p>Work through the full CABE example, change access rules and inspect the message envelope. The hosted simulator uses Cedar for policy evaluation.</p></div><a class="button" href="https://cabespec.org/game/" target="_blank" rel="noopener noreferrer">Open simulator <svg class="icon" aria-hidden="true"><use href="#external"/></svg></a></div>
+    <div class="simulator-shell">
+      <div class="simulator-bar"><span>CABE Policy Simulator</span><span>cabespec.org/game</span></div>
+      <div class="simulator-launch" id="simulator-launch"><div><h3>Experiment with access policy</h3></div><button class="button primary" id="load-simulator" type="button" aria-controls="simulator-host" aria-expanded="false">Load simulator <svg class="icon" aria-hidden="true"><use href="#play"/></svg></button></div>
+      <div class="simulator-host" id="simulator-host" hidden><div class="embed-bar"><span>Use the direct link if your browser does not allow embedding.</span><button class="close-embed" id="close-simulator" type="button">Close simulator</button></div></div>
+      <div class="simulator-footer"><span></span><a href="https://cabespec.org/game/" target="_blank" rel="noopener noreferrer">Open in a new tab <svg class="icon" aria-hidden="true"><use href="#external"/></svg></a></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="section architecture-notes" aria-labelledby="model-title">
+    <div class="section-intro"><h2 id="model-title">Messages, leases <br>and domains</h2><p>This example demonstrates single domain operation. The same envelope and key access model can support arbitrarily frequent messages and exchanges between independently operated domains.</p></div>
+    <div class="architecture-columns">
+      <div><h3>Key material can be reused.</h3><p>A suitable non-captive lease lets a client encrypt further messages with the same attributes locally until the lease expires. This avoids a key service round trip for every event. Lease reuse and rollover also determine how quickly a policy change affects future messages.</p><a class="more-link" href="https://cabespec.org/spec/ckap/" target="_blank" rel="noopener noreferrer">Key access and leases <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div>
+      <div><h3>Concise at any message size.</h3><p>CABE is a concise encapsulation scheme which can scale to arbitrarily large or arbitrarily small messages.</p><a class="more-link" href="https://cabespec.org/spec/cbes/" target="_blank" rel="noopener noreferrer">Envelope structure <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div>
+      <div><h3>Domains can prepare to share.</h3><p>The federation draft defines lease packages which let a receiving key service recover material for a foreign envelope without a live request to its origin.</p><a class="more-link" href="https://cabespec.org/spec/cfar/" target="_blank" rel="noopener noreferrer">Federation and preparation <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div>
+    </div>
+  </section>
+
+  <section class="section" id="applications" aria-labelledby="applications-title">
+    <div class="section-intro"><h2 id="applications-title">Applications</h2><p>These are different uses of the same foundation. Each has its own producer, permitted consumers and delivery path.</p></div>
+    <div class="application-list">
+      <article class="application-row"><div><span class="application-index">01</span><h3>Telemetry and <br>application events</h3></div><div><p>A shared event service may carry equipment readings, observations and application results for several consumers. Access rules can distinguish these products without making the broker a trusted reader of their payloads. Suitable leases allow local key use across multiple messages.</p></div></article>
+      <article class="application-row"><div><span class="application-index">02</span><h3>Satellite and <br>coalition information</h3></div><div><p>An analysis application may need selected products from a satellite provider or coalition information service rather than access to its entire collection. The provider’s release rules determine which consumers may obtain which products. For a live feed, an application can protect finite video segments before they reach a shared relay or cache.</p></div></article>
+      <article class="application-row"><div><span class="application-index">03</span><h3>A partner observation <br>reaching the field</h3></div><div><p>Suppose a partner has a current observation about a drone, and an authorised SOF application needs it for situational awareness. The desired exchange is from the partner’s publishing application to that receiver, without making each relay an entitled reader of the observation.</p></div></article>
+      <article class="application-row"><div><span class="application-index">04</span><h3>An ally-operated <br>radio mesh</h3></div><div><p>An ally’s mobile ad hoc network may provide an available path between applications. Protected application data can use that path without giving the radios and relays its decryption keys. Access to the transport and access to the payload are different permissions.</p></div></article>
+    </div>
+  </section>
+
+  <section class="section" id="software" aria-labelledby="software-title">
+    <div class="section-intro"><h2 id="software-title">Software</h2></div>
+    <div class="software-grid">
+      <div class="software-list">
+        <article class="software-item"><h3>khaled</h3><div><p>The reference key server, including Cedar policy evaluation and plugins for authentication, claims mapping and key storage.</p><a class="more-link" href="https://khaled.cabespec.org/reference/config/" target="_blank" rel="noopener noreferrer">Server configuration <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div></article>
+        <article class="software-item"><h3>cabe-go</h3><div><p>The Go client library. Its <code>cabecap</code> interface handles encapsulation, decapsulation and lease caching.</p><a class="more-link" href="https://github.com/messier-42/cabe-go#quick-start" target="_blank" rel="noopener noreferrer">Client example <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div></article>
+        <article class="software-item"><h3>cabetool</h3><div><p>Command-line tooling for client identity, encryption and decryption, included with <code>cabe-go</code>.</p><a class="more-link" href="https://github.com/messier-42/cabe-go#command-line-tool" target="_blank" rel="noopener noreferrer">Command-line usage <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div></article>
+      </div>
+      <aside class="client-start"><h3>Start with the Go client</h3><p>Add the library to your project:</p><div class="command-shell"><pre class="command"><code id="install-command">go get github.com/messier-42/cabe-go</code></pre><button class="copy-button" id="copy-command" type="button" aria-label="Copy Go installation command"><svg class="icon" aria-hidden="true"><use href="#copy"/></svg></button></div><p class="copy-status" id="copy-status" aria-live="polite"></p><p>The example also needs a running CKAP endpoint and a client configured to authenticate to it. Installing the library does not start the key service.</p><a class="more-link" href="https://github.com/messier-42/cabe-go#quick-start" target="_blank" rel="noopener noreferrer">Read the client setup <svg class="icon" aria-hidden="true"><use href="#external"/></svg></a></aside>
+    </div>
+  </section>
+
+  <section class="section" id="integration" aria-labelledby="integration-title">
+    <div class="section-intro"><h2 id="integration-title">Where CABE sits</h2><p>A common envelope need not mean a common identity system, policy language or application. The deployment supplies those choices and the trust relationships between them.</p></div>
+    <div class="responsibilities">
+      <div><h3>CABE components</h3><dl><div><dt>Client library</dt><dd>Constructs and consumes envelopes; makes key service requests.</dd></div><div><dt>Key service</dt><dd>Manages keys and leases; controls access according to policy.</dd></div><div><dt>Envelope</dt><dd>Binds attributes to the encrypted payload and identifies the lease.</dd></div></dl></div>
+      <div><h3>The surrounding system</h3><dl><div><dt>Identity &amp; policy</dt><dd>Establishes caller claims, message attributes and access rules.</dd></div><div><dt>Transport</dt><dd>Delivers and stores envelopes using the available infrastructure.</dd></div><div><dt>Processing</dt><dd>Controls plaintext use, release of derived information and records of use.</dd></div></dl></div>
+    </div>
+    <details class="note" id="delegated-access"><summary>Requests made on someone else’s behalf <svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary><div class="note-body"><p>A service at the end of a chain may recognise its immediate caller without knowing who initiated the task or what authority was delegated. A larger system should be able to make that distinction when deciding whether to release information.</p><p>CABE can provide object protection and policy controlled key access within that system. The integration must validate the delegation and enforce its limits, including where a caller already holds broader key material. The envelope does not itself define a transitive-identity protocol.</p><p>Records can link a task, acting service, object and access decision. With local key use, point-of-use instrumentation is also needed: a key service log is not a log of every object decrypted.</p></div></details>
+  </section>
+
+  <section class="section references" aria-label="Technical references">
+    <div id="specifications"><h2>Specifications</h2>
+      <a class="spec-link" href="https://cabespec.org/spec/arch/" target="_blank" rel="noopener noreferrer"><code>CABE-ARCH</code><span><strong>Architecture</strong><small>Attributes, key series, leases and access.</small></span><svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
+      <a class="spec-link" href="https://cabespec.org/spec/cbes/" target="_blank" rel="noopener noreferrer"><code>CBES</code><span><strong>Envelope structure</strong><small>Message encoding and cryptographic operations.</small></span><svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
+      <a class="spec-link" href="https://cabespec.org/spec/ckap/" target="_blank" rel="noopener noreferrer"><code>CKAP</code><span><strong>Key access protocol</strong><small>Client and key service interaction.</small></span><svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
+      <a class="spec-link" href="https://cabespec.org/spec/cfar/" target="_blank" rel="noopener noreferrer"><code>CFAR</code><span><strong>Federation and resilience</strong><small>Lease packages for prepared receiving domains.</small></span><svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
+      <a class="spec-link" href="https://cabespec.org/spec/acp240/" target="_blank" rel="noopener noreferrer"><code>ACP240</code><span><strong>Attribute mapping</strong><small>A defined subset of classification metadata.</small></span><svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
+      <a class="more-link" href="https://cabespec.org/specification/" target="_blank" rel="noopener noreferrer">All specification drafts <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
+    </div>
+    <div id="security"><h2>Security boundaries</h2>
+      <details class="faq"><summary>What happens after a key is disclosed?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary><p>An exported key can be used locally without another key service decision. A later refusal cannot erase keys or plaintext already obtained. Leases and rollover matter for future messages; separate envelopes sharing usable key material do not automatically have separate access boundaries. <a href="https://cabespec.org/spec/arch/" target="_blank" rel="noopener noreferrer">Key access and rollover</a></p></details>
+      <details class="faq"><summary>Does the payload pass through the key service?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary><p>No. Non-captive keys are used locally. With captive keys, the service performs operations on a content-encryption key while the application handles the payload; it does not need the whole video segment or file. <a href="https://cabespec.org/spec/cbes/" target="_blank" rel="noopener noreferrer">Envelope operations</a></p></details>
+      <details class="faq"><summary>What does federation require?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary><p>Prepared trust, the appropriate federation keys and lease package, and the required local services. The current draft specifies early selection of target domains and non-captive lease keys. The receiving key service must be trusted with the material it recovers. <a href="https://cabespec.org/spec/cfar/" target="_blank" rel="noopener noreferrer">Federation draft</a></p></details>
+      <details class="faq"><summary>What does integrity protection establish?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary><p>Authenticated encryption protects against changes by parties without the required key. It does not distinguish every holder of a shared key, prove an observation is true or establish correct labelling. Producer-specific provenance needs additional evidence. <a href="https://cabespec.org/spec/cbes/" target="_blank" rel="noopener noreferrer">Envelope protection</a></p></details>
+      <details class="faq"><summary>Are the attributes confidential?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary><p>The baseline envelope’s protected headers are integrity-protected, not encrypted. Account for the metadata exposed by your attribute scheme separately from the confidentiality of the payload. <a href="https://cabespec.org/spec/cbes/" target="_blank" rel="noopener noreferrer">Envelope headers</a></p></details>
+    </div>
+  </section>
+</div>
+</main>
+<footer class="footer"><div class="wrap"><div class="footer-brand"><a class="brand" href="#main">CABE</a><span>Concise Attribute-Bound Encapsulation</span></div><div class="footer-links"><a href="https://github.com/messier-42/cabe/issues" target="_blank" rel="noopener noreferrer">Discuss the specification</a><a href="https://messier42.com/" target="_blank" rel="noopener noreferrer">Messier 42</a></div></div></footer>
+
+<script>
+/* Display behaviour only. Policy decisions on this page are worked examples.
+   The hosted simulator is a separate application, loaded only on request. */
+(() => {
+  'use strict';
+  const button = document.getElementById('menu-toggle');
+  const nav = document.getElementById('navlinks');
+  function closeMenu() {
+    if (!button || !nav) return;
+    nav.classList.remove('is-open');
+    button.setAttribute('aria-expanded', 'false');
+    button.setAttribute('aria-label', 'Open navigation');
+  }
+  if (button && nav) {
+    button.addEventListener('click', () => {
+      const open = button.getAttribute('aria-expanded') !== 'true';
+      nav.classList.toggle('is-open', open);
+      button.setAttribute('aria-expanded', String(open));
+      button.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+    });
+    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && nav.classList.contains('is-open')) {
+        closeMenu();
+        button.focus();
+      }
+    });
+    document.addEventListener('click', event => {
+      if (!nav.contains(event.target) && !button.contains(event.target)) closeMenu();
+    });
+  }
+
+  const launch = document.getElementById('load-simulator');
+  const panel = document.getElementById('simulator-launch');
+  const host = document.getElementById('simulator-host');
+  const close = document.getElementById('close-simulator');
+  if (launch && panel && host && close) {
+    launch.addEventListener('click', () => {
+      if (host.querySelector('iframe')) return;
+      const frame = document.createElement('iframe');
+      frame.src = 'https://cabespec.org/game/';
+      frame.title = 'CABE Policy Simulator, hosted at cabespec.org';
+      frame.referrerPolicy = 'no-referrer';
+      // The application is cross-origin. A load event does not prove success.
+      // The direct link remains visible whether or not embedding is allowed.
+      host.appendChild(frame);
+      panel.hidden = true;
+      host.hidden = false;
+      launch.setAttribute('aria-expanded', 'true');
+      close.focus({ preventScroll: true });
+    });
+    close.addEventListener('click', () => {
+      host.querySelector('iframe')?.remove();
+      host.hidden = true;
+      panel.hidden = false;
+      launch.setAttribute('aria-expanded', 'false');
+      launch.focus({ preventScroll: true });
+    });
+  }
+
+  const copy = document.getElementById('copy-command');
+  const command = document.getElementById('install-command');
+  const status = document.getElementById('copy-status');
+  if (copy && command && status) {
+    copy.addEventListener('click', async () => {
+      try {
+        if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
+        await navigator.clipboard.writeText(command.textContent.trim());
+        status.textContent = 'Command copied.';
+        copy.setAttribute('aria-label', 'Command copied. Copy again');
+      } catch {
+        const range = document.createRange();
+        range.selectNodeContents(command);
+        const selection = window.getSelection();
+        if (selection) {
+          selection.removeAllRanges();
+          selection.addRange(range);
+          status.textContent = 'Command selected. Press Ctrl+C or ⌘C to copy.';
+        } else {
+          status.textContent = 'Select and copy the command above.';
+        }
+      }
+    });
+  }
+})();
+
+</script></body></html>
