@@ -1,0 +1,62 @@
+.article-category { color: var(--quiet); font: 11px/1.8 var(--font-mono); margin-bottom: 12px; }
+.article-layout { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 40px; align-items: start; padding-block: 42px 64px; }
+.article-contents { position: sticky; top: 24px; }
+.article-contents h2 { font-size: 13px; letter-spacing: 0; margin-bottom: 18px; }
+.article-contents ol { display: grid; gap: 13px; list-style: none; padding: 0; margin: 0; }
+.article-contents a { font-size: 12px; color: var(--muted); text-decoration: none; }
+.article-contents a:hover { color: var(--blue); text-decoration: underline; }
+.article-prose { min-width: 0; color: var(--muted); font-size: 15px; line-height: 1.85; }
+.article-prose > p, .article-prose > section > p, .article-prose > section > ol { max-width: 790px; }
+.article-prose section { scroll-margin-top: 24px; }
+.article-prose > section + section { margin-top: 38px; }
+.article-prose h2 { color: var(--ink); font-size: 27px; margin-bottom: 20px; }
+.article-prose h2 a { color: inherit; text-decoration: none; }
+.article-prose h2 a:hover { text-decoration: underline; }
+.article-prose h3 { color: var(--ink); font-size: 16px; }
+.article-prose ol { padding-left: 22px; }
+.article-prose li + li { margin-top: 12px; }
+.article-prose .article-thesis { color: var(--ink); font-size: 17px; }
+.article-prose strong { color: var(--ink); font-weight: 600; }
+.relationship-list { display: grid; gap: 0; margin-block: 24px; border-top: 1px solid var(--line); }
+.relationship { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 20px; padding-block: 18px; border-bottom: 1px solid var(--line); }
+.relationship dl { margin: 0; font-size: 13px; line-height: 1.7; }
+.relationship dt { display: inline; color: var(--ink); font-weight: 600; }
+.relationship dd { display: inline; margin: 0; }
+.relationship dl > div + div { margin-top: 8px; }
+.article-prose .article-sources { border-top: 1px solid var(--line); padding-top: 30px; font-size: 13px; }
+.article-sources li { scroll-margin-top: 24px; overflow-wrap: anywhere; }
+.article-return { margin-top: 38px; font-size: 13px; }
+.article-index { list-style: none; margin: 0; padding: 0; max-width: 920px; }
+.article-index li { padding-block: 26px; border-block: 1px solid var(--line); }
+.article-index h2 { font-size: 28px; max-width: 780px; }
+.article-index h2 a { color: var(--ink); text-decoration: none; }
+.article-index h2 a:hover { color: var(--blue); text-decoration: underline; }
+.article-index p:not(.article-category) { margin-top: 16px; max-width: 700px; color: var(--muted); }
+.article-index .article-link { display: inline-block; margin-top: 20px; font-size: 13px; }
+.governance-copy { max-width: 790px; margin-right: auto; margin-left: 0; }
+.core-team { display: flex; flex-wrap: wrap; gap: 12px 32px; list-style: none; padding: 0; color: var(--ink); }
+.core-team li + li { margin-top: 0; }
+.governance-roles { margin-block: 22px; }
+.governance-roles > div { padding-block: 16px; border-top: 1px solid var(--line); }
+.governance-roles > div:last-child { border-bottom: 1px solid var(--line); }
+.governance-roles dt { font-weight: 600; color: var(--ink); margin-bottom: 5px; }
+.governance-roles dd { margin: 0; }
+@media (max-width: 1100px) {
+  .article-layout { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+  .article-contents { position: static; border-bottom: 1px solid var(--line); padding-bottom: 25px; }
+  .article-contents ol { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 25px; }
+}
+@media (max-width: 620px) {
+  .article-layout { padding-block: 30px 48px; }
+  .article-contents ol { grid-template-columns: 1fr; gap: 10px; }
+  .article-prose { font-size: 14px; }
+  .article-prose .article-thesis { font-size: 16px; }
+  .article-prose h2, .article-index h2 { font-size: 26px; }
+  .relationship { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .core-team { flex-direction: column; gap: 6px; }
+}
+@media print {
+  .article-layout { display: block; padding-top: 20px; }
+  .article-contents, .article-return { display: none; }
+  .article-prose { font-size: 11pt; }
+}
