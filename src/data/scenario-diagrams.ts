@@ -9,6 +9,7 @@ export interface ScenarioDiagram {
   domains: { x: number; y: number; width: number; height: number; label: string }[];
   nodes: DiagramNode[]; edges: DiagramEdge[];
   labels?: { x: number; y: number; text: string }[];
+  controlLabel?: string;
   caption: string; mobile: { title: string; text: string; kind?: 'key' | 'control' }[];
 }
 const node = (id: string, x: number, y: number, width: number, title: string, lines: string[], kind?: DiagramNode['kind'], decision?: DiagramNode['decision']): DiagramNode => ({id,x,y,width,height:52+lines.length*21+(decision?24:0),title,lines,kind,decision});
@@ -87,6 +88,28 @@ export const diagrams: Record<string, ScenarioDiagram> = {
       {title:'Relay and store ciphertext',text:'Shared infrastructure carries all three contributions. It has no keys and performs no plaintext fusion.'},
       {title:'Field picture · authorised reader',text:'The field application obtains keys for position reports and selected observations, then processes those plaintext inputs.',kind:'key'},
       {title:'Analysis picture · authorised reader',text:'The analysis application is also permitted satellite products. Its plaintext processing builds a different view from its permitted inputs.',kind:'key'},
+    ],
+  },
+  'live-video-and-voice': {
+    title:'Live media protection with reusable Leases and a shared encrypted relay',
+    description:'Voice and video producers encapsulate encoded audio blocks, video frames or segments using valid cached Non-Captive Leases. A relay forwards successive Envelopes without receiving decryption keys. Authorised receiving applications obtain the required material from the Key Service, recover the encoded media and play it locally. Key access is separate from the media delivery path and does not require a request for every chunk.',
+    assumption:'Channel Attribute Sets · reusable valid Leases · Non-Captive Keys',
+    height:415,domains:domain(415),
+    nodes:[
+      node('key',300,65,280,'Key Service',['Channel and audience rules','Authorises Lease access'],'key'),
+      node('producer',35,243,245,'Voice / video producers',['Audio blocks / video units','Encrypt with cached Leases']),
+      node('relay',340,243,200,'Shared relay',['Envelope 1 → 2 → 3','No decryption keys'],'store'),
+      node('receiver',600,243,245,'Receiving applications',['Recover encoded media','Decode and play locally'],'trusted'),
+    ],
+    edges:[{path:'M280 280H340'},{path:'M540 280H600'},
+      {path:'M300 102H155V243',kind:'key'},{path:'M580 102H722V243',kind:'key'}],
+    labels:[{x:440,y:382,text:'Successive media chunks · no Key Service round trip for every chunk'}],
+    caption:'Producers protect the encoded media before delivery. A reusable Lease supports successive chunks with the required per-Message encryption parameters. The relay forwards ciphertext; it does not mix or transcode plaintext. Chunk boundaries alone do not create separate permissions.',
+    mobile:[
+      {title:'Obtain authorised Leases',text:'Voice and video applications resolve Non-Captive Leases for the agreed channel Attribute Sets. Key access follows the configured channel and audience rules.',kind:'key'},
+      {title:'Protect media as it is produced',text:'Producers encapsulate encoded audio blocks, video frames or segments. Valid cached Leases support successive chunks without a Key Service round trip for every chunk.'},
+      {title:'Forward successive Envelopes',text:'A shared relay delivers the encrypted media. It receives no decryption keys and performs no plaintext mixing or transcoding.'},
+      {title:'Authorise receivers and recover media',text:'Receiving applications obtain their permitted key material, recover the encoded media and decode it locally. Key access is separate from repeated media delivery.',kind:'key'},
     ],
   },
   'partner-observation': {
@@ -197,6 +220,41 @@ export const diagrams: Record<string, ScenarioDiagram> = {
       {title:'Storage delivers protected inputs',text:'Solid encrypted delivery supplies observation and equipment-status Envelopes. A reference is not permission to decrypt.'},
       {title:'Analysis worker authenticates',text:'Dashed key access permits observations and refuses equipment status. The worker processes its permitted plaintext inputs.',kind:'key'},
       {title:'Maintenance worker authenticates',text:'Its separate request permits equipment status and refuses observations. Workflow controls still constrain each worker’s tasks and results.',kind:'key'},
+    ],
+  },
+  'delegated-requests': {
+    title:'Verified requester and task authority contribute to worker key access',
+    description:'An analyst asks a planning application to examine imagery. It assigns a task and protected observation references to the image-processing service. A trusted task authority checks the requester and grants, and issues a bound credential. The Key Service authentication integration verifies the credential and worker binding, then supplies verified Claims to Policy alongside the Attributes and operation. For the same processing service, Task A is permitted and Task B refused. Each task uses a separate isolated execution without prior input keys, CEKs or plaintext.',
+    assumption:'Proposed integration · isolated task executions · no shared input keys, CEKs or plaintext',
+    controlLabel:'Task / authority information',
+    height:650,domains:domain(650),
+    nodes:[
+      node('analyst',40,65,200,'Analyst',['Requests imagery analysis'],'control'),
+      node('planner',320,65,240,'Planning application',['Assigns task + references'],'control'),
+      node('observations',40,213,230,'Protected observations',['Stored Envelopes','No decryption keys'],'store'),
+      node('worker',600,213,240,'Image-processing service',['Separate execution per task','No input key, CEK or plaintext'],'trusted'),
+      node('authority',40,435,230,'Trusted task authority',['Checks requester and grants','Issues bound task credential'],'control'),
+      node('authentication',320,435,240,'Authentication integration',['Verifies credential + worker','Maps verified facts to Claims'],'control'),
+      node('key',600,435,240,'Key Service · Policy',['Claims, Attributes, operation','Task A: key access permitted','Task B: key access refused'],'key'),
+    ],
+    edges:[
+      {path:'M240 102H320',kind:'control'},{path:'M440 138V178H720V213',kind:'control'},
+      {path:'M140 138V175H27V470H40',kind:'control'},
+      {path:'M270 477H292V359H575V286H600',kind:'control'},
+      {path:'M270 252H600'},
+      {path:'M650 307V385H440V435',kind:'key'},
+      {path:'M560 482H600',kind:'control'},
+      {path:'M750 435V307',kind:'key'},
+    ],
+    labels:[{x:435,y:237,text:'Observation Envelopes'},{x:435,y:349,text:'Bound task credential'},{x:535,y:415,text:'Worker key request'}],
+    caption:'Dotted paths carry tasks, credentials and verified Claims; they are supporting integration choices. Dashed paths show ordinary key access through authentication and Policy. Task A and Task B are independent requests by the same processing service, in isolated executions with no previously held input material. The operator enforces isolation and controls result release.',
+    mobile:[
+      {title:'Analyst → planning application',text:'An analyst asks for imagery analysis. The planning application assigns a task and observation references to the image-processing service.',kind:'control'},
+      {title:'Check requester and task authority',text:'A trusted task authority authenticates the requester, checks the grants to the acting services and issues a signed credential bound to the requester, task, scope and intended worker.',kind:'control'},
+      {title:'Deliver protected observations',text:'Storage supplies Envelopes to an isolated worker execution. Each task starts without the input key, CEK or plaintext; there is no shared input cache.'},
+      {title:'Verify before establishing Claims',text:'The Key Service’s authentication integration verifies the credential’s issuer, signature, validity and worker binding, then maps verified service, requester and task facts into Claims.',kind:'control'},
+      {title:'Ordinary Retrograde request',text:'The worker supplies the Attribute Set and Lease Reference. Policy evaluates the authenticated Claims, Attributes and operation. The task credential is an integration mechanism, not a new CABE field or operation.',kind:'key'},
+      {title:'Same service, different task decisions',text:'Task A with permitted requester and scope receives key access. Task B outside that scope is refused. Separate executions prevent Task B from inheriting keys or plaintext already obtained for Task A.',kind:'key'},
     ],
   },
   'supplier-diagnostics': {

@@ -9,7 +9,7 @@ const marker = (kind = 'data') => `url(#${id}-${kind}-arrow)`;
   <div class="diagram-legend" aria-label="Diagram line styles">
     <span><i class="line-data"></i>Encrypted delivery</span>
     <span><i class="line-key"></i>Key access</span>
-    {diagram.edges.some(edge => edge.kind === 'control') && <span><i class="line-control"></i>{id === 'shared-storage' ? 'Time / policy change' : 'Task / reference'}</span>}
+    {diagram.edges.some(edge => edge.kind === 'control') && <span><i class="line-control"></i>{diagram.controlLabel ?? (id === 'shared-storage' ? 'Time / policy change' : 'Task / reference')}</span>}
   </div>
   <svg class="diagram-desktop" xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 880 ${diagram.height}`} role="img" aria-labelledby={`${id}-diagram-title ${id}-diagram-description`}>
     <title id={`${id}-diagram-title`}>{diagram.title}</title>

@@ -2031,18 +2031,6 @@
   margin-bottom: 20px;
 }
 
-/* Compact scenario index; detailed flows live on the single Scenarios page. */
-:where(.home-page) .scenario-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 14px; line-height: 1.8; }
-:where(.home-page) .scenario-table th, :where(.home-page) .scenario-table td { padding: 17px 20px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
-:where(.home-page) .scenario-table thead th { background: var(--soft); font-size: 12px; font-weight: 600; }
-:where(.home-page) .scenario-table th:first-child { width: 38%; padding-left: 0; }
-:where(.home-page) .scenario-table thead th:first-child { padding-left: 14px; }
-:where(.home-page) .scenario-table tbody th { font-weight: 500; }
-:where(.home-page) .scenario-table td { color: var(--muted); padding-right: 0; }
-@media (max-width: 620px) {
-  :where(.home-page) .scenario-table { font-size: 12px; line-height: 1.75; }
-  :where(.home-page) .scenario-table th, :where(.home-page) .scenario-table td { padding: 14px 10px; }
-  :where(.home-page) .scenario-table th:first-child { width: 42%; }
-}
-:where(.home-page) .scenario-table a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
-:where(.home-page) .scenario-table a:hover { color: #194777; }
+/* Linked application headings retain the original numbered row layout. */
+:where(.home-page) .application-row h3 a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+:where(.home-page) .application-row h3 a:hover { color: #194777; }

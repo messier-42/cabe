@@ -2,7 +2,7 @@ export const scenarios = [
   {
     id: 'shared-storage',
     title: 'Shared storage and later access',
-    summary: 'Admit a new reader to retained reports without copying or re-encrypting the archive.',
+    applicationDescription: 'Several teams can keep encrypted reports in a shared object store. Within an established CABE Domain that retains the required key material, a later policy decision can admit another team to an existing report without creating another archive copy or re-encrypting it.',
     setup: 'Several teams share an object store, such as S3, for reports and recorded sensor data. Producers encrypt each object before uploading it. Their applications use one established CABE Domain and its Key Service, which retains the material required to decrypt historical Envelopes. This example uses Non-Captive Lease Keys.',
     paragraphs: [
       'A second team’s application can fetch a report’s Envelope but is initially refused its decryption material. The report remains in storage for six months. A later sharing decision changes the Policy to admit that team to the relevant historical reports. The application makes a fresh Retrograde request using the report’s Attribute Set and Lease Reference. The Key Service evaluates the requested operation and the caller’s established Claims against the revised Policy.',
@@ -15,7 +15,7 @@ export const scenarios = [
   {
     id: 'telemetry',
     title: 'Telemetry and application events',
-    summary: 'Reuse Leases for frequent messages while consumers have different product permissions.',
+    applicationDescription: 'A shared event service may carry equipment readings, observations and application results for several consumers. Access rules can distinguish these products without making the broker a trusted reader of their payloads.',
     setup: 'A sensor application publishes repeated observations and equipment-status events through a shared broker. An analysis application is entitled to observations; a maintenance application is entitled to equipment status. All three applications authenticate within the same CABE Domain. The producer assigns distinct Attribute Sets to the two information products.',
     paragraphs: [
       'The producer obtains an authorised Lease for each Attribute Set. With Non-Captive Lease Keys and valid cached Leases, it encrypts further Messages locally, using the same applicable Lease Key with the required per-Message encryption parameters. A short sequence of readings therefore does not require a fresh Prograde request for every event. Expiry or invalidation prompts new resolution; cached Leases do not promise an instantaneous transition during Rollover.',
@@ -27,7 +27,8 @@ export const scenarios = [
   {
     id: 'coalition-operating-picture',
     title: 'A coalition operating picture',
-    summary: 'Combine contributions through agreed formats and a common security mechanism, with selective views.',
+    applicationTitle: 'Satellite and coalition information',
+    applicationDescription: 'An analysis application may need selected products from a satellite provider or coalition information service rather than access to its entire collection. The provider’s release rules determine which consumers may obtain which products. For a live feed, an application can protect finite video segments before they reach a shared relay or cache.',
     setup: 'Several producers contribute position reports, observations and selected satellite products. The participants agree compatible report formats and Attribute meanings. Their separately operated applications use an established CABE Domain and authenticate to its Key Service. The example uses Non-Captive Lease Keys and does not require federation between Domains.',
     paragraphs: [
       'Each producer protects its contributions using the appropriate Attribute Set. Shared relays and storage carry the Envelopes to consuming applications. A field application may obtain keys for position reports and selected observations, while an analysis application also receives access to satellite products. The Key Service evaluates each request using that application’s established Claims, the contribution’s Attributes and the requested operation.',
@@ -38,9 +39,23 @@ export const scenarios = [
     references: [{ path: '/spec/arch/#definitions', label: 'Messages, Attributes and Domains' }, { path: '/spec/arch/#key-resolution', label: 'Policy and key resolution' }],
   },
   {
+    id: 'live-video-and-voice',
+    title: 'Live voice and video',
+    applicationDescription: 'Voice and video can be protected as they are produced. Applications encapsulate encoded audio blocks, video frames or segments in CABE Envelopes and send them through shared relays. Authorised receivers obtain the key material needed to recover the media; the relays do not need those keys. Reusable Leases allow successive chunks to be protected without a Key Service round trip for every chunk.',
+    setup: 'Voice and video applications produce encoded audio blocks, video frames or segments and protect them before delivery through shared infrastructure. The applications agree the media formats, framing and channel Attributes, and use one CABE Domain. This example uses Non-Captive Lease Keys and reusable Leases for successive media chunks.',
+    paragraphs: [
+      'Each producer obtains a Lease for the appropriate Attribute Set and protects the encoded media as CABE Messages before publication. While its cached Lease remains valid, it can encrypt further units with the same Attribute Set locally, using the required per-Message encryption parameters. A shared relay forwards the resulting Envelopes without receiving their decryption keys.',
+      'Receiving applications authenticate to the Key Service and request the material for the arriving Envelopes. Policy evaluates the caller’s established Claims, the channel Attributes and the requested operation. Authorised applications decrypt locally, recover the encoded media and pass it to their decoders. Key access is separate from the media delivery path; successive chunks can use a valid cached Lease without a Key Service round trip for every chunk.',
+      'Splitting a stream into units does not itself create independent permissions. Access boundaries follow the usable key material, and a later refusal cannot recall keys or media already obtained. A service performing plaintext mixing, transcoding or analysis would be an authorised processor with its own access arrangement; the relay shown here only forwards encrypted media.',
+      'This is an architectural use of CABE. Latency and throughput depend on the media applications, implementation and network, and require measurement in the system being built.',
+    ],
+    consequence: 'Media applications share a relay while key access controls who can recover the encoded media.',
+    references: [{ path: '/spec/arch/#prograde-resolution', label: 'Reusable Leases' }, { path: '/spec/cbes/#operations', label: 'Media object encryption and recovery' }, { path: '/spec/arch/#key-access', label: 'Key custody and local use' }],
+  },
+  {
     id: 'partner-observation',
     title: 'A partner observation reaching the field',
-    summary: 'Share a partner’s observation with an authorised field application through intermediary transport.',
+    applicationDescription: 'A partner’s publishing application can send an encrypted drone observation to an authorised SOF application for situational awareness. Relays carry the Envelope without needing the decryption key.',
     setup: 'A partner’s publishing application has a current drone observation needed by an authorised SOF application for situational awareness. The partner and field applications participate in an agreed CABE Domain and can authenticate to its Key Service. The producer is authorised to publish the observation, and the field application does not already hold its key.',
     paragraphs: [
       'The producer assigns the agreed Attributes and obtains a Non-Captive Lease Key. It encrypts the observation before passing the Envelope to a shared delivery path. Brokers, gateways and caches forward the same protected object without being given its decryption key. They are intermediaries, distinct from the application entitled to read the report.',
@@ -53,7 +68,8 @@ export const scenarios = [
   {
     id: 'allied-radio-mesh',
     title: 'Protected traffic over an allied radio mesh',
-    summary: 'Use available radio transport without giving its operators the application decryption keys.',
+    applicationTitle: 'An ally-operated radio mesh',
+    applicationDescription: 'An ally’s mobile ad hoc network may provide an available path between applications. Protected application data can use that path without giving the radios and relays its decryption keys.',
     setup: 'Two applications have an available data connection through an ally-operated mobile ad hoc network. Radio admission, routing and waveform compatibility are already provided by that network. The applications use the same CABE Domain and have a separate, usable relationship with its Key Service; the radio network is not the Domain boundary.',
     paragraphs: [
       'The sending application obtains an authorised Non-Captive Lease Key and encrypts each Message locally. A valid cached Lease can serve further Messages with the same Attribute Set. Radios and relays transport the resulting Envelopes between endpoints, but they do not receive the application decryption keys.',
@@ -66,7 +82,7 @@ export const scenarios = [
   {
     id: 'intermittent-links',
     title: 'Information arriving over an intermittent link',
-    summary: 'Let a prepared Target Domain resolve access locally when the Origin Domain is unreachable.',
+    applicationDescription: 'An Origin Domain can send protected reports through an intermittent link or store-and-forward path. A prepared Target Domain uses the accompanying Federated Lease Package and its local Key Service to provide authorised access. The recipient does not need a live connection to the Origin Domain when it reads the report.',
     setup: 'An Origin Domain sends protected reports through an intermittent link, a store-and-forward path or carried storage. The receiving Target Domain is included in the federation arrangement when the Lease is created. Its local Key Service holds the federation secret material needed to recover the relevant Non-Captive Lease Key information.',
     paragraphs: [
       'During Prograde Resolution, the Origin Domain’s Key Service prepares a Federated Lease Package (FLP) for the included Target Domain. The producer attaches the applicable FLP to the Envelope. Both travel through the delivery path; the intermediary needs neither the plaintext nor the Lease Key.',
@@ -79,7 +95,7 @@ export const scenarios = [
   {
     id: 'derived-results',
     title: 'Restricted inputs, separately releasable results',
-    summary: 'Make a trusted processing application release and protect a distinct result for another audience.',
+    applicationDescription: 'An authorised processing application can read restricted observations and decide which result may be released. It protects that result as a new Message with its own Attributes and key arrangement, so another audience can read the result without being given access to the inputs.',
     setup: 'An authorised processing application needs restricted observations to produce a result for a wider audience. Its operators define the release rules and trust it to apply them to plaintext. The applications use one CABE Domain, with distinct Attribute Sets and an appropriate key arrangement for the restricted inputs and the released result.',
     paragraphs: [
       'The processing application requests access to the input Envelopes as its own authenticated Principal. The Key Service checks its Claims and requested operation against each input’s Attributes. With permitted Non-Captive key access, it decrypts the observations locally and performs the analysis inside an explicitly trusted processing boundary.',
@@ -92,7 +108,7 @@ export const scenarios = [
   {
     id: 'workflow-coordination',
     title: 'A workflow coordinator without access to every input',
-    summary: 'Dispatch tasks and references while separately authenticated workers obtain only their permitted inputs.',
+    applicationDescription: 'A coordinator passes tasks and protected input references to separately authenticated processing services. Each worker requests access to the information it needs. Arranging the work does not require the coordinator to hold every worker’s input keys.',
     setup: 'A coordinator dispatches tasks and references to two separately authenticated processing services. An analysis worker may read observations; a maintenance worker may read equipment-status inputs. The inputs have distinct Attribute Sets and key arrangements in one CABE Domain. The coordinator has neither worker’s input keys.',
     paragraphs: [
       'The coordinator sends each worker a task and an object reference. The workers fetch protected inputs from shared storage and request the required material from the Key Service as their own Principals. A task reference locates an object; it is not itself an entitlement to decrypt it. Policy checks the worker’s established Claims, the input’s Attribute Set and the requested operation.',
@@ -103,9 +119,23 @@ export const scenarios = [
     references: [{ path: '/spec/ckap/#client-identity', label: 'Direct Client authentication' }, { path: '/spec/arch/#key-resolution', label: 'Worker access decisions' }],
   },
   {
+    id: 'delegated-requests',
+    title: 'Requests made on someone else’s behalf',
+    applicationDescription: 'An analyst asks a planning application to examine imagery. The application passes part of the task to an image-processing service, which requests access to protected observations. An integration can supply verified requester and task information to the key access decision, allowing policy to consider whose request the service is carrying out as well as the service’s own identity.',
+    setup: 'An analyst asks a planning application to examine imagery, and it assigns work to an image-processing service. In this proposed integration, the operator runs that service in isolated task executions within one CABE Domain. Each starts without the requested observation’s key or CEK, with no shared key or plaintext cache. The operator enforces this separation and controls result release.',
+    paragraphs: [
+      'A trusted task authority authenticates the analyst and checks the authority granted to the planning application and processing service for the requested observations. It issues a signed, short-lived task credential bound to the requester, task, scope and intended worker. The Key Service’s authentication integration verifies the issuer, signature, validity and worker binding, then maps the verified service, requester and task information into Claims on the authenticated Principal. Forwarded names or task identifiers alone supply no authority.',
+      'The worker fetches the protected observations and makes an ordinary CKAP Retrograde request with the Attribute Set and Lease Reference. Policy evaluates the established Claims, Attributes and requested operation. For the same processing service, Task A with permitted requester and scope is allowed; Task B outside that scope is refused. These are separate executions starting without the input material, not a sequence in which a worker forgets keys it has already obtained.',
+      'The task credential, authority checks and execution isolation are supporting integration choices, not CABE delegation fields or a new CKAP operation. Refusing a fresh request would not constrain a worker that already held usable input keys, CEKs or plaintext.',
+      'Records can associate the original task, acting services, requested information and key access decisions. Application-side events record local decryption or use separately. Key Service logs do not record every local decryption, and correlating these records does not by itself establish complete, tamper-proof provenance.',
+    ],
+    consequence: 'Verified requester and task authority contribute to the decision alongside the acting service’s identity.',
+    references: [{ path: '/spec/arch/#definitions', label: 'Principals, Claims and Policy inputs' }, { path: '/spec/ckap/#client-identity', label: 'Authentication integration' }, { path: '/spec/ckap/#retrograde', label: 'The existing Retrograde request' }, { path: '/spec/arch/#key-access', label: 'Retained keys and local use' }],
+  },
+  {
     id: 'supplier-diagnostics',
     title: 'Selected diagnostic data for a supplier',
-    summary: 'Share deliberately separate fault records without duplicating the whole collection system.',
+    applicationDescription: 'An operator publishes fault records separately from operational observations through a shared collection service. A supplier’s diagnostic application can obtain keys for the fault records while access to operational information is refused. Selective sharing does not require duplicating the whole collection system.',
     setup: 'An operator deliberately publishes fault records and operational observations as distinct information products. The supplier’s diagnostic application and the operator’s operations application authenticate to the same agreed CABE Domain. Fault and observation Messages have different Attribute Sets and appropriate, separate key arrangements; their Payloads are prepared by the producer.',
     paragraphs: [
       'The producer encrypts both products before uploading their Envelopes to a common collection service. The supplier can fetch the collection’s protected objects, but its established Claims permit key access for fault records only. A request for operational-observation key material is refused. The operator’s application has the observation access required for its own work.',
