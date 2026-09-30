@@ -39,6 +39,21 @@ export const scenarios = [
     references: [{ path: '/spec/arch/#definitions', label: 'Messages, Attributes and Domains' }, { path: '/spec/arch/#key-resolution', label: 'Policy and key resolution' }],
   },
   {
+    id: 'air-tasking-orders',
+    title: 'Air tasking orders and updates',
+    applicationDescription: 'An air operations centre can distribute an Air Tasking Order and subsequent changes through shared messaging and storage services. Participating planning and unit applications obtain access to the tasking information they are authorised to receive, while relays and storage operators do not need its decryption keys. The same protection model can carry a complete order or separately prepared tasking messages and amendments.',
+    setup: 'In this possible integration, an air operations centre’s tasking publisher, a planning application and a unit application use one CABE Domain with Non-Captive Lease Keys. The planning application may read the complete order and its amendments; the unit application may read separately prepared unit tasking and its amendments. These audiences have distinct Attribute Sets and separate key material. The applications agree compatible tasking formats and trusted issuing-authority public keys.',
+    paragraphs: [
+      'The publisher prepares both products, digitally signs their content and application-level order identifiers and revisions, then protects them in CABE Envelopes under authorised Leases. A complete order is one opaque Payload: CABE does not selectively reveal its internal paragraphs. The publisher applies release rules when selecting each product’s content; shared messaging and storage services carry the Envelopes without decrypting or redacting them.',
+      'Recipients authenticate to the Key Service and request the material for their permitted products. Policy evaluates their established Claims, the Attributes and the requested operation. Retrieving an Envelope is not permission to read it. Separate Envelopes are not independent access boundaries where the same usable key material spans them.',
+      'When tasking changes, the publisher prepares a signed amendment for each affected product. It can be much smaller than the original order while using the same Envelope format and key access mechanism. The amendment identifies its order, base revision and resulting revision within the application’s signed content.',
+      'After recovering the protected information, the receiving application verifies the signature against its configured issuing-authority keys and checks that the issuer is authorised for that product. CABE’s symmetric authentication alone does not uniquely identify an issuer among holders of the same key. The application checks the amendment’s order and base revision against its local copy before applying it and updating its view; mismatches require reconciliation through the application’s workflow.',
+      'Tasking validation and supersession remain application responsibilities. Order identifiers and revision relationships are application data, not CABE fields or operations. Publishing a new revision does not erase earlier plaintext, recall obtained keys or guarantee that every recipient has the latest order.',
+    ],
+    consequence: 'Participants share distribution infrastructure for protected tasking and updates without giving relays plaintext or adopting a different protection format for each message size.',
+    references: [{ path: '/spec/arch/#definitions', label: 'Payloads, Attributes and Policy' }, { path: '/spec/cbes/#construction', label: 'Symmetric Envelope protection' }, { path: '/spec/cbes/#operations', label: 'Encapsulation and recovery' }, { path: '/spec/ckap/#retrograde', label: 'Recipient key resolution' }],
+  },
+  {
     id: 'live-video-and-voice',
     title: 'Live voice and video',
     applicationDescription: 'Voice and video can be protected as they are produced. Applications encapsulate encoded audio blocks, video frames or segments in CABE Envelopes and send them through shared relays. Authorised receivers obtain the key material needed to recover the media; the relays do not need those keys. Reusable Leases allow successive chunks to be protected without a Key Service round trip for every chunk.',
