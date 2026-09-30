@@ -4,7 +4,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
 const links = [
   { href: `${base}/#why-cabe`, label: 'Why CABE?' },
   { href: `${base}/#how-it-works`, label: 'How it works' },
-  { href: `${base}/#applications`, label: 'Applications' },
+  { href: `${base}/scenarios/`, label: 'Scenarios', active: currentPath === `${base}/scenarios` },
   { href: `${base}/software/`, label: 'Software', active: currentPath === `${base}/software` },
   { href: `${base}/specification/`, label: 'Specifications', active: currentPath === `${base}/specification` || currentPath.startsWith(`${base}/spec/`) },
 ];

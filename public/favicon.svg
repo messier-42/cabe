@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="6" fill="#003B7A"/>
-  <rect x="1" y="1" width="30" height="30" rx="5" stroke="#ffffff" stroke-width="0.75" opacity="0.5"/>
-  <rect x="7" y="11" width="18" height="14" rx="1.5" stroke="#ffffff" stroke-width="1.25"/>
-  <path d="M12 11V8.5a4 4 0 0 1 8 0V11" stroke="#ffffff" stroke-width="1.25"/>
-  <circle cx="16" cy="18" r="2" fill="#ffffff" opacity="0.8"/>
-  <path d="M16 20v2.5" stroke="#ffffff" stroke-width="1.25" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="62 -61 272 272" fill="#003B7A">
+  <title>CABE</title>
+  <!-- Canonical A contours from CABE-bound-wordmark.svg (interlocking-cab and a-feather).
+       Only the shared C/A and A/B joins are cut: (90,134)–(80,103) and (316,103)–(311,134).
+       All other segments are copied verbatim; square framing adds optical clear space. -->
+  <path d="M 80 103 Q 84 103 87 100 L 175 9 Q 184 0 197 0 Q 209 0 218 9 L 309 100 Q 312 103 316 103 L 311 134 C 297 134 291 132 282 124 L 197 40 L 114 126 C 108 132 101 134 90 134 Z"/>
+  <path d="M 197 62 L 259 126 C 251 131.3 244 134 233 134 C 220 134 213 130 205 122 L 170 89 Z"/>
 </svg>
