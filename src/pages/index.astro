@@ -167,11 +167,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </section>
 
   <section class="section" id="applications" aria-labelledby="applications-title">
-    <div class="section-intro"><h2 id="applications-title">Example scenarios</h2></div>
-    <table class="scenario-table" aria-labelledby="applications-title">
-      <thead><tr><th scope="col">Scenario</th><th scope="col">What it illustrates</th></tr></thead>
-      <tbody>{scenarios.map(scenario => <tr><th scope="row"><a href={`${base}/scenarios/#${scenario.id}`}>{scenario.title}</a></th><td>{scenario.summary}</td></tr>)}</tbody>
-    </table>
+    <div class="section-intro"><h2 id="applications-title">Applications</h2></div>
+    <div class="application-list">
+      {scenarios.map((scenario, index) => <article class="application-row" id={scenario.id === 'delegated-requests' ? 'delegated-access' : undefined} aria-labelledby={`application-${scenario.id}`}>
+        <div><span class="application-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span><h3 id={`application-${scenario.id}`}><a href={`${base}/scenarios/#${scenario.id}`}>{scenario.applicationTitle ?? scenario.title}</a></h3></div>
+        <div><p>{scenario.applicationDescription}</p></div>
+      </article>)}
+    </div>
   </section>
 
   <section class="section" id="software" aria-labelledby="software-title">
@@ -187,12 +189,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </section>
 
   <section class="section" id="integration" aria-labelledby="integration-title">
-    <div class="section-intro"><h2 id="integration-title">Where CABE sits</h2><p>The deployment selects its identity system and Policy and establishes trust between participating applications and Key Services.</p></div>
-    <div class="responsibilities">
-      <div><h3>CABE components</h3><dl><div><dt>Client library</dt><dd>Constructs and consumes Envelopes; makes Key Service requests.</dd></div><div><dt>Key Service</dt><dd>Resolves keys, manages Leases and applies Policy.</dd></div><div><dt>Envelope</dt><dd>Carries the Message’s Attributes and Lease Reference in protected headers.</dd></div></dl></div>
-      <div><h3>The surrounding system</h3><dl><div><dt>Identity &amp; policy</dt><dd>Authenticates Clients, establishes Claims and defines access rules.</dd></div><div><dt>Transport</dt><dd>Delivers and stores Envelopes using the available infrastructure.</dd></div><div><dt>Processing</dt><dd>Controls plaintext use, release of derived information and records of use.</dd></div></dl></div>
+    <div class="section-intro">
+      <h2 id="integration-title">Where CABE sits</h2>
+      <div>
+        <p>Producers use a CABE client library to encrypt Messages before publishing them. Consumers use it to obtain the required key material and decrypt received Envelopes. The broker, relay or object store carries those Envelopes.</p>
+        <p>Operators configure how the Key Service authenticates applications, which facts it establishes about each caller, and the rules that grant access. Those facts might include the caller’s organisation, project and approved function. In khaled, authentication, claims mapping, policy evaluation and key storage are separate plugins.</p>
+      </div>
     </div>
-    <details class="note" id="delegated-access"><summary>Requests made on someone else’s behalf <svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary><div class="note-body"><p>A service at the end of a chain may recognise its immediate caller without knowing who initiated the task or what authority was delegated. A larger system should be able to make that distinction when deciding whether to release information.</p><p>CABE protects objects and controls key access; the integration validates delegation and enforces its limits, including where a caller already holds broader key material. CABE does not define a transitive identity protocol.</p><p>Records can link a task, acting service, object and access decision. With local key use, point-of-use instrumentation is also needed: a Key Service log is not a log of every object decrypted.</p></div></details>
+    <div class="responsibilities">
+      <div><h3>CABE components</h3><dl><div><dt>Client library</dt><dd>Serialises Attributes, constructs Envelopes and caches Leases.</dd></div><div><dt>Key Service</dt><dd>Maps Attribute Sets to key material and resolves Lease References.</dd></div><div><dt>Envelope</dt><dd>Carries protected Attributes and a Lease Reference alongside the encrypted Payload.</dd></div></dl></div>
+      <div><h3>Application responsibilities</h3><dl><div><dt>Publishing application</dt><dd>Chooses the information to publish and assigns its Attributes.</dd></div><div><dt>Consuming application</dt><dd>Interprets recovered data and controls its use and release.</dd></div><div><dt>Transport</dt><dd>Routes, stores and retries delivery according to the application’s needs.</dd></div></dl></div>
+    </div>
   </section>
 
   <section class="section references" aria-label="Technical references">
