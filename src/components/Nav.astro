@@ -1,60 +1,60 @@
 ---
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-
-// priority: 1 = highest (last to drop into hamburger), higher numbers drop first
+const currentPath = Astro.url.pathname.replace(/\/$/, '');
 const links = [
-  { href: `${base}/`,              label: 'Home',          priority: 5 },
-  { href: `${base}/specification`, label: 'Specification', priority: 1 },
-  { href: `${base}/software`,      label: 'Software',      priority: 2 },
-  { href: `${base}/faq`,           label: 'FAQ',           priority: 3 },
-  { href: `${base}/get-involved`,  label: 'Get Involved',  priority: 4 },
+  { href: `${base}/#why-cabe`, label: 'Why CABE?' },
+  { href: `${base}/#how-it-works`, label: 'How it works' },
+  { href: `${base}/#applications`, label: 'Applications' },
+  { href: `${base}/software/`, label: 'Software', active: currentPath === `${base}/software` },
+  { href: `${base}/specification/`, label: 'Specifications', active: currentPath === `${base}/specification` || currentPath.startsWith(`${base}/spec/`) },
 ];
-
-const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
-<nav class="nav">
-  <div class="container nav__inner">
-    <a href={`${base}/`} class="nav__logo">
-      <span class="nav__logo-mark">CABE</span>
-      <span class="nav__logo-sub">Concise Attribute-Bound Encapsulation</span>
+<header class="header">
+  <div class="wrap nav">
+    <a class="brand" href={`${base}/`} aria-label="CABE home">
+      <img src={`${base}/cabe-mark.svg`} alt="CABE" width="555" height="146" />
     </a>
-    <ul class="nav__links">
-      {links.map(link => (
-        <li class={`nav__links-item nav__links-item--p${link.priority}`}>
-          <a
-            href={link.href}
-            class:list={['nav__link', { 'nav__link--active': currentPath === link.href.replace(/\/$/, '') }]}
-          >
-            {link.label}
-          </a>
-        </li>
-      ))}
-      <li class="nav__links-item nav__links-item--cta">
-        <a href={`${base}/#mc-email`} class="nav__cta">Find out more</a>
-      </li>
-    </ul>
-    <details class="nav__menu">
-      <summary class="nav__menu-toggle" aria-label="Toggle navigation menu">
-        <span class="nav__menu-bar"></span>
-        <span class="nav__menu-bar"></span>
-        <span class="nav__menu-bar"></span>
-      </summary>
-      <ul class="nav__menu-panel">
-        {links.map(link => (
-          <li>
-            <a
-              href={link.href}
-              class:list={['nav__menu-link', { 'nav__menu-link--active': currentPath === link.href.replace(/\/$/, '') }]}
-            >
-              {link.label}
-            </a>
-          </li>
-        ))}
-        <li>
-          <a href={`${base}/#mc-email`} class="nav__menu-link nav__menu-link--cta">Find out more</a>
-        </li>
-      </ul>
-    </details>
+    <nav class="navlinks" id="navlinks" aria-label="Main navigation">
+      {links.map(link => <a href={link.href} aria-current={link.active ? (currentPath.startsWith(`${base}/spec/`) ? 'true' : 'page') : undefined}>{link.label}</a>)}
+    </nav>
+    <a class="source-link" href="https://github.com/messier-42/cabe" target="_blank" rel="noopener noreferrer">
+      GitHub
+      <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12" /></svg>
+    </a>
+    <button class="menu" id="menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="navlinks" type="button" hidden>
+      <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+    </button>
   </div>
-</nav>
+</header>
+
+<script>
+  const button = document.getElementById('menu-toggle');
+  const nav = document.getElementById('navlinks');
+  if (button && nav) {
+    button.hidden = false;
+    nav.parentElement?.classList.add('nav-ready');
+    function closeMenu() {
+      nav?.classList.remove('is-open');
+      button?.setAttribute('aria-expanded', 'false');
+      button?.setAttribute('aria-label', 'Open navigation');
+    }
+    button.addEventListener('click', () => {
+      const open = button.getAttribute('aria-expanded') !== 'true';
+      nav.classList.toggle('is-open', open);
+      button.setAttribute('aria-expanded', String(open));
+      button.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+    });
+    nav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && nav.classList.contains('is-open')) {
+        closeMenu();
+        button.focus();
+      }
+    });
+    document.addEventListener('click', event => {
+      if (event.target instanceof Node && !nav.contains(event.target) && !button.contains(event.target)) closeMenu();
+    });
+    window.matchMedia('(max-width: 620px)').addEventListener('change', closeMenu);
+  }
+</script>
