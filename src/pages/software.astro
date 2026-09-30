@@ -35,7 +35,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
           <p id="khaled-title" class="khaled-feature__body">
             <strong>khaled</strong> is the reference implementation of a CABE
-            Key Server, the centerpiece of any CABE deployment. It has a
+            Key Server, the centrepiece of any CABE deployment. It has a
             plugin-based architecture enabling it to be refitted to support a wide
             variety of operating scenarios.
           </p>
@@ -53,7 +53,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <!-- Supporting software -->
         <div class="software-grid">
           <a href="https://github.com/messier-42/cabe-go" class="software-card software-card--link">
-            <span class="software-card__tag software-card__tag--live">Available now</span>
             <h3 class="software-card__title">cabe-go</h3>
             <p class="software-card__body">
               The cabe-go client library allows CABE to be integrated into
@@ -63,7 +62,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </a>
 
           <a href="https://github.com/messier-42/cabe-go" class="software-card software-card--link">
-            <span class="software-card__tag software-card__tag--live">Available now</span>
             <h3 class="software-card__title">cabetool</h3>
             <p class="software-card__body">
               The cabetool command line tool allows you to perform CABE
@@ -73,17 +71,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           </a>
 
           <a href="/game/" class="software-card software-card--link">
-            <span class="software-card__tag software-card__tag--live">Available now</span>
             <h3 class="software-card__title">CABE Policy Simulator</h3>
             <p class="software-card__body">
               A browser-based interactive simulator demonstrating Cedar
-              policy evaluation against CABE envelopes — useful for learning.
+              policy evaluation against CABE Envelopes — useful for learning.
             </p>
             <span class="software-card__link">Launch simulator →</span>
           </a>
 
           <a href={`${base}/specification`} class="software-card software-card--link">
-            <span class="software-card__tag software-card__tag--live">Available now</span>
             <h3 class="software-card__title">Build your own</h3>
             <p class="software-card__body">
               The CABE specifications are open. Implement CABE in the
@@ -225,25 +221,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     border-color: var(--blue-line);
     box-shadow: 0 4px 18px rgba(38, 95, 153, 0.08);
     transform: translateY(-1px);
-  }
-
-  .software-card__tag {
-    align-self: flex-start;
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.2rem 0.55rem;
-    border-radius: 100px;
-    background: var(--soft);
-    color: var(--quiet);
-    border: 1px solid var(--line);
-  }
-
-  .software-card__tag--live {
-    color: var(--pass);
-    background: #e8f5ef;
-    border-color: #b0dfc8;
   }
 
   .software-card__title {

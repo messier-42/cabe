@@ -7,7 +7,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <Layout
   title="CABE — Attribute-based access control for encrypted data"
-  description="CABE is a concise encrypted message format and key access protocol for attribute-based access control over encrypted data."
+  description="CABE is a concise encrypted Envelope format and key access protocol for attribute-based access control over encrypted data."
 >
 <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;overflow:hidden"><defs>
 <symbol id="arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
@@ -23,7 +23,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div>
       <p class="eyebrow">Concise Attribute-Bound Encapsulation</p>
       <h1 id="hero-title">Attribute-based access control<br> for encrypted data</h1>
-      <p class="hero-copy">CABE defines an encrypted message format and a protocol for obtaining keys under an attribute based access policy. Applications can exchange protected data through brokers, relays and storage services which do not need access to the plaintext.</p>
+      <p class="hero-copy">CABE defines an encrypted Envelope format and a protocol for obtaining keys under an attribute based access policy. Applications can exchange protected data through brokers, relays and storage services which do not need access to the plaintext.</p>
       <div class="actions">
         <a class="button primary" href="#simulator">Try the policy simulator <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
         <a class="button" href={`${base}/spec/arch/`}>Read the architecture <svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
@@ -37,21 +37,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="prose">
       <p>Applications which need to cooperate do not necessarily share the same operators, permissions or assumptions about trust. Putting them on the same network does not resolve those differences.</p>
       <p>A report may pass through several systems before reaching the application which needs it. A partner may be entitled to selected observations but not the whole collection. The infrastructure carrying that information need not be entitled to read it.</p>
-      <p>We want to make these exchanges possible without requiring each application to invent its own protection and key-distribution scheme. This includes frequent telemetry, live information and work passed between services, as well as files. CABE supplies a common envelope and policy controlled key access which those larger systems can build on.</p>
+      <p>The producing application assigns Attributes to the information it protects. The Key Service uses those Attributes to control key access, independently of the transport carrying the Envelope.</p>
     </div>
   </section>
 
   <section class="section foundation" id="how-it-works" aria-labelledby="how-title">
     <div class="section-intro">
       <h2 id="how-title">A shared broker <br>with two consumers</h2>
-      <p>Suppose a sensor publishes observations through a broker used by an analysis application and a maintenance application. Both can receive the messages. Whether either can read them is a separate question, answered by the key service’s policy.</p>
+      <p>Suppose a sensor publishes an encrypted observation through a broker used by an analysis application and a maintenance application. Both receive the same Envelope. The Key Service applies its Policy to their requests for the decryption key.</p>
     </div>
 
     <figure class="figure">
-      <div class="figure-top"><span>One CABE domain</span><div class="legend" aria-hidden="true"><span><i></i>Encrypted message</span><span><i class="key"></i>Key service interaction</span></div></div>
+      <div class="figure-top"><span>CABE Domain</span><div class="legend" aria-hidden="true"><span><i></i>Encrypted Envelope</span><span><i class="key"></i>Key Service interaction</span></div></div>
       <svg class="architecture" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 356" role="img" aria-labelledby="architecture-title architecture-desc">
-        <title id="architecture-title">Message delivery and policy controlled key access</title>
-        <desc id="architecture-desc">The producer assigns attributes and requests a lease from the key service. The broker delivers the encrypted observation to both consumers. In this illustrative khaled configuration, authentication and claims mapping supply facts to Cedar. The policy permits the analysis consumer and refuses the maintenance consumer. Neither consumer already has the decryption key.</desc>
+        <title id="architecture-title">Envelope delivery and policy controlled key access</title>
+        <desc id="architecture-desc">The authorised producer assigns Attributes and obtains a Lease from the Key Service. The broker delivers the encrypted observation to both consumers. In this illustrative khaled configuration, authentication and claims mapping establish caller information. Cedar evaluates that information, the Message’s Attributes and the requested operation. The Key Service permits key access for the analysis consumer and refuses it for the maintenance consumer. Neither consumer already holds the decryption key.</desc>
         <defs>
           <marker id="data-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M1 1l6 3-6 3" fill="none" stroke="#737b85" stroke-width="1.2"/></marker>
           <marker id="key-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M1 1l6 3-6 3" fill="none" stroke="#356da2" stroke-width="1.2"/></marker>
@@ -59,19 +59,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <path d="M144 217V77H370" fill="none" stroke="#356da2" stroke-width="1.4" stroke-dasharray="5 5" marker-start="url(#key-arrow)" marker-end="url(#key-arrow)"/>
         <path d="M750 57H934V190" fill="none" stroke="#356da2" stroke-width="1.4" stroke-dasharray="5 5" marker-start="url(#key-arrow)" marker-end="url(#key-arrow)"/>
         <path d="M750 86H1087V305H1059" fill="none" stroke="#356da2" stroke-width="1.4" stroke-dasharray="5 5" marker-start="url(#key-arrow)" marker-end="url(#key-arrow)"/>
-        <text x="165" y="141" class="node-small">Authenticate and</text><text x="165" y="162" class="node-small">request a lease</text>
+        <text x="165" y="141" class="node-small">Authenticate and</text><text x="165" y="162" class="node-small">request a Lease</text>
         <text x="778" y="131" class="node-small">Authenticate</text><text x="778" y="152" class="node-small">Request key access</text>
         <rect x="370" y="27" width="380" height="111" rx="7" fill="#f3f7fb" stroke="#b5c9dc"/>
-        <text x="392" y="55" class="node-title">Key service <tspan class="node-sub">/ khaled</tspan></text>
-        <text x="392" y="81" class="node-small">Authenticated claims + attributes + operation</text>
+        <text x="392" y="55" class="node-title">Key Service <tspan class="node-sub">(khaled)</tspan></text>
+        <text x="392" y="81" class="node-small">Established Claims + Attributes + operation</text>
         <rect x="391" y="96" width="112" height="25" rx="4" fill="white" stroke="#cad7e2"/>
         <text x="407" y="113" class="node-small" style="fill:#265f99;font-weight:600">Cedar policy</text>
         <path d="M514 108H545" stroke="#356da2" stroke-width="1.3" marker-end="url(#key-arrow)"/>
         <text x="557" y="113" class="node-small">Key access decision</text>
         <rect x="28" y="218" width="232" height="102" rx="7" fill="white" stroke="#d3d8de"/>
-        <text x="49" y="249" class="node-title">Producer</text><text x="49" y="273" class="node-sub">Assigns attributes</text><text x="49" y="295" class="node-sub">Encrypts the observation</text>
+        <text x="49" y="249" class="node-title">Producer</text><text x="49" y="273" class="node-sub">Assigns Attributes</text><text x="49" y="295" class="node-sub">Encrypts the observation</text>
         <path d="M260 269H393" stroke="#737b85" stroke-width="1.5" marker-end="url(#data-arrow)"/>
-        <text x="276" y="251" class="node-small">CABE envelope</text>
+        <text x="276" y="251" class="node-small">CABE Envelope</text>
         <rect x="395" y="218" width="252" height="102" rx="7" fill="#f8f9fb" stroke="#d3d8de"/>
         <text x="417" y="249" class="node-title">Shared broker</text><text x="417" y="273" class="node-sub">Delivers the same ciphertext</text><text x="417" y="295" class="node-sub">Has no decryption key</text>
         <path d="M647 269H716M716 224V304" stroke="#737b85" fill="none" stroke-width="1.5"/>
@@ -80,39 +80,39 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <rect x="810" y="272" width="249" height="67" rx="7" fill="white" stroke="#d3d8de"/><text x="831" y="298" class="node-title">Maintenance consumer</text><text x="831" y="322" class="node-small" style="fill:#a33636">Key access refused</text>
       </svg>
       <div class="mobile-architecture">
-        <div class="mobile-key"><strong>Key service / khaled</strong>Authentication and claims mapping → Cedar policy evaluation → key access decision.</div>
+        <div class="mobile-key"><strong>Key Service (khaled)</strong>Authentication and claims mapping → Cedar policy evaluation → key access decision.</div>
         <ol class="mobile-flow">
-          <li><strong>Producer</strong><p>Assigns attributes, obtains a lease and encrypts the observation.</p></li>
+          <li><strong>Producer</strong><p>Assigns Attributes, obtains a Lease and encrypts the observation.</p></li>
           <li><strong>Shared broker</strong><p>Delivers the same ciphertext to both consumers. It has no decryption key.</p></li>
           <li><strong>Consumers request key access</strong><p class="allowed">Analysis application — key access permitted</p><p class="denied">Maintenance application — key access refused</p></li>
         </ol>
       </div>
-      <figcaption class="caption">Illustrative non-captive key flow. The producer is authorised to publish; neither consumer already holds the key. The rule and its inputs are shown below.</figcaption>
+      <figcaption class="caption">Illustrative flow using a Non-Captive Key. The producer is authorised to publish; neither consumer already holds the key. Receiving the Envelope does not by itself grant access to its decryption key.</figcaption>
     </figure>
 
     <div class="policy-worked" aria-labelledby="policy-title">
-      <div class="policy-heading"><div><p class="section-kicker">The decision inside the key service</p><h3 id="policy-title">How access is decided</h3></div><span class="quiet-tag">Illustrative configuration</span></div>
+      <div class="policy-heading"><div><p class="section-kicker">The decision inside the Key Service</p><h3 id="policy-title">How access is decided</h3></div><span class="quiet-tag">Illustrative configuration</span></div>
       <div class="policy-inputs">
         <div class="object-input">
-          <h4>Message attributes</h4>
+          <h4>Message Attributes</h4>
           <pre><code is:raw>{
   "project": "survey",
   "product": "observation",
   "release-to": ["ExampleOrg"]
 }</code></pre>
-          <p>The producer assigns these to the message.</p>
+          <p>The producer assigns this Attribute Set to the Message.</p>
         </div>
         <div class="claims-input">
-          <h4>Established caller claims</h4>
+          <h4>Established caller Claims</h4>
           <div class="claims-grid">
             <div><strong>Analysis application</strong><dl><div><dt>Project</dt><dd>survey</dd></div><div><dt>Organisation</dt><dd>ExampleOrg</dd></div><div><dt>Function</dt><dd>analysis</dd></div></dl></div>
             <div><strong>Maintenance application</strong><dl><div><dt>Project</dt><dd>survey</dd></div><div><dt>Organisation</dt><dd>ExampleOrg</dd></div><div><dt>Function</dt><dd>maintenance</dd></div></dl></div>
           </div>
-          <p>Authentication and claims mapping supply these facts. The application’s name grants no permission by itself.</p>
+          <p>Authentication and claims mapping establish these facts about each Principal. The application’s name grants no permission by itself.</p>
         </div>
       </div>
       <div class="policy-rule">
-        <div><h4>Configured access rule</h4><p>For decryption requests, require the same project, a permitted organisation and an approved function for the product.</p></div>
+        <div><h4>Configured access rule</h4><p>For requests to obtain the decryption key, require the same project, a permitted organisation and an approved function for the product.</p></div>
         <dl class="function-map"><div><dt>analysis</dt><dd>observation</dd></div><div><dt>maintenance</dt><dd>equipment-status</dd></div></dl>
       </div>
       <div class="decision-table-wrap">
@@ -127,19 +127,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <tfoot><tr><th scope="row">Key request</th><td><span class="decision-badge allow">ALLOW</span></td><td><span class="decision-badge deny">DENY</span></td></tr></tfoot>
         </table>
       </div>
-      <p class="policy-foot">The broker delivered the same envelope to both applications. The key service evaluated their requests separately.</p>
+      <p class="policy-foot">The broker delivers the same ciphertext to both consumers. The Key Service evaluates their requests separately.</p>
     </div>
 
     <div class="cedar-explanation">
       <div><h3>Where Cedar fits</h3><a class="more-link" href="https://khaled.cabespec.org/overview/arch/" target="_blank" rel="noopener noreferrer">Policy integration <svg class="icon" aria-hidden="true"><use href="#external"/></svg></a></div>
       <div><p>CABE does not prescribe a policy language. The reference key server <strong>khaled</strong> supports pluggable policy languages; the Cedar policy language is supported out of the box. The server uses the policy decision to control key access; authentication and claims mapping establish the facts on which it depends.</p></div>
     </div>
+    <div class="cedar-explanation">
+      <div><h3>Payload encryption</h3><a class="more-link" href={`${base}/spec/cbes/`}>Envelope operations <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div>
+      <div><p>With a Non-Captive Key, the Client encrypts and decrypts the Payload locally using the Lease Key. With a Captive Key, the Client asks the Key Service to wrap or unwrap a content encryption key (CEK), then handles the Payload locally using that CEK. The Key Service does not need the Payload for these operations, but remains trusted for the key material it controls.</p></div>
+    </div>
   </section>
 </div>
 
 <section class="simulator-section" id="simulator" aria-labelledby="simulator-title">
   <div class="wrap">
-    <div class="simulator-intro"><div><h2 id="simulator-title">Try the policy simulator</h2><p>Work through the full CABE example, change access rules and inspect the message envelope. The hosted simulator uses Cedar for policy evaluation.</p></div><a class="button" href={`${base}/game/`} target="_blank" rel="noopener noreferrer">Open simulator <svg class="icon" aria-hidden="true"><use href="#external"/></svg></a></div>
+    <div class="simulator-intro"><div><h2 id="simulator-title">Try the policy simulator</h2><p>Work through the full CABE example, change access rules and inspect the Envelope. The hosted simulator uses Cedar for policy evaluation.</p></div><a class="button" href={`${base}/game/`} target="_blank" rel="noopener noreferrer">Open simulator <svg class="icon" aria-hidden="true"><use href="#external"/></svg></a></div>
     <div class="simulator-shell">
       <div class="simulator-bar"><span>CABE Policy Simulator</span><span>cabespec.org/game</span></div>
       <div class="simulator-launch" id="simulator-launch"><div><h3>Experiment with access policy</h3></div><button class="button primary" id="load-simulator" type="button" aria-controls="simulator-host" aria-expanded="false">Load simulator <svg class="icon" aria-hidden="true"><use href="#play"/></svg></button></div>
@@ -151,21 +155,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <div class="wrap">
   <section class="section architecture-notes" aria-labelledby="model-title">
-    <div class="section-intro"><h2 id="model-title">Messages, leases <br>and domains</h2><p>This example demonstrates single domain operation. The same envelope and key access model can support arbitrarily frequent messages and exchanges between independently operated domains.</p></div>
+    <div class="section-intro"><h2 id="model-title">Leases, message size <br>and federation</h2></div>
     <div class="architecture-columns">
-      <div><h3>Key material can be reused.</h3><p>A suitable non-captive lease lets a client encrypt further messages with the same attributes locally until the lease expires. This avoids a key service round trip for every event. Lease reuse and rollover also determine how quickly a policy change affects future messages.</p><a class="more-link" href={`${base}/spec/ckap/`}>Key access and leases <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div>
-      <div><h3>Concise at any message size.</h3><p>CABE is a concise encapsulation scheme which can scale to arbitrarily large or arbitrarily small messages.</p><a class="more-link" href={`${base}/spec/cbes/`}>Envelope structure <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div>
-      <div><h3>Domains can prepare to share.</h3><p>The federation draft defines lease packages which let a receiving key service recover material for a foreign envelope without a live request to its origin.</p><a class="more-link" href={`${base}/spec/cfar/`}>Federation and preparation <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div>
+      <div><h3>Leases</h3><p>A Client with a valid cached Lease and a Non-Captive Lease Key can encrypt further Messages with the same Attribute Set locally. It requests a new Lease when the cached one expires or is invalidated. Rollover and cache invalidation affect when the Client switches to new key material.</p><a class="more-link" href={`${base}/spec/ckap/`}>Key access and Leases <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div>
+      <div><h3>Message size</h3><p>CABE is a concise encapsulation scheme which can scale to arbitrarily large or arbitrarily small messages.</p><a class="more-link" href={`${base}/spec/cbes/`}>Envelope structure <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div>
+      <div><h3>Federation</h3><p>A Federated Lease Package lets a receiving CABE Domain’s Key Service recover key material for the shared Lease without a live request to the Origin Domain.</p><a class="more-link" href={`${base}/spec/cfar/`}>Federation and preparation <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div>
     </div>
   </section>
 
   <section class="section" id="applications" aria-labelledby="applications-title">
-    <div class="section-intro"><h2 id="applications-title">Applications</h2><p>These are different uses of the same foundation. Each has its own producer, permitted consumers and delivery path.</p></div>
+    <div class="section-intro"><h2 id="applications-title">Applications</h2></div>
     <div class="application-list">
-      <article class="application-row"><div><span class="application-index">01</span><h3>Telemetry and <br>application events</h3></div><div><p>A shared event service may carry equipment readings, observations and application results for several consumers. Access rules can distinguish these products without making the broker a trusted reader of their payloads. Suitable leases allow local key use across multiple messages.</p></div></article>
+      <article class="application-row"><div><span class="application-index">01</span><h3>Telemetry and <br>application events</h3></div><div><p>A shared event service may carry equipment readings, observations and application results for several consumers. Access rules can distinguish these products without making the broker a trusted reader of their payloads.</p></div></article>
       <article class="application-row"><div><span class="application-index">02</span><h3>Satellite and <br>coalition information</h3></div><div><p>An analysis application may need selected products from a satellite provider or coalition information service rather than access to its entire collection. The provider’s release rules determine which consumers may obtain which products. For a live feed, an application can protect finite video segments before they reach a shared relay or cache.</p></div></article>
-      <article class="application-row"><div><span class="application-index">03</span><h3>A partner observation <br>reaching the field</h3></div><div><p>Suppose a partner has a current observation about a drone, and an authorised SOF application needs it for situational awareness. The desired exchange is from the partner’s publishing application to that receiver, without making each relay an entitled reader of the observation.</p></div></article>
-      <article class="application-row"><div><span class="application-index">04</span><h3>An ally-operated <br>radio mesh</h3></div><div><p>An ally’s mobile ad hoc network may provide an available path between applications. Protected application data can use that path without giving the radios and relays its decryption keys. Access to the transport and access to the payload are different permissions.</p></div></article>
+      <article class="application-row"><div><span class="application-index">03</span><h3>A partner observation <br>reaching the field</h3></div><div><p>A partner’s publishing application can send an encrypted drone observation to an authorised SOF application for situational awareness. Relays carry the Envelope without needing the decryption key.</p></div></article>
+      <article class="application-row"><div><span class="application-index">04</span><h3>An ally-operated <br>radio mesh</h3></div><div><p>An ally’s mobile ad hoc network may provide an available path between applications. Protected application data can use that path without giving the radios and relays its decryption keys.</p></div></article>
     </div>
   </section>
 
@@ -174,37 +178,54 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="software-grid">
       <div class="software-list">
         <article class="software-item"><h3>khaled</h3><div><p>The reference key server, including Cedar policy evaluation and plugins for authentication, claims mapping and key storage.</p><a class="more-link" href="https://khaled.cabespec.org/reference/config/" target="_blank" rel="noopener noreferrer">Server configuration <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div></article>
-        <article class="software-item"><h3>cabe-go</h3><div><p>The Go client library. Its <code>cabecap</code> interface handles encapsulation, decapsulation and lease caching.</p><a class="more-link" href="https://github.com/messier-42/cabe-go#quick-start" target="_blank" rel="noopener noreferrer">Client example <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div></article>
+        <article class="software-item"><h3>cabe-go</h3><div><p>The Go client library. Its <code>cabecap</code> interface handles encapsulation, decapsulation and Lease caching.</p><a class="more-link" href="https://github.com/messier-42/cabe-go#quick-start" target="_blank" rel="noopener noreferrer">Client example <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div></article>
         <article class="software-item"><h3>cabetool</h3><div><p>Command-line tooling for client identity, encryption and decryption, included with <code>cabe-go</code>.</p><a class="more-link" href="https://github.com/messier-42/cabe-go#command-line-tool" target="_blank" rel="noopener noreferrer">Command-line usage <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div></article>
       </div>
-      <aside class="client-start"><h3>Start with the Go client</h3><p>Add the library to your project:</p><div class="command-shell"><pre class="command"><code id="install-command">go get github.com/messier-42/cabe-go</code></pre><button class="copy-button" id="copy-command" type="button" aria-label="Copy Go installation command"><svg class="icon" aria-hidden="true"><use href="#copy"/></svg></button></div><p class="copy-status" id="copy-status" aria-live="polite"></p><p>The example also needs a running CKAP endpoint and a client configured to authenticate to it. Installing the library does not start the key service.</p><a class="more-link" href="https://github.com/messier-42/cabe-go#quick-start" target="_blank" rel="noopener noreferrer">Read the client setup <svg class="icon" aria-hidden="true"><use href="#external"/></svg></a></aside>
+      <aside class="client-start"><h3>Start with the Go client</h3><p>Add the library to your project:</p><div class="command-shell"><pre class="command"><code id="install-command">go get github.com/messier-42/cabe-go</code></pre><button class="copy-button" id="copy-command" type="button" aria-label="Copy Go installation command"><svg class="icon" aria-hidden="true"><use href="#copy"/></svg></button></div><p class="copy-status" id="copy-status" aria-live="polite"></p><a class="more-link" href="https://github.com/messier-42/cabe-go#quick-start" target="_blank" rel="noopener noreferrer">Read the client setup <svg class="icon" aria-hidden="true"><use href="#external"/></svg></a></aside>
     </div>
   </section>
 
   <section class="section" id="integration" aria-labelledby="integration-title">
-    <div class="section-intro"><h2 id="integration-title">Where CABE sits</h2><p>A common envelope need not mean a common identity system, policy language or application. The deployment supplies those choices and the trust relationships between them.</p></div>
+    <div class="section-intro"><h2 id="integration-title">Where CABE sits</h2><p>The deployment selects its identity system and Policy and establishes trust between participating applications and Key Services.</p></div>
     <div class="responsibilities">
-      <div><h3>CABE components</h3><dl><div><dt>Client library</dt><dd>Constructs and consumes envelopes; makes key service requests.</dd></div><div><dt>Key service</dt><dd>Manages keys and leases; controls access according to policy.</dd></div><div><dt>Envelope</dt><dd>Binds attributes to the encrypted payload and identifies the lease.</dd></div></dl></div>
-      <div><h3>The surrounding system</h3><dl><div><dt>Identity &amp; policy</dt><dd>Establishes caller claims, message attributes and access rules.</dd></div><div><dt>Transport</dt><dd>Delivers and stores envelopes using the available infrastructure.</dd></div><div><dt>Processing</dt><dd>Controls plaintext use, release of derived information and records of use.</dd></div></dl></div>
+      <div><h3>CABE components</h3><dl><div><dt>Client library</dt><dd>Constructs and consumes Envelopes; makes Key Service requests.</dd></div><div><dt>Key Service</dt><dd>Resolves keys, manages Leases and applies Policy.</dd></div><div><dt>Envelope</dt><dd>Carries the Message’s Attributes and Lease Reference in protected headers.</dd></div></dl></div>
+      <div><h3>The surrounding system</h3><dl><div><dt>Identity &amp; policy</dt><dd>Authenticates Clients, establishes Claims and defines access rules.</dd></div><div><dt>Transport</dt><dd>Delivers and stores Envelopes using the available infrastructure.</dd></div><div><dt>Processing</dt><dd>Controls plaintext use, release of derived information and records of use.</dd></div></dl></div>
     </div>
-    <details class="note" id="delegated-access"><summary>Requests made on someone else’s behalf <svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary><div class="note-body"><p>A service at the end of a chain may recognise its immediate caller without knowing who initiated the task or what authority was delegated. A larger system should be able to make that distinction when deciding whether to release information.</p><p>CABE can provide object protection and policy controlled key access within that system. The integration must validate the delegation and enforce its limits, including where a caller already holds broader key material. The envelope does not itself define a transitive-identity protocol.</p><p>Records can link a task, acting service, object and access decision. With local key use, point-of-use instrumentation is also needed: a key service log is not a log of every object decrypted.</p></div></details>
+    <details class="note" id="delegated-access"><summary>Requests made on someone else’s behalf <svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary><div class="note-body"><p>A service at the end of a chain may recognise its immediate caller without knowing who initiated the task or what authority was delegated. A larger system should be able to make that distinction when deciding whether to release information.</p><p>CABE protects objects and controls key access; the integration validates delegation and enforces its limits, including where a caller already holds broader key material. CABE does not define a transitive identity protocol.</p><p>Records can link a task, acting service, object and access decision. With local key use, point-of-use instrumentation is also needed: a Key Service log is not a log of every object decrypted.</p></div></details>
   </section>
 
   <section class="section references" aria-label="Technical references">
     <div id="specifications"><h2>Specifications</h2>
-      <a class="spec-link" href={`${base}/spec/arch/`}><code>CABE-ARCH</code><span><strong>Architecture</strong><small>Attributes, key series, leases and access.</small></span><svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
+      <a class="spec-link" href={`${base}/spec/arch/`}><code>CABE-ARCH</code><span><strong>Architecture</strong><small>Attributes, Key Series, Leases and access.</small></span><svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
       <a class="spec-link" href={`${base}/spec/cbes/`}><code>CBES</code><span><strong>Envelope structure</strong><small>Message encoding and cryptographic operations.</small></span><svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
-      <a class="spec-link" href={`${base}/spec/ckap/`}><code>CKAP</code><span><strong>Key access protocol</strong><small>Client and key service interaction.</small></span><svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
-      <a class="spec-link" href={`${base}/spec/cfar/`}><code>CFAR</code><span><strong>Federation and resilience</strong><small>Lease packages for prepared receiving domains.</small></span><svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
+      <a class="spec-link" href={`${base}/spec/ckap/`}><code>CKAP</code><span><strong>Key access protocol</strong><small>Client and Key Service interaction.</small></span><svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
+      <a class="spec-link" href={`${base}/spec/cfar/`}><code>CFAR</code><span><strong>Federation and resilience</strong><small>Lease packages for prepared receiving Domains.</small></span><svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
       <a class="spec-link" href={`${base}/spec/acp240/`}><code>ACP240</code><span><strong>Attribute mapping</strong><small>A defined subset of classification metadata.</small></span><svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
       <a class="more-link" href={`${base}/specification/`}>All specification drafts <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
     </div>
-    <div id="security"><h2>Security boundaries</h2>
-      <details class="faq"><summary>What happens after a key is disclosed?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary><p>An exported key can be used locally without another key service decision. A later refusal cannot erase keys or plaintext already obtained. Leases and rollover matter for future messages; separate envelopes sharing usable key material do not automatically have separate access boundaries. <a href={`${base}/spec/arch/`}>Key access and rollover</a></p></details>
-      <details class="faq"><summary>Does the payload pass through the key service?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary><p>No. Non-captive keys are used locally. With captive keys, the service performs operations on a content-encryption key while the application handles the payload; it does not need the whole video segment or file. <a href={`${base}/spec/cbes/`}>Envelope operations</a></p></details>
-      <details class="faq"><summary>What does federation require?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary><p>Prepared trust, the appropriate federation keys and lease package, and the required local services. The current draft specifies early selection of target domains and non-captive lease keys. The receiving key service must be trusted with the material it recovers. <a href={`${base}/spec/cfar/`}>Federation draft</a></p></details>
-      <details class="faq"><summary>What does integrity protection establish?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary><p>Authenticated encryption protects against changes by parties without the required key. It does not distinguish every holder of a shared key, prove an observation is true or establish correct labelling. Producer-specific provenance needs additional evidence. <a href={`${base}/spec/cbes/`}>Envelope protection</a></p></details>
-      <details class="faq"><summary>Are the attributes confidential?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary><p>The baseline envelope’s protected headers are integrity-protected, not encrypted. Account for the metadata exposed by your attribute scheme separately from the confidentiality of the payload. <a href={`${base}/spec/cbes/`}>Envelope headers</a></p></details>
+    <div id="security" aria-labelledby="security-title">
+      <h2 id="security-title">Security model</h2>
+      <p class="security-intro">CABE lets brokers, relays and storage services carry encrypted Envelopes without entrusting them with plaintext. The Key Service, identity and claims authorities, and participants holding usable key material or plaintext remain trusted for the information and authority they control.</p>
+      <details class="faq">
+        <summary>What if a broker, relay or storage service is compromised?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary>
+        <p>CBES uses authenticated encryption: an intermediary without the relevant key cannot read the Payload or make a changed ciphertext or protected header verify under the intended key. Protected headers, including the Attribute Set and Lease Reference, remain visible. Unprotected headers do not carry the same integrity guarantee; CFAR explicitly permits intermediaries to change the attached federation-package list. An intermediary can drop, delay, reorder or replay Envelopes and observe their size, timing and routing. CABE encryption alone does not guarantee delivery, freshness, replay prevention or resistance to traffic analysis. <a href={`${base}/spec/cbes/`}>Envelope headers</a></p>
+      </details>
+      <details class="faq">
+        <summary>Who is trusted to make the access decision?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary>
+        <p>The Key Service applies its configured Policy to the Principal’s Claims, the Message’s Attribute Set and the requested operation. The Key Server authenticates the Client; the deployment’s trusted identity and claims authorities establish the caller information. The producer assigns Message Attributes, so their authority depends on the producer and any validation the deployment requires. Key management, authentication and authorisation remain trusted components. Keeping the Payload out of the Key Service’s normal data path does not make it unable to decrypt. Compromise affects the keys and authority the compromised component can use. <a href={`${base}/spec/arch/`}>Key resolution</a></p>
+      </details>
+      <details class="faq">
+        <summary>Where are keys held, and when is policy checked?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary>
+        <p>A Non-Captive Lease Key is disclosed to an authorised Client for local use. A valid cached Lease avoids repeated resolution for encryption; local use of retained key material does not trigger another policy check. A Captive Lease Key stays at the Key Service, which can enforce current Policy when wrapping or unwrapping a content encryption key (CEK). The Client handles the Payload using that CEK and may retain it or the plaintext. New Key Resolution requests are checked against Policy. Lease expiry and Rollover govern key selection for subsequent encryption; they do not erase retained keys or guarantee immediate revocation. Old ciphertext remains decryptable with its key, and Envelopes sharing usable key material need not have independent access boundaries. <a href={`${base}/spec/arch/`}>Key access and rollover</a></p>
+      </details>
+      <details class="faq">
+        <summary>What changes in the trust model when domains federate?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary>
+        <p>CFAR lets a receiving CABE Domain’s Key Service recover Non-Captive Lease Key material for shared Leases without contacting the Origin Domain. That service is therefore trusted with the means to decrypt the associated Envelopes and with access decisions for its Clients. This is a different role from merely transporting ciphertext. Once usable material is shared, the Origin Domain cannot be assumed to continuously control its use. <a href={`${base}/spec/cfar/`}>Federation draft</a></p>
+      </details>
+      <details class="faq">
+        <summary>Does successful verification identify the producer?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary>
+        <p>Successful verification under a symmetric key establishes integrity against an intermediary without that key. It does not distinguish participants able to use the same key. An Attribute naming a source, a protected Origin Domain header, or encryption to a recipient is not, by itself, authenticated evidence of a particular producer. Applications requiring producer-specific attribution need additional authenticated evidence binding that producer to the Message. <a href={`${base}/spec/cbes/`}>Envelope protection</a></p>
+      </details>
     </div>
   </section>
 </div>

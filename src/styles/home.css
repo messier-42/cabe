@@ -2023,3 +2023,10 @@
     border-top: 1px solid var(--line);
   }
 }
+
+:where(.home-page) .security-intro {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.9;
+  margin-bottom: 20px;
+}
