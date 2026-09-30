@@ -1,16 +1,14 @@
 ---
 import { getEntry, render } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
-import Nav from '../components/Nav.astro';
 
 const entry = await getEntry('pages', 'faq');
 const { Content } = await render(entry);
 ---
 
 <Layout title="FAQ — CABE" description="Frequently asked questions about Concise Attribute-Bound Encapsulation.">
-  <Nav />
 
-  <main class="page">
+  <main class="page" id="main" tabindex="-1">
     <div class="page__header">
       <div class="container">
         <span class="section-label">FAQ</span>
@@ -36,13 +34,13 @@ const { Content } = await render(entry);
 
   /* Each h1 is a question */
   .faq-prose :global(h1) {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: 1rem;
     font-weight: 700;
     color: var(--ink);
     margin: 0;
     padding: 1.5rem 0 0.6rem;
-    border-top: 1px solid var(--border-dim);
+    border-top: 1px solid var(--line);
   }
 
   .faq-prose :global(h1:first-child) {
@@ -53,9 +51,9 @@ const { Content } = await render(entry);
   /* Each paragraph following a h1 is an answer */
   .faq-prose :global(p) {
     font-size: 0.925rem;
-    color: var(--ink-3);
+    color: var(--muted);
     line-height: 1.8;
-    font-weight: 300;
+    font-weight: 400;
     margin: 0 0 1.5rem;
   }
 
@@ -69,8 +67,8 @@ const { Content } = await render(entry);
 
   .faq-prose :global(li) {
     font-size: 0.925rem;
-    color: var(--ink-3);
+    color: var(--muted);
     line-height: 1.7;
-    font-weight: 300;
+    font-weight: 400;
   }
 </style>

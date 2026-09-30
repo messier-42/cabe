@@ -1,0 +1,75 @@
+/* Presentation only: Markdown content, IDs and ordering are left to Astro. */
+.spec-page .page__title { max-width: 950px; font-size: clamp(32px, 3.8vw, 48px); }
+.spec-page .page__subtitle { max-width: 850px; font-size: 16px; }
+.spec-doc-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 20px; font-size: 12px; color: var(--muted); }
+.spec-doc-meta__sep { color: var(--quiet); }
+.spec-layout { display: grid; grid-template-columns: 238px minmax(0, 1fr); align-items: start; gap: 48px; }
+.spec-toc { position: sticky; top: 24px; border-right: 1px solid var(--line); padding-right: 20px; min-width: 0; }
+.spec-toc summary { font-size: 13px; font-weight: 600; cursor: pointer; padding: 0 0 14px; }
+.spec-toc nav { max-height: calc(100vh - 110px); overflow-y: auto; padding: 4px; scrollbar-width: thin; }
+.spec-toc__list { list-style: none; padding: 0; margin: 0; }
+.spec-toc__item a { display: block; padding: 6px 9px; border-left: 2px solid transparent; font-size: 12px; line-height: 1.55; color: var(--muted); text-decoration: none; overflow-wrap: anywhere; }
+.spec-toc__item a:hover, .spec-toc__item a:focus-visible { color: var(--blue); border-left-color: var(--blue); background: var(--blue-soft); }
+.spec-toc__item--depth-2 a { padding-left: 23px; }
+.spec-prose { min-width: 0; max-width: 790px; font-size: 15px; line-height: 1.85; overflow-wrap: anywhere; }
+.spec-prose :is(h1, h2, h3, h4) { line-height: 1.3; font-weight: 600; scroll-margin-top: 24px; }
+.spec-prose h1 { font-size: 29px; letter-spacing: -.035em; margin: 48px 0 20px; padding-top: 22px; border-top: 1px solid var(--line); }
+.spec-prose > h1:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.spec-prose h2 { font-size: 23px; margin: 34px 0 15px; }
+.spec-prose h3 { font-size: 18px; margin: 28px 0 12px; }
+.spec-prose h4 { font-size: 16px; margin: 24px 0 10px; }
+.spec-prose p { margin: 0 0 18px; }
+.spec-prose a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+.spec-prose strong { font-weight: 600; }
+.spec-prose code { font-size: .88em; background: var(--soft); padding: .12em .3em; border-radius: 3px; }
+.spec-prose pre { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; border: 1px solid var(--line); border-left: 3px solid var(--blue-line); border-radius: 6px; padding: 20px; margin: 22px 0; font: 13px/1.75 var(--font-mono); }
+.spec-prose pre code { background: transparent; color: inherit; padding: 0; border-radius: 0; font-size: inherit; white-space: pre; overflow-wrap: normal; }
+.spec-prose :is(ul, ol) { padding-left: 24px; margin: 0 0 20px; }
+.spec-prose li { margin: 7px 0; }
+.spec-prose li > :is(ul, ol) { margin-top: 8px; margin-bottom: 8px; }
+.spec-prose blockquote { border-left: 3px solid var(--blue-line); background: var(--blue-soft); padding: 16px 20px; margin: 24px 0; }
+.spec-prose blockquote > :last-child { margin-bottom: 0; }
+.spec-prose hr { border: 0; border-top: 1px solid var(--line); margin: 36px 0; }
+.spec-prose figure { margin: 24px 0; }
+.spec-prose img, .spec-prose svg { max-width: 100%; height: auto; }
+/* A block table provides an overflow fallback even when JavaScript is disabled. */
+.spec-prose table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 24px 0; font-size: 13px; line-height: 1.7; }
+.spec-prose th, .spec-prose td { text-align: left; vertical-align: top; padding: 12px 16px; border: 1px solid var(--line); min-width: 100px; }
+.spec-prose th { font-weight: 600; background: var(--soft); }
+.spec-prose tbody tr:nth-child(even) { background: #fcfcfd; }
+.spec-prose .table-scroll { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; margin: 24px 0; }
+.spec-prose .table-scroll table { display: table; width: 100%; margin: 0; overflow: visible; }
+@media (max-width: 1000px) {
+  .spec-layout { grid-template-columns: 205px minmax(0, 1fr); gap: 30px; }
+}
+@media (max-width: 800px) {
+  .spec-layout { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+  .spec-toc { position: static; border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; }
+  .spec-toc summary { padding: 0; }
+  .spec-toc[open] summary { padding-bottom: 12px; }
+  .spec-toc nav { max-height: 240px; }
+}
+@media (max-width: 620px) {
+  .spec-page .page__title { font-size: 32px; }
+  .spec-page .page__subtitle { font-size: 15px; }
+  .spec-prose { font-size: 14px; }
+  .spec-prose h1 { font-size: 26px; }
+  .spec-prose h2 { font-size: 21px; }
+  .spec-prose pre { padding: 16px; font-size: 12px; }
+}
+@media print {
+  .spec-toc { display: none; }
+  .spec-layout { display: block; width: 100%; }
+  .spec-prose { max-width: none; font-size: 10pt; }
+  .spec-prose h1 { font-size: 19pt; margin-top: 24px; }
+  .spec-prose h2 { font-size: 15pt; }
+  .spec-prose h3 { font-size: 12pt; }
+  /* Override the highlighter's inline overflow so printed examples cannot clip. */
+  .spec-prose pre { overflow: visible !important; font-size: 8pt; background: white !important; padding: 12px; }
+  .spec-prose pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+  .spec-prose .table-scroll { overflow: visible; }
+  .spec-prose table, .spec-prose .table-scroll table { display: table; width: 100%; table-layout: fixed; font-size: 8pt; }
+  .spec-prose th, .spec-prose td { min-width: 0; padding: 7px; overflow-wrap: anywhere; }
+  .spec-prose thead { display: table-header-group; }
+  .spec-prose tr, .spec-prose figure { break-inside: avoid; }
+}

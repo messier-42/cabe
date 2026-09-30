@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import Nav from '../../components/Nav.astro';
+import '../../styles/spec.css';
 
 export async function getStaticPaths() {
   const entries = await getCollection('spec');
@@ -18,13 +18,12 @@ const tocHeadings = headings.filter(h => h.depth === 1 || h.depth === 2);
 ---
 
 <Layout title={`${entry.data.title} — CABE`} description={entry.data.abstract}>
-  <Nav />
 
-  <main class="page">
+  <main class="page spec-page" id="main" tabindex="-1">
     <div class="page__header">
       <div class="container">
         <span class="section-label">
-          <a href={`${base}/specification`} style="color: inherit; text-decoration: none;">Specification</a>
+          <a href={`${base}/specification`}>Specification</a>
           &nbsp;/&nbsp;{entry.data.draft}
         </span>
         <h1 class="page__title">{entry.data.title}</h1>
@@ -38,254 +37,43 @@ const tocHeadings = headings.filter(h => h.depth === 1 || h.depth === 2);
     </div>
 
     <div class="page__body">
-      <div class="spec-layout">
+      <div class="spec-layout wrap">
         {tocHeadings.length > 0 && (
-          <nav class="spec-toc" aria-label="Table of contents">
-            <div class="spec-toc__label">Contents</div>
-            <ol class="spec-toc__list">
-              {tocHeadings.map(h => (
-                <li class={`spec-toc__item spec-toc__item--depth-${h.depth}`}>
-                  <a href={`#${h.slug}`}>{h.text}</a>
-                </li>
-              ))}
-            </ol>
-          </nav>
+          <details class="spec-toc" open>
+            <summary>Contents</summary>
+            <nav aria-label="Table of contents">
+              <ol class="spec-toc__list">
+                {tocHeadings.map(h => (
+                  <li class={`spec-toc__item spec-toc__item--depth-${h.depth}`}>
+                    <a href={`#${h.slug}`}>{h.text}</a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          </details>
         )}
-        <div class="container">
-          <div class="spec-prose">
-            <Content />
-          </div>
-        </div>
+        <article class="spec-prose" aria-label={entry.data.title}>
+          <Content />
+        </article>
       </div>
     </div>
   </main>
 
 </Layout>
 
-<style is:global>
-  /* ── Spec two-column layout ──────────────────────────────────── */
-  .spec-layout {
-    display: flex;
-    align-items: start;
-  }
-  @media (max-width: 860px) {
-    .spec-layout {
-      flex-direction: column;
-    }
-    .spec-toc {
-      width: 100% !important;
-      position: static !important;
-      border-right: none !important;
-      border-bottom: 1px solid var(--border-dim);
-      padding: 1.5rem clamp(1.5rem, 5vw, 3rem) !important;
-    }
-  }
-
-  /* ── Table of contents ───────────────────────────────────────── */
-  .spec-toc {
-    flex-shrink: 0;
-    width: 220px;
-    position: sticky;
-    top: 2rem;
-    max-height: calc(100vh - 4rem);
-    overflow-y: auto;
-    padding: 2.5rem 1.5rem 2.5rem clamp(1.5rem, 5vw, 3rem);
-    border-right: 1px solid var(--border-dim);
-  }
-  .spec-toc__label {
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--ink-4);
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border-dim);
-  }
-  .spec-toc__list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-  .spec-toc__item a {
-    display: block;
-    font-size: 0.78rem;
-    font-weight: 400;
-    color: var(--ink-4);
-    text-decoration: none;
-    line-height: 1.4;
-    padding: 0.3rem 0.6rem;
-    border-left: 2px solid transparent;
-    transition: color 0.15s, border-color 0.15s;
-  }
-  .spec-toc__item a:hover {
-    color: var(--amber);
-    border-left-color: var(--amber-border);
-  }
-  .spec-toc__item--depth-2 a {
-    padding-left: 1.4rem;
-    font-size: 0.73rem;
-    opacity: 0.75;
-  }
-  .spec-toc__item--depth-2 a:hover { opacity: 1; }
-
-  .spec-doc-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1.25rem;
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ink-4);
-  }
-  .spec-doc-meta__sep { color: var(--border); }
-
-  .spec-prose { max-width: 100%; }
-
-  /* ── Headings ────────────────────────────────────────────────── */
-  .spec-prose h1, .spec-prose h2, .spec-prose h3, .spec-prose h4 {
-    font-family: var(--font-display);
-    font-weight: 700;
-    color: var(--ink);
-    line-height: 1.2;
-  }
-  .spec-prose h2 {
-    font-size: 1.25rem;
-    margin: 3.5rem 0 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--border-dim);
-    color: var(--ink);
-  }
-  .spec-prose h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    margin: 2.25rem 0 0.6rem;
-    color: var(--ink);
-    font-family: var(--font-display);
-  }
-  .spec-prose h3::before {
-    content: '§';
-    color: var(--amber);
-    margin-right: 0.45em;
-    font-weight: 400;
-    font-size: 0.9em;
-    opacity: 0.7;
-  }
-  .spec-prose h4 {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--ink-2);
-    margin: 1.75rem 0 0.5rem;
-    font-family: var(--font-mono);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-
-  /* ── Body text ───────────────────────────────────────────────── */
-  .spec-prose p {
-    color: var(--ink-3);
-    line-height: 1.85;
-    font-weight: 300;
-    font-size: 0.975rem;
-    margin-bottom: 1.1rem;
-  }
-  .spec-prose em  { color: var(--ink); font-style: italic; }
-  .spec-prose strong { color: var(--ink); font-weight: 600; }
-
-  /* ── Inline code ─────────────────────────────────────────────── */
-  .spec-prose code {
-    font-family: var(--font-mono);
-    font-size: 0.8em;
-    color: var(--amber-dim);
-    background: var(--amber-trace);
-    padding: 0.12em 0.4em;
-    border-radius: 3px;
-    white-space: nowrap;
-  }
-
-  /* ── Code blocks ─────────────────────────────────────────────── */
-  .spec-prose pre {
-    border-left: 3px solid var(--amber-border);
-    border-radius: 0 6px 6px 0;
-    padding: 1.25rem 1.5rem;
-    overflow-x: auto;
-    margin: 1.5rem 0 1.75rem;
-    font-size: 0.82rem;
-  }
-  /* Reset inline-code styling inside blocks; color/bg come from Astro's inline styles */
-  .spec-prose pre code {
-    background: transparent !important;
-    color: inherit !important;
-    padding: 0 !important;
-    font-size: inherit !important;
-    white-space: pre;
-    border-radius: 0;
-  }
-
-  /* ── Lists ───────────────────────────────────────────────────── */
-  .spec-prose ul, .spec-prose ol {
-    padding-left: 1.5rem;
-    margin-bottom: 1.25rem;
-    color: var(--ink-3);
-    font-weight: 300;
-    font-size: 0.975rem;
-  }
-  .spec-prose li { margin-bottom: 0.45rem; line-height: 1.75; }
-  .spec-prose li strong { color: var(--ink); font-weight: 600; }
-
-  /* ── Blockquote ──────────────────────────────────────────────── */
-  .spec-prose blockquote {
-    border-left: 3px solid var(--amber-border);
-    padding: 0.75rem 1.25rem;
-    margin: 1.5rem 0;
-    background: var(--amber-trace);
-    border-radius: 0 4px 4px 0;
-  }
-  .spec-prose blockquote p { margin: 0; color: var(--ink-2); }
-
-  /* ── Links ───────────────────────────────────────────────────── */
-  .spec-prose a { color: var(--amber); text-decoration: underline; text-decoration-color: var(--amber-border); }
-  .spec-prose a:hover { color: var(--amber-bright); }
-
-  /* ── Section dividers ────────────────────────────────────────── */
-  .spec-prose hr { border: none; border-top: 1px solid var(--border-dim); margin: 3.5rem 0 0; }
-  .spec-prose hr + h2 { margin-top: 2rem; }
-
-  /* ── Table ───────────────────────────────────────────────────── */
-  .spec-prose table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.875rem;
-    margin: 1.75rem 0;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-  }
-  .spec-prose thead { background: var(--bg-2); }
-  .spec-prose th {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--ink-4);
-    border-bottom: 1px solid var(--border);
-    padding: 0.6rem 1rem;
-    text-align: left;
-  }
-  .spec-prose td {
-    padding: 0.65rem 1rem;
-    border-bottom: 1px solid var(--border-dim);
-    color: var(--ink-3);
-    font-weight: 300;
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-  }
-  .spec-prose td:first-child { color: var(--amber-dim); }
-  .spec-prose tr:last-child td { border-bottom: none; }
-  .spec-prose tbody tr:nth-child(even) { background: var(--bg); }
-</style>
+<script>
+  // Add keyboard access to scrollable examples without changing the source documents.
+  document.querySelectorAll<HTMLElement>('.spec-prose pre').forEach(pre => {
+    pre.tabIndex = 0;
+    pre.setAttribute('aria-label', 'Code example');
+  });
+  document.querySelectorAll<HTMLTableElement>('.spec-prose table').forEach(table => {
+    const scroll = document.createElement('div');
+    scroll.className = 'table-scroll';
+    scroll.tabIndex = 0;
+    scroll.setAttribute('role', 'region');
+    scroll.setAttribute('aria-label', table.caption?.textContent || 'Scrollable table');
+    table.before(scroll);
+    scroll.append(table);
+  });
+</script>

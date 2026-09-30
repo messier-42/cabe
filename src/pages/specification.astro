@@ -1,15 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Nav from '../components/Nav.astro';
 import { specGroups } from '../data/specs';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Layout title="Specification — CABE" description="CABE specifications: core wire format, key access protocol, and policy expression language.">
-  <Nav />
 
-  <main class="page">
+  <main class="page" id="main" tabindex="-1">
     <div class="page__header">
       <div class="container">
         <span class="section-label">Specification</span>
@@ -27,13 +25,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div class="spec-index">
           {specGroups.map(group => (
             <div class="spec-group">
-              <div class="spec-group__label">{group.label}</div>
+              <h2 class="spec-group__label">{group.label}</h2>
               <div class="spec-group__docs">
                 {group.specs.map(spec => (
                   spec.slug
                     ? <a href={`${base}/spec/${spec.slug}/`} class="spec-entry">
                         <div class="spec-entry__draft">{spec.draft}</div>
-                        <div class="spec-entry__title">{spec.title}</div>
+                        <h3 class="spec-entry__title">{spec.title}</h3>
                         <div class="spec-entry__desc">{spec.desc}</div>
                         <div class="spec-entry__footer">
                           <span class:list={['spec-entry__status', `spec-entry__status--${spec.statusType}`]}>
@@ -44,7 +42,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                       </a>
                     : <div class="spec-entry spec-entry--wip">
                         <div class="spec-entry__draft">{spec.draft}</div>
-                        <div class="spec-entry__title">{spec.title}</div>
+                        <h3 class="spec-entry__title">{spec.title}</h3>
                         <div class="spec-entry__desc">{spec.desc}</div>
                         <div class="spec-entry__footer">
                           <span class:list={['spec-entry__status', `spec-entry__status--${spec.statusType}`]}>
@@ -64,85 +62,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 </Layout>
 
 <style>
-  .spec-entry {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    padding: 1.75rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--bg-1);
-    color: inherit;
-    text-decoration: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-
-  a.spec-entry:hover {
-    border-color: var(--amber-border);
-    box-shadow: 0 4px 20px rgba(184, 108, 0, 0.08);
-  }
-
-  .spec-entry--wip {
-    opacity: 0.55;
-  }
-
-  .spec-entry__draft {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    color: var(--amber-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .spec-entry__title {
-    font-family: var(--font-display);
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--ink);
-    line-height: 1.2;
-  }
-
-  .spec-entry__desc {
-    font-size: 0.875rem;
-    color: var(--ink-3);
-    line-height: 1.7;
-    font-weight: 300;
-    flex: 1;
-  }
-
-  .spec-entry__footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 0.5rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--border-dim);
-  }
-
-  .spec-entry__status {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 0.2rem 0.6rem;
-    border-radius: 100px;
-  }
-
-  .spec-entry__status--active {
-    color: var(--success);
-    background: #e8f5ef;
-    border: 1px solid #b0dfc8;
-  }
-
-  .spec-entry__status--pending {
-    color: var(--ink-4);
-    background: var(--bg-3);
-    border: 1px solid var(--border);
-  }
-
-  .spec-entry__arrow {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--amber);
-  }
+  .spec-index { display: grid; gap: 44px; }
+  .spec-group__label { font-size: 18px; font-weight: 600; margin: 0 0 20px; }
+  .spec-group__docs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .spec-entry { display: flex; flex-direction: column; gap: 13px; padding: 24px; border: 1px solid var(--line); border-radius: 8px; color: inherit; text-decoration: none; }
+  a.spec-entry:hover { border-color: var(--blue-line); background: var(--blue-soft); }
+  .spec-entry__draft { font: 12px/1.6 var(--font-mono); color: var(--blue); }
+  .spec-entry__title { font-size: 19px; line-height: 1.4; }
+  .spec-entry__desc { font-size: 14px; color: var(--muted); flex: 1; }
+  .spec-entry__footer { display: flex; justify-content: space-between; align-items: center; gap: 15px; padding-top: 16px; margin-top: 4px; border-top: 1px solid var(--line); }
+  .spec-entry__status { font-size: 12px; color: var(--muted); }
+  .spec-entry__status--active { color: var(--pass); }
+  .spec-entry__arrow { color: var(--blue); }
+  @media (max-width: 900px) { .spec-group__docs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 620px) { .spec-group__docs { grid-template-columns: 1fr; } .spec-entry { padding: 22px; } }
+  @media print { .spec-group__docs { grid-template-columns: repeat(2, minmax(0, 1fr)); } .spec-entry { break-inside: avoid; } }
 </style>
