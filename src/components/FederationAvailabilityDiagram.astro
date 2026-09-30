@@ -12,6 +12,16 @@ const availabilityNodes = [
   { x: 606, y: 84, w: 244, h: 88, title: 'Key Server B', lines: ['Handles the fresh request', 'Policy permits this reader'], kind: 'key' },
   { x: 320, y: 278, w: 260, h: 90, title: 'Receiving application', lines: ['Quotes Lease Reference + FLP', 'Decrypts the report locally'], kind: 'plain' },
 ];
+const narrowFederationNodes = federationNodes.map((node, index) => ({
+  ...node, x: 36, w: 288,
+  y: [66, 206, 344, 658, 522][index],
+  h: [78, 64, 88, 80, 68][index],
+}));
+const narrowAvailabilityNodes = availabilityNodes.map((node, index) => ({
+  ...node, x: 36, w: 288,
+  y: [82, 210, 354, 510][index],
+  h: [68, 84, 88, 88][index],
+}));
 ---
 <figure class="fha-figure" aria-labelledby="fha-caption">
   <div class="fha-heading"><strong>Two views of the same receiving arrangement</strong><span>Architectural example</span></div>
@@ -46,11 +56,36 @@ const availabilityNodes = [
         </g>)}
       </svg>
     </div>
-    <ol class="fha-mobile">
-      <li><strong>Origin Domain</strong><p>The publisher obtains a Non-Captive Lease and an FLP for the prepared Target, then encrypts the report locally.</p></li>
-      <li><strong>Shared delivery</strong><p>The Envelope and inline FLP reach the Target application. The Origin connection then fails.</p></li>
-      <li class="key"><strong>Target Domain</strong><p>A fresh local request quotes the FLP. The Key Service recovers material, verifies the request and applies local policy.</p></li>
-    </ol>
+    <div class="fha-mobile">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 778" role="img" aria-labelledby="fha-narrow-federation-title fha-narrow-federation-desc">
+        <title id="fha-narrow-federation-title">Federation between the Origin and Target Domains</title>
+        <desc id="fha-narrow-federation-desc">The Origin Key Service supplies a Lease and FLP for the prepared Target. The publisher encrypts locally and shared delivery carries the Envelope and FLP to the receiving application. After delivery, the Origin connection fails. The receiving application makes a fresh request to its local Target Key Service, which verifies the FLP and applies policy.</desc>
+        <defs>
+          <marker id="fha-narrow-data-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#68717c" /></marker>
+          <marker id="fha-narrow-federation-key-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#265f99" /></marker>
+        </defs>
+        <rect class="fha-domain" x="16" y="16" width="328" height="280" rx="8" />
+        <rect class="fha-domain" x="16" y="476" width="328" height="286" rx="8" />
+        <text class="fha-domain-label" x="36" y="44">Origin CABE Domain</text>
+        <text class="fha-domain-label" x="36" y="502">Target CABE Domain</text>
+        <path class="fha-edge key" d="M82 144 V206" marker-start="url(#fha-narrow-federation-key-arrow)" marker-end="url(#fha-narrow-federation-key-arrow)" />
+        <text class="fha-label" x="96" y="180">Lease + FLP</text>
+        <path class="fha-edge plain" d="M180 270 V344" marker-end="url(#fha-narrow-data-arrow)" />
+        <rect x="170" y="303" width="20" height="24" fill="white" />
+        <path class="fha-break" d="M173 305 L187 325 M187 305 L173 325" />
+        <text class="fha-outage-label" x="198" y="312">Origin link unavailable</text>
+        <text class="fha-outage-label" x="198" y="329">after delivery</text>
+        <path class="fha-edge plain" d="M300 432 V522" marker-end="url(#fha-narrow-data-arrow)" />
+        <path class="fha-edge key" d="M180 590 V658" marker-start="url(#fha-narrow-federation-key-arrow)" marker-end="url(#fha-narrow-federation-key-arrow)" />
+        <text class="fha-label" x="194" y="618">Fresh local request</text>
+        <text class="fha-label" x="194" y="638">Permitted material</text>
+        {narrowFederationNodes.map(node => <g class={`fha-node ${node.kind}`}>
+          <rect x={node.x} y={node.y} width={node.w} height={node.h} rx="6" />
+          <text class="fha-node-title" x={node.x + 14} y={node.y + 26}>{node.title}</text>
+          {node.lines.map((line, i) => <text class="fha-node-copy" x={node.x + 14} y={node.y + 49 + i * 20}>{line}</text>)}
+        </g>)}
+      </svg>
+    </div>
   </div>
   <div class="fha-view">
     <h3>B. High availability within the Target Domain</h3>
@@ -77,10 +112,29 @@ const availabilityNodes = [
         <path class="fha-break" d="M255 101 L271 117 M271 101 L255 117" />
       </svg>
     </div>
-    <ol class="fha-mobile">
-      <li class="unavailable"><strong>Target Key Server A fails</strong><p>The Target still has the required durable recovery state and local dependencies.</p></li>
-      <li class="key"><strong>Target Key Server B handles the request</strong><p>The reader quotes the Lease Reference and FLP in a fresh request. Permitted material enables local decryption.</p></li>
-    </ol>
+    <div class="fha-mobile">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 658" role="img" aria-labelledby="fha-narrow-ha-title fha-narrow-ha-desc">
+        <title id="fha-narrow-ha-title">High availability within one Target Key Service</title>
+        <desc id="fha-narrow-ha-desc">Key Server A is unavailable. Implementation-neutral arrangements keep the required durable state available within the Target Domain. A fresh request with the Lease Reference and FLP reaches Key Server B. The permitted application receives material and decrypts locally. Dotted lines show state dependencies without prescribing a storage topology.</desc>
+        <defs>
+          <marker id="fha-narrow-ha-key-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#265f99" /></marker>
+        </defs>
+        <rect class="fha-domain" x="16" y="16" width="328" height="626" rx="8" />
+        <text class="fha-domain-label" x="36" y="42">Target CABE Domain</text>
+        <text class="fha-label" x="36" y="62">One logical Key Service</text>
+        <path class="fha-edge state" d="M180 150 V210 M180 294 V354" />
+        <path class="fha-edge key" d="M180 442 V510" marker-start="url(#fha-narrow-ha-key-arrow)" marker-end="url(#fha-narrow-ha-key-arrow)" />
+        <text class="fha-label" x="194" y="470">Fresh request + FLP</text>
+        <text class="fha-label" x="194" y="490">Permitted material</text>
+        <text class="fha-label" x="36" y="624">No storage topology is prescribed.</text>
+        {narrowAvailabilityNodes.map(node => <g class={`fha-node ${node.kind}`}>
+          <rect x={node.x} y={node.y} width={node.w} height={node.h} rx="6" />
+          <text class="fha-node-title" x={node.x + 14} y={node.y + 26}>{node.title}</text>
+          {node.lines.map((line, i) => <text class="fha-node-copy" x={node.x + 14} y={node.y + 49 + i * 20}>{line}</text>)}
+        </g>)}
+        <path class="fha-break" d="M290 99 L306 115 M306 99 L290 115" />
+      </svg>
+    </div>
   </div>
   <ul class="fha-legend" aria-label="Diagram line types">
     <li><span class="plain"></span>Encrypted delivery</li>
@@ -121,13 +175,8 @@ const availabilityNodes = [
   figcaption { padding: 16px 20px; border-top: 1px solid var(--line); background: var(--soft); font-size: 12px; line-height: 1.75; }
   .fha-mobile { display: none; }
   @media (max-width: 800px) {
-    .fha-desktop, .fha-legend { display: none; }
-    .fha-mobile { display: grid; gap: 16px; list-style: none; padding: 10px 20px 20px; margin: 0; }
-    .fha-mobile li { margin: 0; padding-left: 13px; border-left: 2px solid var(--quiet); }
-    .fha-mobile li.key { border-color: var(--blue); border-left-style: dashed; }
-    .fha-mobile li.unavailable { border-color: var(--deny); }
-    .fha-mobile strong { font-size: 14px; }
-    .fha-mobile p { margin-top: 7px; font-size: 13px; line-height: 1.8; }
+    .fha-desktop { display: none; }
+    .fha-mobile { display: block; max-width: 440px; margin-inline: auto; }
   }
   @media print { .fha-view { break-inside: avoid; } }
 </style>
