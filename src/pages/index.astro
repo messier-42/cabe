@@ -24,7 +24,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div>
       <p class="eyebrow">Concise Attribute-Bound Encapsulation</p>
       <h1 id="hero-title">Attribute-based access control<br> for encrypted data</h1>
-      <p class="hero-copy">CABE defines an encrypted Envelope format and a protocol for obtaining keys under an attribute based access policy. Applications can exchange protected data through brokers, relays and storage services which do not need access to the plaintext.</p>
+      <p class="hero-copy">CABE defines a compact encrypted Envelope format and a protocol for obtaining keys under an attribute based access policy. Applications can exchange protected data through brokers, relays and storage services without giving those services the keys to read it.</p>
       <div class="actions">
         <a class="button primary" href="#simulator">Try the policy simulator <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a>
         <a class="button" href={`${base}/spec/arch/`}>Read the architecture <svg class="icon" aria-hidden="true"><use href="#external"/></svg></a>
@@ -140,6 +140,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="cedar-explanation">
       <div><h3>Payload encryption</h3><a class="more-link" href={`${base}/spec/cbes/`}>Envelope operations <svg class="icon" aria-hidden="true"><use href="#arrow"/></svg></a></div>
       <div><p>With a Non-Captive Key, the Client encrypts and decrypts the Payload locally using the Lease Key. With a Captive Key, the Client asks the Key Service to wrap or unwrap a content encryption key (CEK), then handles the Payload locally using that CEK. The Key Service does not need the Payload for these operations, but remains trusted for the key material it controls.</p></div>
+    </div>
+    <div class="cedar-explanation">
+      <div><h3 id="payload-format">The Payload format is the application’s choice.</h3></div>
+      <div><p>CABE uses CBOR and COSE for its Envelope. The Payload is an opaque sequence of bytes: applications can protect their existing data formats, including encoded voice and video, without converting them to CBOR. An application may also choose CBOR for its own structured data when compact encoding is useful.</p></div>
     </div>
   </section>
 </div>
