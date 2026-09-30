@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { articles } from '../../data/articles';
+import '../../styles/articles.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Layout title="Articles — CABE" description="Technical articles and perspectives on CABE and its use in application systems.">
+  <main class="page" id="main" tabindex="-1">
+    <header class="page__header"><div class="container">
+      <span class="section-label">CABE</span>
+      <h1 class="page__title">Articles</h1>
+      <p class="page__subtitle">Technical articles and perspectives on CABE and its use in application systems.</p>
+    </div></header>
+    <div class="page__body"><div class="container">
+      <ul class="article-index">{articles.map(article => <li>
+        <p class="article-category">{article.category}</p>
+        <h2><a href={`${base}/articles/${article.slug}/`}>{article.title}</a></h2>
+        <p>{article.description}</p>
+        <a class="article-link" href={`${base}/articles/${article.slug}/`}>Read article →</a>
+      </li>)}</ul>
+    </div></div>
+  </main>
+</Layout>

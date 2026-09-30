@@ -36,7 +36,7 @@ export const scenarios = [
       'CABE supplies a common Envelope and key access mechanism for independently developed applications. It does not translate Payload formats or reconcile independently chosen Attribute meanings. Contributions to a common operating picture can therefore have different audiences: a shared picture does not require every participant to read every underlying report or see an identical view.',
     ],
     consequence: 'Shared contributions, selectively authorised application views.',
-    references: [{ path: '/spec/arch/#definitions', label: 'Messages, Attributes and Domains' }, { path: '/spec/arch/#key-resolution', label: 'Policy and key resolution' }],
+    references: [{ path: '/spec/arch/#definitions', label: 'Messages, Attributes and Domains' }, { path: '/spec/arch/#key-resolution', label: 'Policy and key resolution' }, { path: '/articles/mission-partner-information-sharing/', label: 'Mission-partner sharing article' }],
   },
   {
     id: 'air-tasking-orders',
@@ -105,7 +105,7 @@ export const scenarios = [
       'The Origin Domain does not need to be online at the moment of reading. A prepared federation relationship, usable package and functioning local Key Service are still part of this design. The Target Domain’s service is trusted with recovered key material; it has a different role from the carrier transporting ciphertext.',
     ],
     consequence: 'Local key access after delayed delivery, without a live Origin request.',
-    references: [{ path: '/spec/cfar/#federation-overview', label: 'Early Interbinding and FLPs' }, { path: '/spec/cfar/#consumption', label: 'Package verification' }],
+    references: [{ path: '/spec/cfar/#federation-overview', label: 'Early Interbinding and FLPs' }, { path: '/spec/cfar/#consumption', label: 'Package verification' }, { path: '/articles/mission-partner-information-sharing/', label: 'Mission-partner sharing article' }],
   },
   {
     id: 'derived-results',
@@ -114,11 +114,11 @@ export const scenarios = [
     setup: 'An authorised processing application needs restricted observations to produce a result for a wider audience. Its operators define the release rules and trust it to apply them to plaintext. The applications use one CABE Domain, with distinct Attribute Sets and an appropriate key arrangement for the restricted inputs and the released result.',
     paragraphs: [
       'The processing application requests access to the input Envelopes as its own authenticated Principal. The Key Service checks its Claims and requested operation against each input’s Attributes. With permitted Non-Captive key access, it decrypts the observations locally and performs the analysis inside an explicitly trusted processing boundary.',
-      'The application determines what may be released, constructs a new Message, assigns that result its own Attribute Set and obtains an authorised output Lease. It encrypts the result into a separate Envelope. A recipient authorised for the result can request its key without being granted access to the restricted input material.',
+      'The application determines what may be released, including any required sanitisation or redaction, constructs a new Message, assigns that result its own Attribute Set and obtains an authorised output Lease. It encrypts the result into a separate Envelope. A recipient authorised for the result can request its key without being granted access to the restricted input material.',
       'The processing system makes and enforces the release decision. CABE protects the separately published objects; it does not sanitise or declassify their Payloads, propagate policy automatically, or turn the original ciphertext into a releasable result by changing its labels.',
     ],
     consequence: 'A deliberate release decision creates a new protected information product.',
-    references: [{ path: '/spec/arch/#definitions', label: 'Messages and Attribute Sets' }, { path: '/spec/cbes/#operations', label: 'Decapsulation and new encapsulation' }],
+    references: [{ path: '/spec/arch/#definitions', label: 'Messages and Attribute Sets' }, { path: '/spec/cbes/#operations', label: 'Decapsulation and new encapsulation' }, { path: '/articles/mission-partner-information-sharing/', label: 'Mission-partner sharing article' }],
   },
   {
     id: 'workflow-coordination',

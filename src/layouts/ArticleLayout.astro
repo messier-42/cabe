@@ -1,0 +1,35 @@
+---
+import Layout from './Layout.astro';
+import '../styles/articles.css';
+
+interface Props {
+  title: string;
+  description: string;
+  category: string;
+  sections: { id: string; title: string }[];
+}
+const { title, description, category, sections } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Layout title={`${title} — CABE`} description={description}>
+  <main class="page article-page" id="main" tabindex="-1">
+    <header class="page__header">
+      <div class="container">
+        <a class="section-label" href={`${base}/articles/`}>Articles</a>
+        <p class="article-category">{category}</p>
+        <h1 class="page__title">{title}</h1>
+        <p class="page__subtitle">{description}</p>
+      </div>
+    </header>
+    <div class="container article-layout">
+      <nav class="article-contents" aria-label="Article contents">
+        <h2>In this article</h2>
+        <ol>{sections.map(section => <li><a href={`#${section.id}`}>{section.title}</a></li>)}</ol>
+      </nav>
+      <article class="article-prose" aria-label={title}>
+        <slot />
+        <p class="article-return"><a href={`${base}/articles/`}>← All articles</a></p>
+      </article>
+    </div>
+  </main>
+</Layout>

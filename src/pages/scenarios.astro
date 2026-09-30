@@ -30,7 +30,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <ScenarioDiagram id={scenario.id} diagram={diagrams[scenario.id]} />
           <div class="scenario-prose">{scenario.paragraphs.map(paragraph => <p>{paragraph}</p>)}</div>
           <p class="scenario-consequence">{scenario.consequence}</p>
-          <nav class="scenario-references" aria-label={`${scenario.title}: specification references`}>
+          <nav class="scenario-references" aria-label={`${scenario.title}: further reading`}>
             {scenario.references.map(reference => <a href={`${base}${reference.path}`}>{reference.label} <span aria-hidden="true">↗</span></a>)}
           </nav>
           <a class="scenario-to-contents" href="#contents">Back to contents ↑</a>

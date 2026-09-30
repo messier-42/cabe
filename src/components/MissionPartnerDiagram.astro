@@ -1,0 +1,118 @@
+---
+// This worked exchange keeps the site's SVG + equivalent mobile HTML convention.
+// It is separate from the existing scenario diagrams so their layouts stay unchanged.
+const nodes = [
+  { x: 38, y: 72, w: 364, h: 82, kind: 'preparation', title: 'Authorised product preparation', lines: ['Synthetic report → distinct partner product', 'Remove excluded details; assign Attributes'] },
+  { x: 38, y: 226, w: 178, h: 110, kind: 'plain', title: 'Producer', lines: ['Authenticated', 'Encrypt locally', 'Attach inline FLP'] },
+  { x: 250, y: 226, w: 152, h: 110, kind: 'key', title: 'Origin Key Service', lines: ['Prograde', 'Non-Captive Lease', '+ FLP for Target'] },
+  { x: 508, y: 72, w: 350, h: 82, kind: 'identity', title: 'Local identity arrangements', lines: ['Both recipient applications authenticate', 'Accepted credentials / assertions'] },
+  { x: 508, y: 226, w: 350, h: 110, kind: 'key', title: 'Target Key Service', lines: ['Holds Federation Secret Key', 'Decrypt / verify FLP; match request', 'Apply local access policy'] },
+  { x: 38, y: 496, w: 350, h: 95, kind: 'plain', title: 'Shared relay / local delivery store', lines: ['Envelope + encrypted FLP delivered', 'No application decryption keys'] },
+  { x: 490, y: 496, w: 177, h: 95, kind: 'key', title: 'Analysis application', lines: ['Authenticated', 'Key access permitted'] },
+  { x: 691, y: 496, w: 177, h: 95, kind: 'plain', title: 'Maintenance app', lines: ['Authenticated', 'Key access refused'] },
+];
+const steps = [
+  { kind: 'preparation', title: '1. Authorised preparation', text: 'From the synthetic report, prepare a distinct partner product, remove excluded details and assign Attributes before protection.' },
+  { kind: 'key', title: '2. Origin Domain: Lease and FLP', text: 'The producer authenticates to the Origin Key Service. Prograde Resolution returns a Non-Captive Lease and an FLP for the prepared Target Domain.' },
+  { kind: 'plain', title: '3. Producer → shared delivery', text: 'The producer encrypts locally and attaches the inline FLP. The relay delivers the Envelope and encrypted package without application decryption keys.' },
+  { kind: 'identity', title: '4. Target Domain: local identity', text: 'Both recipients authenticate through locally accepted arrangements. The Target Key Service establishes their Principal and Claims.' },
+  { kind: 'key', title: '5. Fresh local key requests', text: 'Each app quotes the FLP and request identifiers. The Target Key Service uses its Federation Secret Key, decrypts and verifies the FLP, matches the request and applies local policy. Analysis: permitted. Maintenance: refused. The Payload stays with the applications.' },
+  { kind: 'outage', title: '6. Origin → delivery link interrupted', text: 'After delivery, this link is cut, with no other live Origin connection. Delivered data, the FLP and the Target’s local services remain available for fresh requests.' },
+];
+---
+<figure class="mpe-diagram" aria-labelledby="mpe-caption">
+  <div class="mpe-diagram-heading"><strong>One prepared product, two local decisions</strong><span>Synthetic exchange · proposed integration</span></div>
+  <div class="mpe-desktop">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 686" role="img" aria-labelledby="mpe-svg-title mpe-svg-desc">
+      <title id="mpe-svg-title">Approved partner product delivered from an Origin Domain to two Target Domain applications</title>
+      <desc id="mpe-svg-desc">Authorised preparation precedes encryption. The Origin Key Service gives the producer a Non-Captive Lease and an FLP. The shared relay delivers the Envelope and encrypted FLP to both recipients. Both authenticate locally. The Target Key Service decrypts and verifies the FLP, matches the request and applies policy: analysis is permitted, maintenance is refused. Cut only the Origin-to-delivery link after delivery; local services and delivered material remain available.</desc>
+      <defs>
+        <marker id="mpe-arrow-data" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#68717c" /></marker>
+        <marker id="mpe-arrow-key" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#265f99" /></marker>
+        <marker id="mpe-arrow-preparation" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#80633e" /></marker>
+        <marker id="mpe-arrow-identity" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#6a5687" /></marker>
+      </defs>
+      <rect class="mpe-domain" x="16" y="16" width="408" height="363" rx="8" />
+      <rect class="mpe-domain" x="468" y="16" width="416" height="643" rx="8" />
+      <text class="mpe-domain-label" x="38" y="47">Origin CABE Domain</text>
+      <text class="mpe-domain-label" x="490" y="47">Target CABE Domain · local services available</text>
+      <path class="mpe-edge preparation" d="M127 154 V226" marker-end="url(#mpe-arrow-preparation)" />
+      <text class="mpe-label" x="142" y="190">Prepared product</text>
+      <path class="mpe-edge key" d="M216 281 H250" marker-start="url(#mpe-arrow-key)" marker-end="url(#mpe-arrow-key)" />
+      <path class="mpe-edge identity" d="M682 154 V226" marker-end="url(#mpe-arrow-identity)" />
+      <text class="mpe-label" x="697" y="190">Principal + Claims</text>
+      <path class="mpe-edge plain" d="M127 336 V399 H214 V496" marker-end="url(#mpe-arrow-data)" />
+      <rect x="199" y="428" width="30" height="26" fill="white" />
+      <path class="mpe-break" d="M204 427 L224 453 M224 427 L204 453" />
+      <text class="mpe-outage-label" x="38" y="420">Origin → delivery connection</text>
+      <text class="mpe-outage-label" x="236" y="445">Cut after arrival</text>
+      <path class="mpe-edge plain" d="M388 540 H490" marker-end="url(#mpe-arrow-data)" />
+      <path class="mpe-edge plain" d="M439 540 V630 H779 V591" marker-end="url(#mpe-arrow-data)" />
+      <text class="mpe-label" x="566" y="652" text-anchor="middle">Envelope + inline FLP to both applications</text>
+      <path class="mpe-edge key" d="M578 336 V496" marker-start="url(#mpe-arrow-key)" marker-end="url(#mpe-arrow-key)" />
+      <path class="mpe-edge key" d="M779 336 V496" marker-start="url(#mpe-arrow-key)" marker-end="url(#mpe-arrow-key)" />
+      <text class="mpe-label" x="678" y="399" text-anchor="middle">Fresh local requests</text>
+      <text class="mpe-label" x="678" y="419" text-anchor="middle">+ quoted FLP</text>
+      <text class="mpe-label" x="590" y="463">Key material</text>
+      <text class="mpe-label" x="767" y="463" text-anchor="end">Refusal</text>
+      {nodes.map(node => <g class={`mpe-node ${node.kind}`}>
+        <rect x={node.x} y={node.y} width={node.w} height={node.h} rx="6" />
+        <text class="mpe-node-title" x={node.x + 14} y={node.y + 26}>{node.title}</text>
+        {node.lines.map((line, i) => <text class="mpe-node-copy" x={node.x + 14} y={node.y + 49 + i * 21}>{line}</text>)}
+      </g>)}
+    </svg>
+  </div>
+  <ol class="mpe-mobile">
+    {steps.map(step => <li class={step.kind}><h3>{step.title}</h3><p>{step.text}</p></li>)}
+  </ol>
+  <ul class="mpe-legend" aria-label="Diagram flow types">
+    <li><span class="preparation"></span>Preparation / approval</li>
+    <li><span class="identity"></span>Identity inputs</li>
+    <li><span class="plain"></span>Encrypted delivery</li>
+    <li><span class="key"></span>Key request / response</li>
+  </ul>
+  <figcaption id="mpe-caption">The Target is prepared before delivery. Only the marked Origin connection is interrupted; the delivered Envelope, FLP and local services remain available. Key Services handle key material, not the application Payload.</figcaption>
+</figure>
+<style>
+  .mpe-diagram { margin-block: 28px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: white; }
+  .mpe-diagram-heading { padding: 18px 20px; border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 4px 20px; justify-content: space-between; line-height: 1.6; }
+  .mpe-diagram-heading strong { font-size: 14px; }
+  .mpe-diagram-heading span { font-size: 11px; color: var(--quiet); }
+  svg { width: 100%; height: auto; display: block; }
+  .mpe-domain { fill: #fafbfc; stroke: var(--line); stroke-dasharray: 5 5; }
+  .mpe-domain-label { font: 600 13px var(--font-body); fill: var(--muted); }
+  .mpe-node rect { fill: white; stroke: #ccd3dc; }
+  .mpe-node.key rect { fill: var(--blue-soft); stroke: var(--blue-line); }
+  .mpe-node.preparation rect { fill: #fbf9f5; stroke: #c8b496; }
+  .mpe-node.identity rect { fill: #f8f6fb; stroke: #c5b8d4; }
+  .mpe-node-title { font: 600 14px var(--font-body); fill: var(--ink); }
+  .mpe-node-copy { font: 13px var(--font-body); fill: var(--muted); }
+  .mpe-edge { fill: none; stroke-width: 2; }
+  .mpe-edge.plain { stroke: var(--quiet); }
+  .mpe-edge.key { stroke: var(--blue); stroke-dasharray: 7 4; }
+  .mpe-edge.preparation { stroke: #80633e; stroke-dasharray: 2 4; }
+  .mpe-edge.identity { stroke: #6a5687; stroke-dasharray: 10 3 2 3; }
+  .mpe-label { fill: var(--muted); font: 12px var(--font-body); }
+  .mpe-break { fill: none; stroke: var(--deny); stroke-width: 2.5; }
+  .mpe-outage-label { fill: var(--deny); font: 12px var(--font-body); }
+  .mpe-legend { list-style: none; padding: 12px 20px; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 20px; border-top: 1px solid var(--line); }
+  .mpe-legend li { display: flex; gap: 8px; align-items: center; font-size: 11px; margin: 0; }
+  .mpe-legend span { width: 24px; border-top: 2px solid var(--quiet); }
+  .mpe-legend .key { border-color: var(--blue); border-top-style: dashed; }
+  .mpe-legend .preparation { border-color: #80633e; border-top-style: dotted; }
+  .mpe-legend .identity { border-color: #6a5687; border-top-style: double; border-top-width: 4px; }
+  figcaption { border-top: 1px solid var(--line); padding: 16px 20px; font-size: 12px; line-height: 1.75; background: var(--soft); }
+  .mpe-mobile { display: none; }
+  @media (max-width: 800px) {
+    .mpe-desktop, .mpe-legend { display: none; }
+    .mpe-mobile { display: grid; gap: 16px; list-style: none; margin: 0; padding: 20px; }
+    .mpe-mobile li { margin: 0; padding-left: 13px; border-left: 2px solid var(--quiet); }
+    .mpe-mobile .preparation { border-color: #80633e; border-left-style: dotted; }
+    .mpe-mobile .identity { border-color: #6a5687; }
+    .mpe-mobile .key { border-color: var(--blue); border-left-style: dashed; }
+    .mpe-mobile .outage { border-color: var(--deny); }
+    .mpe-mobile h3 { font-size: 14px; margin-bottom: 8px; }
+    .mpe-mobile p { font-size: 13px; line-height: 1.8; }
+  }
+  @media print { .mpe-diagram { break-inside: avoid; } }
+</style>

@@ -1,0 +1,63 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/articles.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Layout title="Governance — CABE" description="CABE’s current core team, proposed contribution and review process, and direction for broader stewardship.">
+  <main class="page" id="main" tabindex="-1">
+    <header class="page__header"><div class="container">
+      <span class="section-label">The project</span>
+      <h1 class="page__title">Governance</h1>
+      <p class="page__subtitle">Stewardship of the CABE project and specifications.</p>
+    </div></header>
+    <div class="page__body"><div class="container">
+      <div class="article-prose governance-copy">
+        <section id="current-stewardship">
+          <h2><a href="#current-stewardship">Current stewardship</a></h2>
+          <p>The current core team is:</p>
+          <ul class="core-team"><li>Hugo Landau</li><li>Andrés Vega</li><li>Ryan Hurst</li></ul>
+          <p>The website and specification drafts are maintained in the public <a href="https://github.com/messier-42/cabe">messier-42/cabe repository</a>, under Messier 42’s GitHub organisation. The project’s existing public contribution channels support specification discussion, issue reports and proposed changes.</p>
+        </section>
+        <section id="broader-stewardship">
+          <h2><a href="#broader-stewardship">Broadening stewardship</a></h2>
+          <p>An organisation adopting CABE should be able to implement it independently and take part in its development. We intend to broaden stewardship beyond the founding team, with a clear route for sustained contributors to take responsibility for the project. We welcome specification review, independent implementations, interoperability testing and operational feedback.</p>
+          <p>The broader governance model is being developed.</p>
+        </section>
+        <section id="participation-roles">
+          <h2><a href="#participation-roles">Participation and roles</a></h2>
+          <p>The following roles and processes describe a proposed governance model for adoption. They do not announce new appointments or repository permissions.</p>
+          <dl class="governance-roles">
+            <div><dt>Users</dt><dd>Use CABE in their systems and bring questions, operational experience and requirements to the project. Reporting problems and explaining real application needs are useful contributions.</dd></div>
+            <div><dt>Contributors</dt><dd>Improve the specifications, documentation or implementations through proposals, reviews, code, interoperability tests and other substantive work. Contribution can begin through the existing public channels.</dd></div>
+            <div><dt>Maintainers</dt><dd>Take sustained responsibility for an area of the project, review changes, help contributors resolve feedback and look after technical quality and continuity. Maintainer responsibilities and appointments would be made explicit as the broader model is adopted.</dd></div>
+          </dl>
+          <p>Ideas and contributions are considered on their technical merit and alignment with the project’s objectives, scope and design principles. These guidelines are intended to support fair, transparent participation; they are not an exhaustive list of ways to contribute.</p>
+        </section>
+        <section id="change-review">
+          <h2><a href="#change-review">Proposed change review process</a></h2>
+          <p><strong>All changes must be submitted as a GitHub Pull Request (PR).</strong> The submitter is responsible for responding to feedback from reviewers and maintainers and keeping the change ready to merge while the PR remains open, including resolving conflicts and addressing failed checks.</p>
+          <ul>
+            <li><strong>Minor changes require approval from at least one other maintainer.</strong> This includes documentation clarifications, bug fixes and other changes that do not significantly affect most users.</li>
+            <li><strong>Major changes require approval from at least two other maintainers.</strong> This includes new or changed functionality and significant changes to specified behaviour, even when the change is expressed in specification text.</li>
+          </ul>
+          <p>The submitter’s own approval does not count towards either threshold. Reviewers should explain concerns and work with the submitter towards a change that can be accepted.</p>
+        </section>
+        <section id="decision-making">
+          <h2><a href="#decision-making">Proposed decision-making approach</a></h2>
+          <p>We propose a lazy consensus approach: make proposals and their reasoning public, invite feedback and address reasoned objections. Where there is no unresolved objection, routine decisions can move forward without a formal vote.</p>
+          <p>Lazy consensus does not replace the explicit PR approvals above. Silence does not count as a maintainer approval. Objections should be discussed and resolved before the affected proposal proceeds.</p>
+        </section>
+        <section id="future-stewardship">
+          <h2><a href="#future-stewardship">A future steering group</a></h2>
+          <p>As stewardship broadens, the proposed model would give a CABE steering group final authority over the project’s technical direction, governance and process, and contribution policy. This describes an intended body, not an existing appointment or operative charter.</p>
+          <p>For that future group, we aspire to have no more than two members affiliated with the same organisation and at least 40% of members drawn from organisations with a CABE implementation deployed in production. These are longer-term representation goals as the ecosystem develops, not claims about current deployments or the composition of the core team.</p>
+        </section>
+        <section id="contribute">
+          <h2><a href="#contribute">Contribute now</a></h2>
+          <p>Start with the <a href={`${base}/specification/`}>specification drafts</a>. Use <a href="https://github.com/messier-42/cabe/discussions">GitHub Discussions</a> for questions and proposed directions, or <a href="https://github.com/messier-42/cabe/issues">open an issue</a> with a specific problem. Pull requests for errata and proposed improvements are welcome. Implementation experience, interoperability findings and operational feedback can help shape the drafts.</p>
+          <p>The <a href={`${base}/get-involved/`}>Get involved page</a> lists the project’s existing participation channels.</p>
+        </section>
+      </div>
+    </div></div>
+  </main>
+</Layout>

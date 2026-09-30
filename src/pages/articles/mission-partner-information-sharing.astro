@@ -1,0 +1,109 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import MissionPartnerDiagram from '../../components/MissionPartnerDiagram.astro';
+import { articles } from '../../data/articles';
+const article = articles.find(article => article.slug === 'mission-partner-information-sharing')!;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const sections = [
+  { id: 'shared-mechanism', title: 'A shared mechanism' },
+  { id: 'three-relationships', title: 'Three distinct relationships' },
+  { id: 'prepare-the-product', title: 'Prepare the partner product' },
+  { id: 'protect-and-deliver', title: 'Protect and deliver' },
+  { id: 'origin-outage', title: 'When the Origin link fails' },
+  { id: 'proposed-evaluation', title: 'A proposed evaluation' },
+  { id: 'interoperability', title: 'The interoperability contribution' },
+  { id: 'sources', title: 'Sources' },
+];
+---
+<ArticleLayout {...article} sections={sections}>
+  <section id="shared-mechanism">
+    <h2><a href="#shared-mechanism">A shared mechanism</a></h2>
+    <p class="article-thesis">CABE can provide a common mechanism for protecting application data and controlling key access within agreed mission-partner information-sharing arrangements. The objective is to make approved sharing rules executable and repeatable across participating applications, including arrangements that must continue operating through disrupted connectivity.</p>
+    <p>The common mechanism is an Envelope format and key access protocol. It does not require one centrally operated Key Service, one identity provider or identical permissions. The architectural objectives are less bespoke protection logic, reusable brokers, transport and storage, and less infrastructure duplicated solely to separate audiences. These are intended benefits, not measured savings or evidence of a deployed government solution.</p>
+    <p>DoDD 5101.22E’s MPE definition describes an operating framework at a single security level. A CABE Domain instead comprises one logical Key Service, provided by one or more Key Servers, and its Clients. It is not a synonym for an MPE, classification domain or approved security boundary. <a href="#source-mpe">[1]</a> <a href="#source-architecture">[5]</a></p>
+  </section>
+
+  <section id="three-relationships">
+    <h2><a href="#three-relationships">Three distinct relationships</a></h2>
+    <div class="relationship-list">
+      <div class="relationship">
+        <h3>Identity trust</h3>
+        <dl>
+          <div><dt>Question: </dt><dd>Which credentials and assertions are accepted, and which Principal and Claims do they establish?</dd></div>
+          <div><dt>Enables: </dt><dd>Established identity information for a subsequent access decision.</dd></div>
+          <div><dt>Does not establish: </dt><dd>Permission to read a particular product or authority to disclose it.</dd></div>
+        </dl>
+      </div>
+      <div class="relationship">
+        <h3>Key Service federation</h3>
+        <dl>
+          <div><dt>Question: </dt><dd>Which receiving CABE Domains can recover material for particular Leases?</dd></div>
+          <div><dt>Enables: </dt><dd>A receiving Key Service to obtain that material and service local requests under its policy.</dd></div>
+          <div><dt>Does not establish: </dt><dd>Every local client’s entitlement, or a disclosure decision.</dd></div>
+        </dl>
+      </div>
+      <div class="relationship">
+        <h3>Authority to disclose</h3>
+        <dl>
+          <div><dt>Question: </dt><dd>Which product may be shared with which partners, under what conditions?</dd></div>
+          <div><dt>Enables: </dt><dd>An authorised, agreed scope for the exchange that the implementation must represent.</dd></div>
+          <div><dt>Does not establish: </dt><dd>That recognising an identity or encrypting data permits an otherwise unapproved exchange.</dd></div>
+        </dl>
+      </div>
+    </div>
+    <p>DoDI 8520.02 likewise distinguishes accepting an authenticated identity from subsequent rules-based authorisation or access decisions. Here, each application authenticates to its own Domain’s Key Service through locally accepted identity arrangements; federation does not require every client to authenticate to every partner’s identity system. <a href="#source-identity">[2]</a> <a href="#source-ckap">[7]</a></p>
+    <p>Disclosure authority is also distinct from authorisation to use a particular transport or storage architecture. ‘The relay cannot decrypt this’ is a security property. It is not, by itself, an authorisation to place the information on that relay. Reusing shared or unclassified transport remains an objective within an appropriately authorised architecture; object encryption neither authorises arbitrary placement of classified information nor supplies the assurance of an entire classified network.</p>
+  </section>
+
+  <section id="prepare-the-product">
+    <h2><a href="#prepare-the-product">Prepare the partner product</a></h2>
+    <p>Consider a proposed integration using synthetic data, inside an already approved security and releasability arrangement. It demonstrates no transition between classification levels. An organisational rule permits specified partner analysis applications to receive a defined class of observation products.</p>
+    <p>The original synthetic report contains an observation, an internal source identifier and collection notes not intended for partners. An authorised production process prepares a distinct partner product, retaining the approved observation and removing the excluded details. This illustrates writing for release: preparing content for the intended audience, including sanitisation or redaction where required. The Army’s April 2025 guide connects this practice with disclosure coordination and data-sharing agreements; it describes REL TO as reflecting an affirmative disclosure determination. <a href="#source-army">[3]</a></p>
+    <p>Operators assign the resulting product appropriate Attributes and translate the sharing rule into recognised caller Claims and Key Service policy. For example: permit observation access to the designated partner analysis application; refuse the partner maintenance application. These are illustrative application choices, not CABE-defined fields. Translating and testing that rule is integration work. Approval may cover a class of exchanges, subject to whatever review the arrangement requires.</p>
+    <p>The release process decides what the product contains. CABE protects that product afterwards; it does not redact, declassify, inherit policy automatically or relabel unchanged ciphertext into a releasable product.</p>
+  </section>
+
+  <section id="protect-and-deliver">
+    <h2><a href="#protect-and-deliver">Protect and deliver</a></h2>
+    <p>The operators establish the necessary Origin–Target federation arrangement. This construction uses CFAR’s Non-Captive Lease Keys, Early Interbinding and Inline Propagation. During Prograde Resolution, the Origin Key Service includes the prepared Target Domain and creates a Simple Federated Lease Package (FLP) using a suitable Federation Public Key of the Target. The Target retains the corresponding Federation Secret Key. <a href="#source-cfar">[8]</a></p>
+    <p>The producer obtains the authorised Lease and FLP, encrypts the partner Message locally, and attaches the FLP to the Envelope. A shared relay carries the Envelope and encrypted package without application decryption keys. The protected Payload travels to the applications, not through a Key Service. <a href="#source-cbes">[6]</a></p>
+    <MissionPartnerDiagram />
+    <p>Each recipient authenticates locally and requests Retrograde Resolution, quoting the Origin Domain ID, Attribute Set, Lease Reference and FLP. The Target Key Service decrypts and verifies the package and checks that its protected identifiers exactly match the request. Local policy then determines whether that caller receives the applicable material. Both clients can authenticate while only the analysis application obtains access. <a href="#source-ckap">[7]</a> <a href="#source-cfar">[8]</a></p>
+  </section>
+
+  <section id="origin-outage">
+    <h2><a href="#origin-outage">When the Origin link fails</a></h2>
+    <p>After delivery, interrupt the Origin-to-shared-delivery connection shown in the diagram; assume the Target has no other live Origin connection. Already delivered Envelopes and FLPs remain accessible. With its federation private material, local Key Service, identity information and policy available, the Target can service fresh local requests without contacting the Origin. This does not promise continued arrival of new products.</p>
+    <p>An unprepared Domain is not guaranteed access. The Target cannot learn remote policy or credential changes it has not received. Lease expiry does not erase obtained keys or plaintext. Because the Target Key Service recovers usable Lease material, it is a trusted material holder, unlike the ciphertext relay. The Origin cannot continuously enforce every downstream decision after sharing that material.</p>
+  </section>
+
+  <section id="proposed-evaluation">
+    <h2><a href="#proposed-evaluation">A proposed evaluation</a></h2>
+    <p>These are expected observations for a proposed test, not reported results:</p>
+    <ol>
+      <li>Deliver the synthetic Envelope and inline FLP. Authenticate both applications successfully; expect the analysis application’s fresh local request to obtain material and the maintenance application’s request to be refused.</li>
+      <li>Interrupt the identified Origin connection. Repeat a fresh request to the Target Key Service; expect permitted access using the available FLP, federation material and local services.</li>
+    </ol>
+    <p>For each trial, start the permitted client without a cached Lease Key, Content Encryption Key or plaintext. Record the new request and local decision so client caching cannot explain success.</p>
+  </section>
+
+  <section id="interoperability">
+    <h2><a href="#interoperability">The interoperability contribution</a></h2>
+    <p>Common protection and key access can support exchange; applications still need compatible Payload formats, agreed Attribute meanings and operational procedures. CJCSI 6290.01A frames mission-based interoperability analysis around operational processes and supporting technical capabilities. Its CIAV support-request process is not a CABE certification framework. <a href="#source-ciav">[4]</a></p>
+    <p>The government publications supply context; the CABE drafts specify the mechanism. This proposed integration and its intended benefits are project analysis, with no claim of government adoption, endorsement or evaluation success.</p>
+  </section>
+
+  <section id="sources" class="article-sources">
+    <h2><a href="#sources">Sources</a></h2>
+    <ol>
+      <li id="source-mpe"><a href="https://www.esd.whs.mil/Portals/54/Documents/DD/issuances/dodd/510122e.pdf">DoDD 5101.22E, <cite>DoD Executive Agent (DoD EA) for DoD Mission Partner Environment (MPE)</cite></a>, 5 August 2020, glossary, printed p. 9.</li>
+      <li id="source-identity"><a href="https://www.esd.whs.mil/Portals/54/Documents/DD/issuances/dodi/852002p.pdf">DoDI 8520.02, <cite>Public Key Infrastructure and Public Key Enabling</cite></a>, 18 May 2023, “DoD PKI interoperability”, glossary, printed p. 45.</li>
+      <li id="source-army"><a href="https://api.army.mil/e2/c/downloads/2025/04/29/59b51ef8/no-25-1004-commander-and-staff-guide-to-mission-partner-environment-apr-25.pdf">Center for Army Lessons Learned, No. 25-1004, <cite>Commander and Staff Guide to Mission Partner Environment</cite></a>, April 2025, chapter 3, printed pp. 17–20. A professional guide, not a replacement for governing publications.</li>
+      <li id="source-ciav"><a href="https://www.jcs.mil/Portals/36/Documents/Library/Instructions/CJCSI%206290.01A.pdf">CJCSI 6290.01A, <cite>Mission Partner Environment Support Request Management Process for Coalition Interoperability Assurance and Validation</cite></a>, 26 July 2024, purpose, p. 1; definitions, GL-3.</li>
+      <li id="source-architecture"><a href={`${base}/spec/arch/`}>CABE Architecture Specification</a>, September 2026 draft, “Definitions” and “Key Resolution”.</li>
+      <li id="source-cbes"><a href={`${base}/spec/cbes/`}>CABE Baseline Envelope Structure (CBES)</a>, September 2026 draft, “Encapsulation”.</li>
+      <li id="source-ckap"><a href={`${base}/spec/ckap/`}>CABE Key Access Protocol (CKAP)</a>, September 2026 draft, “Client Identity” and “Retrograde”.</li>
+      <li id="source-cfar"><a href={`${base}/spec/cfar/`}>CABE Federation and Resilience (CFAR)</a>, September 2026 draft, “Federation Overview”, “Inline Propagation” and “Simple Federated Lease Packages”.</li>
+    </ol>
+  </section>
+</ArticleLayout>
