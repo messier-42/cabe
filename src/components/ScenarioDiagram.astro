@@ -1,0 +1,76 @@
+---
+import type { ScenarioDiagram } from '../data/scenario-diagrams';
+interface Props { id: string; diagram: ScenarioDiagram; }
+const { id, diagram } = Astro.props;
+const marker = (kind = 'data') => `url(#${id}-${kind}-arrow)`;
+---
+<figure class="scenario-diagram" aria-labelledby={`${id}-caption`}>
+  <div class="diagram-assumption">{diagram.assumption}</div>
+  <div class="diagram-legend" aria-label="Diagram line styles">
+    <span><i class="line-data"></i>Encrypted delivery</span>
+    <span><i class="line-key"></i>Key access</span>
+    {diagram.edges.some(edge => edge.kind === 'control') && <span><i class="line-control"></i>{id === 'shared-storage' ? 'Time / policy change' : 'Task / reference'}</span>}
+  </div>
+  <svg class="diagram-desktop" xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 880 ${diagram.height}`} role="img" aria-labelledby={`${id}-diagram-title ${id}-diagram-description`}>
+    <title id={`${id}-diagram-title`}>{diagram.title}</title>
+    <desc id={`${id}-diagram-description`}>{diagram.description}</desc>
+    <defs>
+      {['data', 'key', 'control'].map(kind => <marker id={`${id}-${kind}-arrow`} markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M1 1l6 3-6 3" class={`arrow-head arrow-${kind}`} /></marker>)}
+    </defs>
+    {diagram.domains.map(domain => <g class="diagram-domain"><rect x={domain.x} y={domain.y} width={domain.width} height={domain.height} rx="8" /><text x={domain.x+15} y={domain.y+25}>{domain.label}</text></g>)}
+    {diagram.edges.map(edge => <path class={`diagram-edge edge-${edge.kind || 'data'}`} d={edge.path} marker-end={marker(edge.kind)} marker-start={edge.kind === 'key' ? marker('key') : undefined} />)}
+    {diagram.nodes.map(node => <g class={`diagram-node node-${node.kind || 'app'}`}>
+      <rect x={node.x} y={node.y} width={node.width} height={node.height} rx="7" />
+      <text x={node.x+14} y={node.y+28} class="diagram-node-title">{node.title}</text>
+      {node.lines.map((line, i) => <text x={node.x+14} y={node.y+53+i*21} class="diagram-node-detail">{line}</text>)}
+      {node.decision && <text x={node.x+14} y={node.y+node.height-15} class={`diagram-decision ${node.decision.allowed ? 'decision-allow' : 'decision-deny'}`}>{node.decision.text}</text>}
+    </g>)}
+    {diagram.labels?.map(label => <text class="diagram-annotation" x={label.x} y={label.y} text-anchor="middle">{label.text}</text>)}
+  </svg>
+  <ol class="diagram-mobile" aria-label={`${diagram.title}: flow and access decisions`}>
+    {diagram.mobile.map(step => <li class={`mobile-step step-${step.kind || 'data'}`}><strong>{step.title}</strong><p>{step.text}</p></li>)}
+  </ol>
+  <figcaption id={`${id}-caption`}>{diagram.caption}</figcaption>
+</figure>
+
+<style>
+  .scenario-diagram { margin: 28px 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: white; }
+  .diagram-assumption { padding: 13px 18px; font-size: 12px; color: var(--muted); background: var(--soft); border-bottom: 1px solid var(--line); }
+  .diagram-legend { display: flex; flex-wrap: wrap; gap: 10px 24px; padding: 13px 18px 0; font-size: 11px; color: var(--muted); }
+  .diagram-legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .diagram-legend i { display: inline-block; width: 25px; border-top: 1.5px solid #737b85; }
+  .diagram-legend .line-key { border-top-style: dashed; border-color: #356da2; }
+  .diagram-legend .line-control { border-top: 2px dotted #8a6338; }
+  .diagram-desktop { display: block; width: 100%; height: auto; }
+  .diagram-domain rect { fill: #fcfdfe; stroke: var(--line); stroke-width: 1; }
+  .diagram-domain text { font-size: 12px; fill: var(--muted); }
+  .diagram-edge, .arrow-head { fill: none; stroke: #737b85; stroke-width: 1.5; }
+  .edge-key, .arrow-key { stroke: #356da2; }
+  .edge-key { stroke-dasharray: 5 5; }
+  .edge-control, .arrow-control { stroke: #8a6338; }
+  .edge-control { stroke-dasharray: 2 5; }
+  .diagram-node rect { fill: white; stroke: #d3d8de; }
+  .node-key rect { fill: #f3f7fb; stroke: #b5c9dc; }
+  .node-store rect, .node-envelope rect { fill: #f8f9fb; }
+  .node-trusted rect { fill: #f4f8f6; stroke: #a9c5b5; }
+  .node-control rect { fill: #faf7f2; stroke: #d8c6ad; }
+  .diagram-node-title { font-size: 16px; font-weight: 600; fill: var(--ink); }
+  .diagram-node-detail { font-size: 14px; fill: var(--muted); }
+  .diagram-decision { font-size: 14px; font-weight: 500; }
+  .decision-allow { fill: var(--pass); }
+  .decision-deny { fill: var(--deny); }
+  .diagram-annotation { font-size: 13px; fill: var(--muted); }
+  figcaption { padding: 15px 18px; border-top: 1px solid var(--line); font-size: 12px; line-height: 1.8; color: var(--muted); }
+  .diagram-mobile { display: none; }
+  @media (max-width: 800px) {
+    .diagram-desktop { display: none; }
+    .diagram-mobile { display: grid; gap: 16px; list-style: none; counter-reset: flow-step; padding: 20px 16px; margin: 0; }
+    .mobile-step { position: relative; padding: 15px; border: 1px solid var(--line); border-radius: 6px; background: #fcfdfe; }
+    .mobile-step::before { counter-increment: flow-step; content: counter(flow-step, decimal-leading-zero); display: block; margin-bottom: 7px; font: 10px/1.5 var(--font-mono); color: var(--quiet); }
+    .step-key { border-left: 2px dashed #356da2; background: var(--blue-soft); }
+    .step-control { border-left: 2px dotted #8a6338; background: #faf7f2; }
+    .mobile-step strong { display: block; font-size: 14px; font-weight: 600; line-height: 1.5; }
+    .mobile-step p { margin-top: 7px; font-size: 13px; color: var(--muted); line-height: 1.8; }
+  }
+  @media print { .scenario-diagram { break-inside: avoid; } }
+</style>

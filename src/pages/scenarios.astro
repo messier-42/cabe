@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ScenarioDiagram from '../components/ScenarioDiagram.astro';
+import { scenarios } from '../data/scenarios';
+import { diagrams } from '../data/scenario-diagrams';
+import '../styles/scenarios.css';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Layout title="Example scenarios — CABE" description="Nine example system designs showing shared storage, frequent messages, coalition information and selective access with CABE.">
+  <main class="page scenarios-page" id="main" tabindex="-1">
+    <header class="page__header">
+      <div class="container">
+        <span class="section-label">CABE in application systems</span>
+        <h1 class="page__title">Example scenarios</h1>
+        <p class="page__subtitle">Shared infrastructure, different permissions. These nine example system designs show where object protection and policy controlled key access can reduce duplicated delivery and storage arrangements.</p>
+        <p class="scenarios-context">These are illustrative designs, not packaged applications or verified deployments. Start with <a href={`${base}/#how-it-works`}>the shared broker example</a> for the mechanism and <a href={`${base}/#security`}>the Security model</a> for the common trust assumptions.</p>
+        <a class="scenarios-back" href={`${base}/#applications`}>← Back to the homepage scenario table</a>
+      </div>
+    </header>
+    <div class="container scenarios-layout">
+      <nav class="scenarios-contents" aria-labelledby="contents-title" id="contents">
+        <h2 id="contents-title">On this page</h2>
+        <ol>{scenarios.map((scenario, index) => <li><a href={`#${scenario.id}`}><span aria-hidden="true">{String(index+1).padStart(2,'0')}</span>{scenario.title}</a></li>)}</ol>
+      </nav>
+      <div class="scenario-sections">
+        {scenarios.map((scenario, index) => <section class="scenario-section" id={scenario.id} aria-labelledby={`${scenario.id}-title`}>
+          <p class="scenario-number">Example {String(index+1).padStart(2,'0')}</p>
+          <h2 id={`${scenario.id}-title`}>{scenario.title}</h2>
+          <p class="scenario-setup">{scenario.setup}</p>
+          <ScenarioDiagram id={scenario.id} diagram={diagrams[scenario.id]} />
+          <div class="scenario-prose">{scenario.paragraphs.map(paragraph => <p>{paragraph}</p>)}</div>
+          <p class="scenario-consequence">{scenario.consequence}</p>
+          <nav class="scenario-references" aria-label={`${scenario.title}: specification references`}>
+            {scenario.references.map(reference => <a href={`${base}${reference.path}`}>{reference.label} <span aria-hidden="true">↗</span></a>)}
+          </nav>
+          <a class="scenario-to-contents" href="#contents">Back to contents ↑</a>
+        </section>)}
+      </div>
+    </div>
+  </main>
+</Layout>

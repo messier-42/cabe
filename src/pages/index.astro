@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { scenarios } from '../data/scenarios';
 import '../styles/home.css';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -35,9 +36,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <section class="section purpose split" id="why-cabe" aria-labelledby="purpose-title">
     <div><h2 id="purpose-title">Why CABE?</h2></div>
     <div class="prose">
-      <p>Applications which need to cooperate do not necessarily share the same operators, permissions or assumptions about trust. Putting them on the same network does not resolve those differences.</p>
-      <p>A report may pass through several systems before reaching the application which needs it. A partner may be entitled to selected observations but not the whole collection. The infrastructure carrying that information need not be entitled to read it.</p>
-      <p>The producing application assigns Attributes to the information it protects. The Key Service uses those Attributes to control key access, independently of the transport carrying the Envelope.</p>
+      <p>Keeping information separate does not need to mean operating a separate network, message broker or archive for every audience. Where each sharing arrangement needs its own infrastructure, organisations pay to provision and operate duplicate services. Bringing another participant into an exchange can become another integration project.</p>
+      <p>CABE is intended to make more of that infrastructure reusable. Producers encrypt information before handing it to shared services. Message Attributes and access Policy determine who may obtain the keys needed to read it. The aim is to carry protected information over shared or unclassified transport, and retain it in common storage, without giving every participant or infrastructure operator access to its contents.</p>
+      <p>The information does not need to be a document. A position report, chat message, command update or sensor reading can be protected as an individual object. CABE’s concise Envelope and reusable Leases support these small, frequent exchanges. With a valid cached Lease and a Non-Captive Key, a producer can encrypt further Messages with the same Attribute Set locally, without a new Key Service request for every Message.</p>
+      <p>Sharing can also change after information is stored. Within an established CABE Domain which retains the required key material, a later Policy decision can admit a new reader to an existing report without copying it into another archive or re-encrypting it for that reader.</p>
+      <p>A common Envelope and key access protocol give independently developed applications a common way to exchange protected information. In a coalition, that can support contributions to a common operating picture while preserving different permissions for the applications using those contributions. Those applications still need compatible Payload formats and agreed Attribute meanings.</p>
     </div>
   </section>
 
@@ -164,13 +167,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </section>
 
   <section class="section" id="applications" aria-labelledby="applications-title">
-    <div class="section-intro"><h2 id="applications-title">Applications</h2></div>
-    <div class="application-list">
-      <article class="application-row"><div><span class="application-index">01</span><h3>Telemetry and <br>application events</h3></div><div><p>A shared event service may carry equipment readings, observations and application results for several consumers. Access rules can distinguish these products without making the broker a trusted reader of their payloads.</p></div></article>
-      <article class="application-row"><div><span class="application-index">02</span><h3>Satellite and <br>coalition information</h3></div><div><p>An analysis application may need selected products from a satellite provider or coalition information service rather than access to its entire collection. The provider’s release rules determine which consumers may obtain which products. For a live feed, an application can protect finite video segments before they reach a shared relay or cache.</p></div></article>
-      <article class="application-row"><div><span class="application-index">03</span><h3>A partner observation <br>reaching the field</h3></div><div><p>A partner’s publishing application can send an encrypted drone observation to an authorised SOF application for situational awareness. Relays carry the Envelope without needing the decryption key.</p></div></article>
-      <article class="application-row"><div><span class="application-index">04</span><h3>An ally-operated <br>radio mesh</h3></div><div><p>An ally’s mobile ad hoc network may provide an available path between applications. Protected application data can use that path without giving the radios and relays its decryption keys.</p></div></article>
-    </div>
+    <div class="section-intro"><h2 id="applications-title">Example scenarios</h2></div>
+    <table class="scenario-table" aria-labelledby="applications-title">
+      <thead><tr><th scope="col">Scenario</th><th scope="col">What it illustrates</th></tr></thead>
+      <tbody>{scenarios.map(scenario => <tr><th scope="row"><a href={`${base}/scenarios/#${scenario.id}`}>{scenario.title}</a></th><td>{scenario.summary}</td></tr>)}</tbody>
+    </table>
   </section>
 
   <section class="section" id="software" aria-labelledby="software-title">
@@ -216,7 +217,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </details>
       <details class="faq">
         <summary>Where are keys held, and when is policy checked?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary>
-        <p>A Non-Captive Lease Key is disclosed to an authorised Client for local use. A valid cached Lease avoids repeated resolution for encryption; local use of retained key material does not trigger another policy check. A Captive Lease Key stays at the Key Service, which can enforce current Policy when wrapping or unwrapping a content encryption key (CEK). The Client handles the Payload using that CEK and may retain it or the plaintext. New Key Resolution requests are checked against Policy. Lease expiry and Rollover govern key selection for subsequent encryption; they do not erase retained keys or guarantee immediate revocation. Old ciphertext remains decryptable with its key, and Envelopes sharing usable key material need not have independent access boundaries. <a href={`${base}/spec/arch/`}>Key access and rollover</a></p>
+        <p>A Non-Captive Lease Key is disclosed to an authorised Client for local use. A valid cached Lease avoids repeated resolution for encryption; local use of retained key material does not trigger another policy check. A Captive Lease Key stays at the Key Service, which can enforce current Policy when wrapping or unwrapping a content encryption key (CEK). The Client handles the Payload using that CEK and may retain it or the plaintext. New Key Resolution requests are checked against Policy. Lease expiry and Rollover govern key selection for subsequent encryption; they do not erase retained keys or guarantee immediate revocation. Old ciphertext remains decryptable with its key, and Envelopes sharing usable key material can share an access boundary. <a href={`${base}/spec/arch/`}>Key access and rollover</a></p>
       </details>
       <details class="faq">
         <summary>What changes in the trust model when domains federate?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary>

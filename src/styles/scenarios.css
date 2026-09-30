@@ -1,0 +1,39 @@
+/* Scenario content stays in one document; diagrams have their own responsive styles. */
+.scenarios-page .scenarios-context { max-width: 780px; font-size: 14px; color: var(--muted); margin-top: 18px; }
+.scenarios-back { display: inline-block; margin-top: 23px; font-size: 13px; }
+.scenarios-layout { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 40px; padding-block: 46px 70px; align-items: start; }
+.scenarios-contents { position: sticky; top: 24px; max-height: calc(100vh - 48px); overflow-y: auto; padding: 5px 15px 10px 0; }
+.scenarios-contents h2 { font-size: 13px; letter-spacing: 0; margin-bottom: 20px; }
+.scenarios-contents ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 15px; }
+.scenarios-contents a { display: flex; gap: 10px; font-size: 12px; line-height: 1.65; color: var(--muted); text-decoration: none; }
+.scenarios-contents a:hover { color: var(--blue); text-decoration: underline; }
+.scenarios-contents a span { font: 10px/2 var(--font-mono); color: var(--quiet); flex: none; }
+.scenario-section { scroll-margin-top: 24px; padding-bottom: 46px; margin-bottom: 46px; border-bottom: 1px solid var(--line); }
+.scenario-section:last-child { margin: 0; padding-bottom: 0; border: 0; }
+.scenario-number { color: var(--quiet); font: 11px/1.8 var(--font-mono); margin-bottom: 9px; }
+.scenario-section h2 { font-size: clamp(25px, 2.5vw, 30px); max-width: 720px; }
+.scenario-setup { margin-top: 20px; font-size: 15px; color: var(--muted); line-height: 1.9; max-width: 790px; }
+.scenario-prose { max-width: 790px; font-size: 14px; color: var(--muted); line-height: 1.9; }
+.scenario-consequence { margin-top: 24px; padding-left: 14px; border-left: 2px solid var(--blue-line); font-size: 15px; color: var(--ink); }
+.scenario-references { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 22px; font-size: 12px; }
+.scenario-to-contents { display: inline-block; margin-top: 22px; font-size: 11px; color: var(--muted); }
+@media (max-width: 1100px) {
+  .scenarios-layout { grid-template-columns: minmax(0, 1fr); gap: 38px; }
+  .scenarios-contents { position: static; max-height: none; overflow: visible; padding: 0 0 28px; border-bottom: 1px solid var(--line); }
+  .scenarios-contents ol { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 17px 30px; }
+  .scenarios-contents a { font-size: 13px; }
+}
+@media (max-width: 620px) {
+  .scenarios-layout { padding-block: 30px 48px; gap: 30px; }
+  .scenarios-contents ol { grid-template-columns: 1fr; gap: 13px; }
+  .scenarios-context { font-size: 13px; }
+  .scenario-section { padding-bottom: 34px; margin-bottom: 34px; }
+  .scenario-setup, .scenario-prose { font-size: 14px; }
+  .scenario-section h2 { font-size: 26px; }
+  .scenario-consequence { font-size: 14px; }
+}
+@media print {
+  .scenarios-layout { display: block; padding: 20px 0 0; }
+  .scenarios-contents, .scenarios-back, .scenario-to-contents { display: none; }
+  .scenario-section { margin: 0 0 24px; padding-bottom: 24px; }
+}
