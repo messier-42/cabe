@@ -1,7 +1,7 @@
 ---
 title: "CABE Key Access Protocol (CKAP)"
 draft: "CKAP"
-status: "Active Draft"
+status: "Version 1.0"
 date: "September 2026"
 abstract: "This document specifies the CABE Key Access Protocol (CKAP)."
 ---

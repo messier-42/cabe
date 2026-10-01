@@ -2,7 +2,7 @@
 ---
 title: "CABE Federation and Resilience (CFAR)"
 draft: "cfar"
-status: "Active Draft"
+status: "Version 1.0"
 date: "September 2026"
 abstract: "This document specifies the CABE Federation, Availability and Resilience (CFAR) specification."
 ---

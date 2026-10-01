@@ -1,7 +1,7 @@
 ---
 title: "CABE High Availability Specification (CABE-HA)"
 draft: "CABE-HA"
-status: "Active Draft"
+status: "Version 1.0"
 date: "September 2026"
 abstract: "This document specifies high availability requirements for a CABE Key Server implemented by multiple colocated Key Server Instances."
 ---

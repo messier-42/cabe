@@ -2,7 +2,7 @@
 ---
 title: "CABE Architecture Specification"
 draft: "CABE-ARCH"
-status: "Active Draft"
+status: "Version 1.0"
 date: "September 2026"
 abstract: "This document specifies the CABE Architecture and provides the architectural framework into which the other CABE specifications fall."
 ---

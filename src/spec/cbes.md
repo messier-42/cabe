@@ -2,7 +2,7 @@
 ---
 title: "CABE Baseline Envelope Structure (CBES)"
 draft: "CBES"
-status: "Active Draft"
+status: "Version 1.0"
 date: "September 2026"
 abstract: "This document specifies the CABE Baseline Envelope Structure."
 ---
