@@ -5,86 +5,80 @@ import '../styles/articles.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout title="Standards & Terminology — CABE" description="The IETF foundations of CABE and the role of related CCEB and NATO publications, interoperability mappings and alternative technologies.">
+<Layout title="Standards & Terminology — CABE" description="Publication references for CBOR, COSE, ACP 240, and NATO confidentiality labelling and metadata binding.">
   <main class="page" id="main" tabindex="-1">
     <header class="page__header">
       <div class="container">
         <span class="section-label">Reference</span>
         <h1 class="page__title">Standards &amp; Terminology</h1>
-        <p class="page__subtitle">The publications behind CABE and how they relate to one another.</p>
       </div>
     </header>
 
     <div class="page__body">
-      <div class="container article-prose">
-        <section aria-labelledby="relationship-title">
-          <h2 id="relationship-title">How the references fit together</h2>
-          <p>CABE is an independent family of specifications. Its core architecture does not require NATO or CCEB infrastructure. Additional specifications, including <a href={`${base}/spec/acp240/`}>CABE-ACP240</a>, define mappings for particular interoperability environments. Such mappings do not by themselves establish conformance with every requirement of the referenced publications.</p>
-          <p>A <strong>normative dependency</strong> supplies requirements used by a specification. An <strong>integration mapping</strong> translates selected concepts for interoperability. A <strong>related standard</strong> provides context for a deployment, while an <strong>alternative technology</strong> offers another approach. This page is informative; the <a href={`${base}/specification/`}>CABE specifications</a> define the requirements and normative references.</p>
+      <div class="container">
+        <div class="article-prose reference-copy">
+          <section aria-labelledby="ietf">
+            <h2 id="ietf">IETF</h2>
+            <div class="publication">
+              <h3><a href="https://www.rfc-editor.org/info/rfc8949">RFC 8949</a> — Concise Binary Object Representation (CBOR)</h3>
+              <p class="publication-meta">Internet Engineering Task Force (IETF).</p>
+              <p>Defines CBOR, including the deterministic encoding requirements used by <a href={`${base}/spec/arch/#serialization`}>CABE-ARCH to serialize Attribute Sets</a>.</p>
+            </div>
+            <div class="publication">
+              <h3><a href="https://www.rfc-editor.org/info/rfc9052">RFC 9052</a> — CBOR Object Signing and Encryption (COSE): Structures and Process</h3>
+              <p class="publication-meta">Internet Engineering Task Force (IETF).</p>
+              <p>Defines the <code>COSE_Encrypt0</code> and <code>COSE_Encrypt</code> structures used for CABE Envelopes by the <a href={`${base}/spec/cbes/#overview`}>CABE Baseline Envelope Structure (CBES)</a>.</p>
+            </div>
+            <div class="publication">
+              <h3><a href="https://www.rfc-editor.org/info/rfc9053">RFC 9053</a> — CBOR Object Signing and Encryption (COSE): Initial Algorithms</h3>
+              <p class="publication-meta">Internet Engineering Task Force (IETF).</p>
+              <p>Specifies COSE algorithms and parameters, including authenticated encryption and key wrapping. Cited in the <a href={`${base}/spec/cbes/#normative-references`}>CBES normative references</a>.</p>
+            </div>
+          </section>
 
-          <div class="reference-table" role="region" aria-label="Standards and their relationship to CABE" tabindex="0">
-            <table>
-              <caption>Publications, provenance and relationship to CABE</caption>
-              <thead><tr><th scope="col">Reference</th><th scope="col">Publisher / provenance</th><th scope="col">Relationship to CABE</th></tr></thead>
-              <tbody>
-                <tr>
-                  <th scope="row"><a href="https://www.rfc-editor.org/info/rfc8949">CBOR</a> / <a href="https://www.rfc-editor.org/info/rfc9052">COSE</a></th>
-                  <td>Internet Engineering Task Force (IETF)</td>
-                  <td><strong>Normative dependencies.</strong> CBOR supplies the encoding and COSE the cryptographic structures used by the <a href={`${base}/spec/cbes/`}>CABE Baseline Envelope Structure (CBES)</a>. See RFC 8949, RFC 9052 and <a href="https://www.rfc-editor.org/info/rfc9053">RFC 9053</a>.</td>
-                </tr>
-                <tr>
-                  <th scope="row">ACP 240(A)</th>
-                  <td>Combined Communications-Electronics Board (CCEB)</td>
-                  <td><strong>Integration mapping.</strong> ACP 240 provides a framework for data-centric interoperability. <a href={`${base}/spec/acp240/`}>CABE-ACP240</a> maps selected labelling concepts relevant to that framework; it does not implement the whole publication.</td>
-                </tr>
-                <tr>
-                  <th scope="row">STANAG 4774 / <a href="https://nso.nato.int/nso/nsdd/main/standards/ap-details/1967/EN">ADatP-4774</a></th>
-                  <td>NATO / NATO Standardization Office (NSO)</td>
-                  <td><strong>Integration mapping.</strong> Confidentiality metadata label syntax and semantics. ADatP-4774 is a normative reference of <a href={`${base}/spec/acp240/`}>CABE-ACP240</a>, which maps selected label fields to CABE Attributes.</td>
-                </tr>
-                <tr>
-                  <th scope="row">STANAG 4778 / ADatP-4778</th>
-                  <td>NATO / NSO</td>
-                  <td><strong>Related standard.</strong> Metadata-to-data binding. Its binding mechanism is not automatically interchangeable with the cryptographic construction defined by <a href={`${base}/spec/cbes/`}>CBES</a>.</td>
-                </tr>
-                <tr>
-                  <th scope="row">STANAG 5663 / ADatP-5663</th>
-                  <td>NATO / NSO</td>
-                  <td><strong>Related standard.</strong> Federated identity, credential and access management context. It is not a dependency of the core <a href={`${base}/spec/arch/`}>CABE architecture</a> or <a href={`${base}/spec/ckap/`}>Key Access Protocol</a>.</td>
-                </tr>
-                <tr>
-                  <th scope="row">ZTDF / <a href="https://opentdf.io/">OpenTDF</a></th>
-                  <td>Related format and open-source project</td>
-                  <td><strong>Alternative technologies.</strong> Zero Trust Data Format (ZTDF) and the OpenTDF project are useful points of comparison. Neither is a CABE conformance requirement; the format and the implementation project are distinct.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
+          <section aria-labelledby="cceb">
+            <h2 id="cceb">CCEB</h2>
+            <div class="publication">
+              <h3><a href="https://wss.apan.org/s/CCEB/public/Forms/acps.aspx">ACP 240(A)</a> — Data-Centric Interoperability Concepts and Design Requirements</h3>
+              <p class="publication-meta">Combined Communications-Electronics Board (CCEB), 8 May 2025.</p>
+              <p>Cited by <a href={`${base}/spec/acp240/`}>CABE-ACP240</a>, which maps selected classification and labelling concepts from ACP 240 and STANAG 4774 to CABE Attributes.</p>
+            </div>
+          </section>
 
-        <section aria-labelledby="publication-title">
-          <h2 id="publication-title">Publication names and sources</h2>
-          <p><strong>ACP</strong> means Allied Communications Publication. ACP 240 is a CCEB publication. <strong>STANAG</strong> means NATO Standardization Agreement; the associated Allied Data Processing Publication (<strong>ADatP</strong>) contains the technical specification. These identifiers describe different publications and responsibilities.</p>
-          <p>Use the <a href="https://wss.apan.org/s/CCEB/public/Forms/acps.aspx">CCEB publications catalogue</a> for ACP publications and the <a href="https://nso.nato.int/nso/nsdd/main/standards">NATO Standardization Document Database</a> for STANAGs and associated publications, including ADatP-4774, ADatP-4778 and ADatP-5663. Publication access may require the relevant national or organisational channel. For the editions cited by the mapping, see the <a href={`${base}/spec/acp240/#normative-references`}>CABE-ACP240 normative references</a>.</p>
-          <p>The <code>NATO</code> policy identifier and NATO classification levels used in CABE-ACP240 retain their specified meaning. Correctly attributing ACP 240 to CCEB does not change those values or the mapping requirements.</p>
-        </section>
+          <section aria-labelledby="nato">
+            <h2 id="nato">NATO</h2>
+            <div class="publication-access">
+              <p>Full NATO STANAGs are generally not publicly downloadable. NATO UNCLASSIFIED and NATO RESTRICTED documents are distributed through <a href="https://www.dsp.dla.mil/Specs-Standards/International-Standardization-Documents/">official channels</a>; public access depends on release authorisation. The entries below use public catalogue records and published reference material.</p>
+              <p>To obtain full documents, contact your national NATO delegation or search the <a href="https://nso.nato.int/nso/nsdd/main/standards">NATO Standardization Office (NSO) standards database</a> by standard number, for example <code>4778</code> for STANAG 4778.</p>
+            </div>
+            <div class="publication">
+              <h3><a href="https://nso.nato.int/nso/nsdd/main/standards/ap-details/1967/EN">ADatP-4774</a> — Confidentiality Metadata Label Syntax</h3>
+              <p class="publication-meta">NATO Standardization Office. Edition A, Version 1, 20 December 2017; covered by STANAG 4774, Edition 1.</p>
+              <p>Specifies confidentiality labels. <a href={`${base}/spec/acp240/#defined-attributes`}>CABE-ACP240</a> maps the policy identifier, classification, releasability, context and “ONLY” categories to the <code>p</code>, <code>s</code>, <code>r</code>, <code>c</code> and <code>o</code> Attributes.</p>
+            </div>
+            <div class="publication">
+              <h3><a href="https://nso.nato.int/nso/nsdd/main/standards/ap-details/1968/EN">ADatP-4778</a> — Metadata Binding Mechanism</h3>
+              <p class="publication-meta">NATO Standardization Office. Edition A, Version 1, 26 October 2018; covered by STANAG 4778, Edition 1.</p>
+              <p>Defines a mechanism for binding metadata to data objects. CABE’s Attribute Set binding is specified in <a href={`${base}/spec/cbes/#header-fields`}>CBES</a>, which places the Attribute Set in a COSE protected header.</p>
+            </div>
+          </section>
+
+          <section aria-labelledby="publication-terminology">
+            <h2 id="publication-terminology">Publication terminology</h2>
+            <p><strong>ACP</strong> means Allied Communications Publication. ACP 240 is issued by CCEB.</p>
+            <p><strong>STANAG</strong> means <a href="https://www.nato.int/en/what-we-do/deterrence-and-defence/standardization">NATO Standardization Agreement</a>. It records nations’ agreement to implement a standard.</p>
+            <p><strong>ADatP</strong> means Allied Data Processing Publication, a NATO publication series. ADatP-4774 and ADatP-4778 contain the technical specifications covered by their respective STANAGs.</p>
+          </section>
+        </div>
       </div>
     </div>
   </main>
 </Layout>
 
 <style>
-  .reference-table { margin-top: 24px; overflow-x: auto; }
-  table { width: 100%; min-width: 700px; border-collapse: collapse; font-size: 14px; line-height: 1.75; }
-  caption { text-align: left; color: var(--quiet); font-size: 13px; margin-bottom: 12px; }
-  th, td { padding: 18px 20px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-  thead th { background: var(--soft); color: var(--ink); font-size: 13px; font-weight: 600; border-top: 1px solid var(--line); }
-  tbody th { width: 22%; color: var(--ink); font-weight: 600; }
-  td:nth-child(2) { width: 23%; }
-  @media print {
-    .reference-table { overflow: visible; }
-    table { min-width: 0; font-size: 10pt; }
-    th, td { padding: 10px; }
-    tr { break-inside: avoid; }
-  }
+  .reference-copy { max-width: 790px; }
+  .publication-access { margin-bottom: 24px; }
+  .publication + .publication { margin-top: 24px; }
+  .publication p { margin-top: 8px; }
+  .publication-meta { color: var(--quiet); font-size: 13px; }
 </style>
