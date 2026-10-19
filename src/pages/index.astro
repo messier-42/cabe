@@ -4,6 +4,7 @@ import { scenarios } from '../data/scenarios';
 import '../styles/home.css';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const khaledSource = 'https://github.com/messier-42/khaled/blob/d06e5b721279fd65480150df8cdbfa06a409172b';
 ---
 
 <Layout
@@ -218,6 +219,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div id="security" aria-labelledby="security-title">
       <h2 id="security-title">Security model</h2>
       <p class="security-intro">CABE lets brokers, relays and storage services carry encrypted Envelopes without entrusting them with plaintext. The Key Service, identity and claims authorities, and participants holding usable key material or plaintext remain trusted for the information and authority they control.</p>
+      <details class="faq" id="cryptographic-mechanisms">
+        <summary>What cryptography does CABE use?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary>
+        <p><a href={`${base}/spec/cbes/`}>CBES</a> requires COSE authenticated encryption to protect Payload confidentiality and authenticate the ciphertext and protected headers, including the Attribute Set and Lease Reference. With khaled, cabe-go uses AES-256-GCM with a 128-bit authentication tag.</p>
+        <p>khaled uses <a href={`${khaledSource}/pkg/keyschedule/schedule.go#L145-L185`}>HKDF-SHA256 for key derivation</a> and <a href={`${khaledSource}/pkg/wrapper/macwrapper/macwrapper.go#L174-L181`}>HMAC-SHA256 truncated to 128 bits</a> to authenticate Lease References and bind them to Attribute Sets. These algorithms and khaled’s internal key schedule are implementation choices. Security depends on nonce uniqueness under each key, key protection and correct authorisation. The 256-bit AES key does not imply 256-bit authentication; forgery bounds depend on data volume and verification attempts. Symmetric authentication provides no inherent non-repudiation.</p>
+      </details>
       <details class="faq">
         <summary>What if a broker, relay or storage service is compromised?<svg class="icon" aria-hidden="true"><use href="#chevron"/></svg></summary>
         <p>CBES uses authenticated encryption: an intermediary without the relevant key cannot read the Payload or make a changed ciphertext or protected header verify under the intended key. Protected headers, including the Attribute Set and Lease Reference, remain visible. Unprotected headers do not carry the same integrity guarantee; CFAR explicitly permits intermediaries to change the attached federation-package list. An intermediary can drop, delay, reorder or replay Envelopes and observe their size, timing and routing. CABE encryption alone does not guarantee delivery, freshness, replay prevention or resistance to traffic analysis. <a href={`${base}/spec/cbes/`}>Envelope headers</a></p>
