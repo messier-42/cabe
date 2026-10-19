@@ -69,6 +69,14 @@ CABE is built on the IETF standards CBOR (Concise Binary Object Representation)
 and COSE (CBOR Object Signing and Encryption). COSE itself incorporates
 NIST-approved cryptographic algorithms such as AES and SHA-2.
 
+Related publications address particular interoperability environments: ACP 240
+is published by the Combined Communications-Electronics Board (CCEB), while
+STANAG 4774 and its associated ADatP-4774 publication are NATO standards for
+confidentiality metadata labelling. CABE-ACP240 provides an interoperability
+mapping for selected concepts; it does not establish blanket conformance with
+ACP 240 or NATO standards. See [Standards & Terminology](/references/) for the
+publications, their provenance and their relationship to CABE.
+
 # How is the CABE specification structured?
 
 CABE is a family of specifications. The core specification defines a way of
