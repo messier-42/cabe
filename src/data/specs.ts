@@ -65,9 +65,9 @@ export const specGroups: SpecGroup[] = [
         slug: 'cfar',
       },
       {
-        title: 'NATO ACP240 Attribute Mapping',
+        title: 'ACP 240 Attribute Mapping',
         draft: 'CABE-ACP240',
-        desc: 'Defines an mapping between a subset of NATO ACP240 and STANAG 4774 information classification labelling and CABE Attribute Sets.',
+        desc: 'Defines a mapping between selected ACP 240 and STANAG 4774 confidentiality metadata concepts and CABE Attribute Sets.',
         status: 'Version 1.0',
         statusType: 'active',
         slug: 'acp240',
