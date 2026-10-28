@@ -1,14 +1,16 @@
 ---
 import Layout from './Layout.astro';
+import type { MarkdownHeading } from 'astro';
 import '../styles/articles.css';
 
 interface Props {
   title: string;
   description: string;
   category: string;
-  sections: { id: string; title: string }[];
+  headings: MarkdownHeading[];
 }
-const { title, description, category, sections } = Astro.props;
+const { title, description, category, headings } = Astro.props;
+const sections = headings.filter(heading => heading.depth === 2);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <Layout title={`${title} — CABE`} description={description}>
@@ -21,11 +23,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <p class="page__subtitle">{description}</p>
       </div>
     </header>
-    <div class="container article-layout">
-      <nav class="article-contents" aria-label="Article contents">
+    <div class:list={['container', 'article-layout', { 'article-layout--without-contents': sections.length === 0 }]}>
+      {sections.length > 0 && <nav class="article-contents" aria-label="Article contents">
         <h2>In this article</h2>
-        <ol>{sections.map(section => <li><a href={`#${section.id}`}>{section.title}</a></li>)}</ol>
-      </nav>
+        <ol>{sections.map(section => <li><a href={`#${section.slug}`}>{section.text}</a></li>)}</ol>
+      </nav>}
       <article class="article-prose" aria-label={title}>
         <slot />
         <p class="article-return"><a href={`${base}/articles/`}>← All articles</a></p>

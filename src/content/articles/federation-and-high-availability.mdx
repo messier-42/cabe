@@ -1,0 +1,62 @@
+---
+title: "Federation and high availability in CABE"
+description: "How CABE supports sharing between Domains and continuity within a Key Service."
+category: "Architecture"
+order: 2
+---
+
+import FederationAvailabilityDiagram from '../../components/FederationAvailabilityDiagram.astro';
+
+## A delivered report still needs a key
+
+An encrypted report has reached its recipient. The bytes are present, but the application still needs the material required to read them. What must remain reachable if a connection or a server fails?
+
+Two concerns arise. Federation lets a prepared receiving CABE Domain obtain access to information originating in another Domain. High availability preserves service when a Key Server fails within one Domain. A CABE Domain comprises one logical Key Service and its Clients; several Key Servers can implement that service. Separate Domains can operate separate Key Services. [^arch]
+
+A publisher asks its Key Service for a Lease to protect Messages with a particular Attribute Set. This is **Prograde Resolution**. A reader asks for the material associated with an existing Envelope, quoting its Lease Reference. This is **Retrograde Resolution**. Both operations involve an access decision; knowing a Lease Reference does not grant permission. The CABE Key Access Protocol (CKAP) carries these requests and responses. [^ckap]
+
+## Federation between Domains
+
+Consider a publisher in an Origin Domain sending an observation report to an application in a Target Domain. When creating the applicable Lease, the Origin Key Service includes that Target and uses its suitable Federation Public Key to prepare a Federated Lease Package (FLP). The Target retains the corresponding Federation Secret Key. This construction uses Non-Captive Lease material, Early Interbinding and Inline Propagation as defined by CABE Federation and Resilience (CFAR). [^cfar]
+
+The publisher encrypts the Message locally and includes the FLP in the Envelope’s headers. Shared transport and storage carry the Envelope and encrypted package without needing the report’s decryption key. Delivery puts these objects within reach of the receiving application; it does not itself give that application access to their protected contents. [^cbes]
+
+The recipient authenticates to its local Key Service and makes a fresh Retrograde request, quoting the Origin Domain ID, Attribute Set, Lease Reference and FLP. The service decrypts and verifies the package, checks that its protected identifiers match the request, and evaluates the caller’s access under local policy. For a permitted request, it provides the recovered Non-Captive material without a live request to the Origin. The application decrypts the report locally. [^cfar]
+
+This receiving Key Service is entrusted with usable Lease material. Federation does not authorise every local client or establish authority to disclose the report. The arrangement still depends on the applicable package, federation private material, local identity information, policy and a reachable local Key Service. An arbitrary unprepared Domain cannot assume it has those means.
+
+## Continuity within one Key Service
+
+Now consider failure within a Domain. A publisher obtains a Lease through Key Server A and publishes an Envelope. Server A fails. An authorised reader presents the Envelope’s Lease Reference to Key Server B. Server B must have the means to honour that request: responding over HTTP is insufficient if the required key state has been lost.
+
+The *CABE High Availability Specification (CABE-HA)* requires the semantics of every CKAP operation to be independent of which Key Server handles it. A successful Prograde reply from any server must be honourable by a corresponding future Retrograde request to any server, subject to the applicable policy. This includes servers introduced later. [^ha]
+
+The guarantee constrains when success may be acknowledged. Before returning an affirmative Prograde response, the service must durably ensure that all current and future Key Servers can process the corresponding Lease Reference, both immediately and later. If it cannot provide that guarantee for a request, it must return an error. The publisher must not receive an affirmative Lease response whose recoverability depends solely on the survival of the issuing server.
+
+Recoverability and permission remain distinct. Server B may be able to recover the material while policy refuses this particular caller. Failover must preserve the service’s meaning, including its access decisions; it is not a way around them.
+
+CABE-HA leaves the implementation strategy open. It gives client retries across configured endpoints and HTTP load balancing as examples of reaching another server. Neither establishes durability by itself. The specification does not mandate a database, replication topology, quorum, consensus protocol or active/standby design; the chosen arrangement must satisfy its invariants. [^ha]
+
+## When a connection and a server fail
+
+Return to the report delivered to the Target Domain. The Origin connection becomes unavailable, and one Target Key Server also fails. The reader starts without a cached Lease Key or plaintext and makes a fresh request through another Target Key Server. This is an architectural example, not a reported test.
+
+<FederationAvailabilityDiagram />
+
+The remaining Target server can service the authorised request if the delivered Envelope and FLP remain accessible and the required federation material, durable recovery arrangements, identity and policy dependencies remain available. It verifies the FLP and applies local policy as before. This composition relies on the Target’s own service arrangements; it does not require a globally replicated key store spanning the two Domains.
+
+Federation removes the need for this access request to reach the Origin Domain. High availability supports continuity within the receiving Key Service. Neither guarantees report delivery, survives the loss of all required state or promises unconditional service during every network partition. A partition that prevents the service from ensuring durable recoverability can require a Prograde error even while an HTTP endpoint remains reachable.
+
+## The architectural consequence
+
+Encrypted information can move through shared infrastructure without making every read depend on one particular originating server. Participating Domains can operate their own Key Services, while each service preserves the meaning of successful operations across server failures. The design separates delivery, local access decisions and the durable ability to recover the necessary material.
+
+[^arch]: [CABE Architecture Specification](/spec/arch/), September 2026 draft, “Definitions”, “Key Resolution” and “Architectural Invariants”.
+
+[^ckap]: [CABE Key Access Protocol (CKAP)](/spec/ckap/), September 2026 draft, “Prograde”, “Retrograde”, “HTTP Transport” and “Client Identity”.
+
+[^cfar]: [CABE Federation and Resilience (CFAR)](/spec/cfar/), September 2026 draft, “Federation Overview”, “Inline Propagation” and “Simple Federated Lease Packages”.
+
+[^cbes]: [CABE Baseline Envelope Structure (CBES)](/spec/cbes/), September 2026 draft, “Construction”, “Encapsulation” and “Decapsulation”.
+
+[^ha]: [CABE High Availability Specification (CABE-HA)](/spec/cha/), September 2026 draft, “Invariants” and “Service Access”.

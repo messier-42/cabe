@@ -17,4 +17,15 @@ const pages = defineCollection({
   schema: z.object({}).passthrough(),
 });
 
-export const collections = {spec, pages};
+const articles = defineCollection({
+  loader: glob({pattern: '**/*.{md,mdx}', base: './src/content/articles'}),
+  schema: z.object({
+    title: z.string().min(1),
+    description: z.string().min(1),
+    category: z.string().min(1),
+    // Existing posts have no confirmed publication dates; retain editorial order.
+    order: z.number().int().nonnegative().default(100),
+  }),
+});
+
+export const collections = {spec, pages, articles};
