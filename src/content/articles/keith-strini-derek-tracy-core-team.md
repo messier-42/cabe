@@ -2,7 +2,7 @@
 title: "Keith Strini and Derek Tracy join the CABE core team"
 description: "Keith Strini and Derek Tracy join the CABE core team, bringing experience from mission systems, software factories, and cross-domain operations."
 category: "Project"
-order: 1
+publishedAt: "2026-10-06"
 ---
 
 Keith Strini and Derek Tracy have joined the CABE core team, alongside Hugo Landau, Andrés Vega, and Ryan Hurst.

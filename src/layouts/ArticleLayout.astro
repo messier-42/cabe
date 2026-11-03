@@ -1,15 +1,17 @@
 ---
 import Layout from './Layout.astro';
 import type { MarkdownHeading } from 'astro';
+import { formatArticleDate } from '../utils/articles.mjs';
 import '../styles/articles.css';
 
 interface Props {
   title: string;
   description: string;
   category: string;
+  publishedAt: string;
   headings: MarkdownHeading[];
 }
-const { title, description, category, headings } = Astro.props;
+const { title, description, category, publishedAt, headings } = Astro.props;
 const sections = headings.filter(heading => heading.depth === 2);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
@@ -18,7 +20,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <header class="page__header">
       <div class="container">
         <a class="section-label" href={`${base}/articles/`}>Articles</a>
-        <p class="article-category">{category}</p>
+        <p class="article-category">{category} · <time datetime={publishedAt}>{formatArticleDate(publishedAt)}</time></p>
         <h1 class="page__title">{title}</h1>
         <p class="page__subtitle">{description}</p>
       </div>
