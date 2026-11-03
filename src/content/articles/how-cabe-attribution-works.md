@@ -11,7 +11,7 @@ Not from those two facts alone. The source Attribute is a statement, and symmetr
 
 [![Key-request authentication is distinct from portable producer attribution. An application-defined signed publication record is protected inside a CABE Envelope, then decrypted and verified by an authorised reader.](/images/primer-attribution.png)](/images/primer-attribution.png)
 
-*Figure 3. The Key Service authenticates a key request. Portable producer attribution requires additional evidence bound to the Message; the signed publication record shown here is an application design, not a standard CABE field.*
+*Figure 1. The Key Service authenticates a key request. Portable producer attribution requires additional evidence bound to the Message; the signed publication record shown here is an application design, not a standard CABE field.*
 
 ## Three different assertions
 
