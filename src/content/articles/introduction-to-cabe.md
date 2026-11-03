@@ -39,7 +39,7 @@ A sensor may produce many reports with the same Attribute Set. Requiring a new k
 
 A valid cached Lease avoids that requirement in the Non-Captive case. The Client holds the Lease Key and can encapsulate further Messages locally while the Lease is valid. A Captive Lease instead keeps the Lease Key at the Key Service, which performs assisted operations on a content encryption key. In both cases the Client handles the Payload. The Key Service remains trusted for the key material it controls even though it does not need the Payload in its normal request path. [3](https://cabespec.org/spec/ckap/)
 
-A Lease is not a timer which makes previously disclosed information disappear. Expiry controls the use of the Lease for subsequent operations by a conforming Client. It cannot erase retained keys or plaintext. The consequences for policy changes are discussed in the policy article.
+A Lease is not a timer which makes previously disclosed information disappear. Expiry controls the use of the Lease for subsequent operations by a conforming Client. It cannot erase retained keys or plaintext. The consequences for policy changes are discussed in [the policy article](/articles/how-cabe-policy-works/).
 
 ## What an integration supplies
 

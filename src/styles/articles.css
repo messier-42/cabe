@@ -22,6 +22,7 @@
 .article-prose .footnotes { margin-top: 38px; border-top: 1px solid var(--line); padding-top: 30px; font-size: 13px; overflow-wrap: anywhere; }
 .article-prose .footnotes p { margin-bottom: 0; }
 .article-prose img { max-width: 100%; height: auto; }
+.article-prose pre { max-width: 100%; overflow-x: auto; padding: 20px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; line-height: 1.6; }
 .article-return { margin-top: 38px; font-size: 13px; }
 .article-index { list-style: none; margin: 0; padding: 0; max-width: 920px; }
 .article-index li { padding-block: 26px; border-block: 1px solid var(--line); }
@@ -54,5 +55,6 @@
 @media print {
   .article-layout { display: block; padding-top: 20px; }
   .article-contents, .article-return { display: none; }
+  .article-prose pre { white-space: pre-wrap; overflow-wrap: anywhere; }
   .article-prose { font-size: 11pt; }
 }
