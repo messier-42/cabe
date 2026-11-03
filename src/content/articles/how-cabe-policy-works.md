@@ -11,7 +11,7 @@ The CABE Architecture leaves the policy language unspecified. khaled, the refere
 
 [![Principal Claims, Message Attributes and the requested operation feed Cedar policy evaluation; the matching analysis request is allowed and the maintenance request is denied.](/images/primer-policy.png)](/images/primer-policy.png)
 
-*Figure 2. khaled evaluates the requested operation against the Principal and Attribute Set. The example allows a matching analysis request and refuses a maintenance request with no matching permit.*
+*Figure 1. khaled evaluates the requested operation against the Principal and Attribute Set. The example allows a matching analysis request and refuses a maintenance request with no matching permit.*
 
 ## The inputs to a decision
 
