@@ -2,7 +2,7 @@
 title: "CABE Primer Part 1: Introduction to CABE"
 description: "Basics of CABE."
 category: "Primer"
-order: 2
+publishedAt: "2026-10-28"
 ---
 
 ## Introduction
