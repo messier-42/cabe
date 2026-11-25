@@ -92,6 +92,13 @@ Standard CABE performs Encapsulation and Decapsulation using symmetric keys (gen
 
 Access is facilitated on a per-Lease basis. A given Target Domain is enabled to obtain the necessary LKAI for a Lease and thereby handle a Retrograde operation by virtue of a FLP. A FLP is a cryptographically secured data unit which enables a Target Domain to obtain the LKAI for a given Lease.
 
+<figure class="cfar-figure" id="figure-federation-overview">
+  <div class="cfar-diagram-scroll" tabindex="0" role="region" aria-label="Federation overview diagram; scroll horizontally on narrow screens">
+    <img src="/images/cfar-federation-overview.svg" width="740" height="570" alt="Origin and Target Domains each contain an Agent and a Key Service. Envelopes and FLPs cross untrusted transport. Each Agent uses CKAP with its own Key Service; Target resolution has no live dependency on the Origin." />
+  </div>
+  <figcaption><strong>Figure 1. Federation overview (informative).</strong> The Target Key Service recovers Non-Captive Lease Key material and applies its own Policy to Client requests. The Origin has the Target's Federation Public Key when creating the SFLP; the Target retains the corresponding Federation Secret Key. Domain outlines identify logical CABE Domains, not physical network boundaries. <a href="/images/cfar-federation-overview.svg">Open full-size diagram.</a></figcaption>
+</figure>
+
 An Origin Domain produces an FLP for a given Target Domain when Interbinding occurs. Interbinding is the process by which an Origin Domain makes a Lease (and associated Envelopes) portable to a Target Domain by generating one or more FLPs.
 
 This specification defines a federation architecture based around Early Interbinding. This is a form of Interbinding in which the Target Domain Set is determined at the time of a Prograde operation. Future specifications may define architectures facilitating Late Interbinding, wherein the Target Domain Set is not known at the time of a Prograde operation.
@@ -113,6 +120,13 @@ The CABE Key Access Protocol is extended as follows:
 - the Prograde operation is extended to allow the Key Service to return a set of FLPs;
 - the Retrograde operation is extended to allow a Client to quote a set of FLPs to a Key Service;
 - to provide a discovery mechanism for FPKs.
+
+<figure class="cfar-figure" id="figure-federated-exchange">
+  <div class="cfar-diagram-scroll" tabindex="0" role="region" aria-label="Federated exchange sequence diagram; scroll horizontally on narrow screens">
+    <img src="/images/cfar-federated-exchange.svg" width="740" height="760" alt="Successful inline exchange: Prograde returns a Lease and SFLPs, the Origin Agent encapsulates and sends the Envelope with FLPs, and the Target Agent quotes them in a local Retrograde request. The Target Key Service decrypts and verifies an SFLP, matches its bindings and applies Policy before returning LKAI for Decapsulation." />
+  </div>
+  <figcaption><strong>Figure 2. Federated exchange (informative).</strong> Early Interbinding and Inline Propagation with a Non-Captive Lease Key, showing the successful path for an authorised Principal. Client authentication and caching are omitted. The processing boxes summarise the required work without prescribing an implementation order. Solid red arrows carry Envelopes; dashed horizontal arrows are CKAP exchanges. <a href="/images/cfar-federated-exchange.svg">Open full-size diagram.</a></figcaption>
+</figure>
 
 ## Common definitions
 
@@ -204,6 +218,13 @@ In Inline Propagation, an Encapsulating Client places the FLPs returned with a L
 
 In Sidecar Propagation, a different (unspecified, application-specific) means is used to transport the FLPs. This could involve, for example, a separate file adjacent to a file containing a CABE Envelope. Sidecar Propagation has the advantage of enabling an application to use its unique domain-specific attributes to facilitate the most efficient and non-redundant transport of FLPs to a Target Domain's Key Service.
 
+<figure class="cfar-figure" id="figure-flp-propagation">
+  <div class="cfar-diagram-scroll" tabindex="0" role="region" aria-label="Inline and sidecar propagation diagram; scroll horizontally on narrow screens">
+    <img src="/images/cfar-flp-propagation.svg" width="740" height="500" alt="Three Envelopes share one Lease. Inline Propagation repeats the FLP Set in each Envelope's unprotected header. The illustrated Sidecar Propagation arrangement carries the same FLP Set separately alongside the Envelopes." />
+  </div>
+  <figcaption><strong>Figure 3. FLP propagation (informative).</strong> Two ways to deliver FLPs for three Envelopes using the same Lease. The sidecar arrangement is illustrative; its format and delivery mechanism are application-specific. The inline FLP list can be changed without re-encrypting the Payload, while each FLP retains its own cryptographic protection. <a href="/images/cfar-flp-propagation.svg">Open full-size diagram.</a></figcaption>
+</figure>
+
 # Simple Federated Lease Packages (SFLPs)
 
 ## Structure
@@ -235,6 +256,13 @@ An Origin Domain's Key service determines the Target Domain Set during Prograde 
 ## Consumption
 
 Before using an SFLP to satisfy a Retrograde request, the Target Domain's Key Service MUST successfully decrypt the SFLP and verify its integrity. The SFLP's protected Origin Domain ID, Attribute Set and Lease Reference MUST exactly match the corresponding values in the request. If an SFLP does not match, the Key Service MAY continue processing by attempting to use other FLPs.
+
+<figure class="cfar-figure" id="figure-sflp-validation">
+  <div class="cfar-diagram-scroll" tabindex="0" role="region" aria-label="SFLP structure and validation diagram; scroll horizontally on narrow screens">
+    <img src="/images/cfar-sflp-validation.svg" width="740" height="660" alt="An SFLP contains protected headers, encrypted Non-Captive LKAI and COSE Recipients. Its Origin Domain ID, Attribute Set and Lease Reference must match the Retrograde request. The Target Key Service decrypts and verifies the SFLP, checks these bindings and applies local Policy before granting key access." />
+  </div>
+  <figcaption><strong>Figure 4. SFLP structure and validation (informative).</strong> The equality marks identify the three request bindings checked by the Target Key Service. Decryption, integrity verification, binding checks and authorisation are needed before an SFLP can satisfy a request. This is a conceptual view, not a byte layout or a prescribed processing order. <a href="/images/cfar-sflp-validation.svg">Open full-size diagram.</a></figcaption>
+</figure>
 
 # Limitations
 
